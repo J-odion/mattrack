@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 const DynamicTable = () => {
   const [reports, setReports] = useState([]);
-
   const addReport = (newReport) => {
     setReports([...reports, newReport]);
   };
