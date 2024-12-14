@@ -4,17 +4,27 @@ import Image from "next/image";
 import { FaCaretDown, FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import AddReportForm from "./ReportForm";
+import RequestMatForm from "./requestMatFor";
+import ContactManagement from "./ContactManagement";
 
 // components/Navbar.js
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAddReportOpen, setIsAddReportOpen] = useState(false);
+  const [isRequestMatOpen, setIsRequestMatOpen] = useState(false);
+  const [isContact, setIsContact] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   const toggleAddReport = () => {
     setIsAddReportOpen(!isAddReportOpen);
+  };
+  const toggleRequestMat = () => {
+    setIsRequestMatOpen(!isRequestMatOpen);
+  };
+  const toggleContact = () => {
+    setIsContact(!isContact);
   };
 
   return (
@@ -44,20 +54,19 @@ export default function Navbar() {
             >
               Add Report
             </button>
-            
+
             <button className="text-[#123962] border-[#123962] border w-[182px] h-[40px] bg-[#fff] font-semibold px-4 py-1 text-[16px] rounded-full">
               Download Report
             </button>
             <button
-              onClick={toggleAddReport}
+              onClick={toggleRequestMat}
               className="bg-[#123962] w-[192px] h-[40px] text-[#FFFFFF] px-4 py-1 text-[16px] rounded-full"
             >
               Request Material
             </button>
-            <button className="text-[#123962] border-[#123962] border w-[220px] h-[40px] bg-[#fff] font-semibold px-4 py-1 text-[16px] rounded-full">
+            <button onClick={toggleContact} className="text-[#123962] border-[#123962] border w-[220px] h-[40px] bg-[#fff] font-semibold px-4 py-1 text-[16px] rounded-full">
               Contact Management
             </button>
-            
           </div>
         </div>
 
@@ -87,7 +96,25 @@ export default function Navbar() {
       {isAddReportOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
           <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
-            <AddReportForm toggleForm={toggleAddReport}/>
+            <AddReportForm toggleForm={toggleAddReport} />
+          </div>
+        </div>
+      )}
+
+      {/* { Request a material pop-up form} */}
+
+      {isRequestMatOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+            <RequestMatForm toggleForm={toggleRequestMat} />
+          </div>
+        </div>
+      )}
+
+      {isContact && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+            <ContactManagement toggleForm={toggleContact} />
           </div>
         </div>
       )}

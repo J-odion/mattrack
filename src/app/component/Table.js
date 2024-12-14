@@ -19,7 +19,7 @@ const DynamicTable = () => {
             <th className="py-2 px-4 border-b">Unit</th>
             <th className="py-2 px-4 border-b">Site Location</th>
             <th className="py-2 px-4 border-b">Management</th>
-            <th className="py-2 px-4 border-b">House Type</th>
+            <th className="py-2 px-4 border-b">House Type / Number</th>
             <th className="py-2 px-4 border-b">Purpose</th>
           </tr>
         </thead>

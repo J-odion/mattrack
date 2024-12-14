@@ -40,6 +40,7 @@ const filters = {
       "Rapid Hardening Cement",
     ],
   },
+  "Date": ["Daily", "Weekly", "Monthy", "Yearly"],
   }
 };
 

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 const AddReportForm = ({ toggleForm, handleSubmit }) => {
-   const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     date: Date.GMT,
     materialManagement: "",
     materialCategory: "",
@@ -12,9 +12,9 @@ const AddReportForm = ({ toggleForm, handleSubmit }) => {
     unit: "",
     recipientName: "",
     houseType: "",
+    houseNumber: "",
     purpose: "",
-    approvalStatus: "",
-    approvedBy: "",
+    storeKeepersName: "",
   });
 
   const [showForm, setShowForm] = useState(false);
@@ -33,7 +33,24 @@ const AddReportForm = ({ toggleForm, handleSubmit }) => {
   const purposes = ["FDN", "Lintel", "Decking", "Block Work", "Plastering"];
 
   const houseTypes = ["FD", "SM", "QD", "D"];
-  const sites = ["Idu Hof Community", "Hof court Karimo 1", "Hof Court Karimo 2", "Hof Court Karimo 3"];
+  const houseNumber = ["FD1", "FD2", "SM1", "SM2", "QD1", "QD2", "D1", "D2"];
+  const sites = [
+    "Idu Hof Community",
+    "Hof court Karimo 1",
+    "Hof Court Karimo 2",
+    "Hof Court Karimo 3",
+  ];
+
+  // const sites = {
+  //   "Idu Hof Community": ["Plywood", "Timber", "Particle Board"],
+  //   "Hof court Karimo 1": ["Roof Nails", "Common Nails", "Masonry Nails"],
+  //   "Hof Court Karimo 2": ["Iron Rods", "Steel Bars", "Reinforcement Mesh"],
+  //   "Hof Court Karimo 3": [
+  //     "Ordinary Portland Cement",
+  //     "White Cement",
+  //     "Rapid Hardening Cement",
+  //   ],
+  // };
   const materialNames = ["Please select a category"];
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -130,23 +147,23 @@ const AddReportForm = ({ toggleForm, handleSubmit }) => {
                     <option value="tons">Tons</option>
                   </select>
                 </div>
-                 {/* Site Location */}
-                 <div>
-                      <label className="block mb-1">Site Location</label>
-                      <select
-                        name="siteLocation"
-                        value={formData.siteLocation}
-                        onChange={handleInputChange}
-                        className="border border-gray-300 p-2 rounded w-full"
-                      >
-                        <option value="">Select a Site Location</option>
-                        {sites.map((site, index) => (
-                          <option key={index} value={site}>
-                            {site}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                {/* Site Location */}
+                <div>
+                  <label className="block mb-1">Site Location</label>
+                  <select
+                    name="siteLocation"
+                    value={formData.siteLocation}
+                    onChange={handleInputChange}
+                    className="border border-gray-300 p-2 rounded w-full"
+                  >
+                    <option value="">Select a Site Location</option>
+                    {sites.map((site, index) => (
+                      <option key={index} value={site}>
+                        {site}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 {/* Recipient Details for Disbursed */}
                 {formData.materialManagement === "disbursed" && (
                   <>
@@ -177,6 +194,23 @@ const AddReportForm = ({ toggleForm, handleSubmit }) => {
                         ))}
                       </select>
                     </div>
+                    {/* House Number */}
+                    <div>
+                      <label className="block mb-1">House Number</label>
+                      <select
+                        name="houseNumber"
+                        value={formData.houseNumber}
+                        onChange={handleInputChange}
+                        className="border border-gray-300 p-2 rounded w-full"
+                      >
+                        <option value="">Select a House Number</option>
+                        {houseNumber.map((houseNumber, index) => (
+                          <option key={index} value={houseNumber}>
+                            {houseNumber}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                     {/* purpose  */}
                     <div>
                       <label className="block mb-1">Purpose</label>
@@ -201,28 +235,13 @@ const AddReportForm = ({ toggleForm, handleSubmit }) => {
 
             {/* Section 2: Approval */}
             <div>
-              <h3 className="text-md font-semibold mb-2">Approval</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-1">Approval Status</label>
-                  <select
-                    name="approvalStatus"
-                    value={formData.approvalStatus}
-                    onChange={handleInputChange}
-                    className="border border-gray-300 p-2 rounded w-full"
-                  >
-                    <option value="">Select Status</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Rejected">Rejected</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block mb-1">Approved By</label>
+                  <label className="block mb-1">Store Keeper's Name</label>
                   <input
                     type="text"
-                    name="approvedBy"
-                    value={formData.approvedBy}
+                    name="storeKeepersName"
+                    value={formData.storeKeepersName}
                     onChange={handleInputChange}
                     className="border border-gray-300 p-2 rounded w-full"
                   />
