@@ -1,4 +1,4 @@
-// File: C:\Users\jafar\Documents\office\Kairos\customForm\MaterialsPlatform\src\app\layout.js
+// File: /Users/mac/Documents/codes/customForm/MaterialsPlatform/src/app/layout.js
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
