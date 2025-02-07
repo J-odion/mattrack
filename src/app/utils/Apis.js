@@ -11,7 +11,7 @@ const apiClient = axios.create({
 // Add request interceptor
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("authToken"); 
+    const token = localStorage.getItem("authToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -19,7 +19,6 @@ apiClient.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
 // Add response interceptor
 apiClient.interceptors.response.use(
   (response) => response,
@@ -53,7 +52,7 @@ export const RegisterUser = async (credentials) => {
   try {
     const response = await apiClient.post("/register", credentials);
 
-    console.log("Registration Success:", response.data.user , "testing");
+    console.log("Registration Success:", response.data.user, "testing");
 
     return response.data.user;
   } catch (error) {
@@ -63,7 +62,7 @@ export const RegisterUser = async (credentials) => {
 
 export const Verifyotp = async (credentials) => {
   try {
-    const response = await apiClient.post("/verify-otp", credentials); 
+    const response = await apiClient.post("/verify-otp", credentials);
     return response.data;
   } catch (error) {
     console.error("Error fetching table data:", error);
@@ -73,7 +72,7 @@ export const Verifyotp = async (credentials) => {
 
 export const Resendotp = async (credentials) => {
   try {
-    const response = await apiClient.post("/resend-otp", credentials); 
+    const response = await apiClient.post("/resend-otp", credentials);
     return response.data;
   } catch (error) {
     console.error("Error fetching table data:", error);
@@ -84,7 +83,7 @@ export const Resendotp = async (credentials) => {
 // Table data
 export const fetchTableData = async () => {
   try {
-    const response = await apiClient.get("/data"); 
+    const response = await apiClient.get("/data");
     return response.data;
   } catch (error) {
     console.error("Error fetching table data:", error);
@@ -94,31 +93,29 @@ export const fetchTableData = async () => {
 
 export const addRecievedData = async (credentials) => {
   try {
-    const response = await apiClient.post("/data", credentials);
-
-    console.log("Uploading Successful:", response.data , "testing");
-
+    const response = await axios.post("/data", credentials);
+    console.log()
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.msg || "Data uploading failed. Please try again.");
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw the actual error, not a generic message
   }
+
 };
 
 export const addDisbursedData = async (credentials) => {
   try {
-    const response = await apiClient.post("/disburseddata", credentials);
-
-    console.log("Uploading Successful:", response.data , "testing");
-
+    const response = await axios.post("/disburseddata", credentials);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.msg || "Data uploading failed. Please try again.");
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw the actual error, not a generic message
   }
 };
 
 export const fetchDisbursedData = async () => {
   try {
-    const response = await apiClient.get("/disburseddata"); 
+    const response = await apiClient.get("/disburseddata");
     return response.data;
   } catch (error) {
     console.error("Error fetching table data:", error);
@@ -128,7 +125,7 @@ export const fetchDisbursedData = async () => {
 
 export const fetchAllInventory = async () => {
   try {
-    const response = await apiClient.get("/inventory"); 
+    const response = await apiClient.get("/inventory");
     return response.data;
   } catch (error) {
     console.error("Error fetching table data:", error);

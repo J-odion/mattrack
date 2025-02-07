@@ -3,20 +3,46 @@ import React, { useState } from "react";
 import { addDisbursedData, addRecievedData } from "../utils/Apis";
 
 const AddReportForm = ({ toggleForm }) => {
-  const [formData, setFormData] = useState({
-    date: Date.GMT,
-    materialManagement: "",
+  const[formData, setFormData] = useState({
+    materialManagement: "disbursed", // Default selection
     materialCategory: "",
     materialName: "",
     quantity: "",
     siteLocation: "",
     unit: "",
+    storeKeepersName: "",
     recipientName: "",
-    houseType: "",
     houseNumber: "",
     purpose: "",
-    storeKeepersName: "",
+    houseType: "",
+    date: new Date().toISOString().split("T")[0], // Format as YYYY-MM-DD
   });
+  const [disbursedData, setDisbursedData] = useState({
+    materialManagement: "Disbursed",
+    materialCategory: formData.materialCategory,
+    materialName: formData.materialName,
+    quantity: formData.quantity,
+    siteLocation: formData.siteLocation,
+    unit: formData.unit,
+    storeKeepersName: formData.storeKeepersName,
+    recipientName: formData.recipientName,
+    houseNumber: formData.houseNumber,
+    purpose: formData.purpose,
+    houseType: formData.houseType,
+    date: formData.date,
+  });
+
+  const [receivedData, setReceivedData] = useState({
+    received: "received", // Ensure this key exists
+    materialCategory: formData.materialCategory,
+    materialName: formData.materialName,
+    quantity: formData.quantity,
+    unit: formData.unit,
+    siteLocation: formData.siteLocation,
+    houseType: formData.houseType,
+    date: formData.date,
+  });
+
 
   const [showForm, setShowForm] = useState(false);
 
@@ -51,19 +77,19 @@ const AddReportForm = ({ toggleForm }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("form Data:", formData)
+
     try {
       // Conditionally call the correct API based on materialManagement
       if (formData.materialManagement === "received") {
         console.log('submitted addRecievedData API')
-        await addRecievedData(formData); // Call the received data endpoint
+        await addRecievedData(receivedData);
       } else if (formData.materialManagement === "disbursed") {
         console.log('submitted addDisbursedData API')
-        await addDisbursedData(formData); // Call the disbursed data endpoint
+        await addDisbursedData(disbursedData);
       }
 
-      // If needed, show success message or perform other actions (e.g., close form, reset fields)
-      toggleForm(); // This closes the form after successful submission (if necessary)
-
+      toggleForm();
     } catch (error) {
       // Handle the error (you can show an error message or any other error handling)
       console.error("Error uploading data:", error.message);

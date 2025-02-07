@@ -74,7 +74,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex gap-4">
+          <div className="hidden lg:flex justify-center items-end gap-4">
             {/* Show Update Inventory, Request Material, Contact Management for Store Keeper */}
             {(userRole === "storekeepers" || userRole === "engineer") && (
               <button
@@ -131,6 +131,7 @@ export default function Navbar() {
                 <FaRegUserCircle />
               </button>
               <h4 className="text-xs">{userRole}</h4>
+              <h4 className="text-xs font-bold">{userName}</h4>
             </div>
           </div>
         </div>
