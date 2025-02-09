@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="w-full h-[100vh] flex overflow-x-hidden">
-      <div className="w-2/3 text-white flex flex-col relative items-left gap-4 p-14 bg-[#123962]">
+      <div className="w-2/3 text-white hidden md:flex flex-col relative items-left gap-4 mdp-14 bg-[#123962]">
         <div className="flex relative flex-col gap-4 mb-5 top-0  ">
           <a href="/" className="absolute right-0 z-50 top-0">
             <Image src="/assets/whiteLogo.PNG" width={0} height={0} className="w-auto h-auto" alt="Logo" />
