@@ -64,8 +64,8 @@ const RegisterStaff = ({ toggleForm }) => {
 
   return (
     <div className="container  p-4">
-      <div className="fixed inset-0 flex justify-center items-center">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-2/4 lg:w border-[#123962] border">
+      <div className="inset-0 flex justify-center items-center">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-2/4 lg:w-2.2/4 border-[#123962] border">
           <h2 className="text-2xs font-bold mb-4">Create a New Staff</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -76,25 +76,26 @@ const RegisterStaff = ({ toggleForm }) => {
 
             {/* Name Input */}
             <div>
-              <label className="block mb-1">Full Name</label>
+              <label className="block mb-1">Full Name *</label>
               <input
                 type="text"
                 name="name"
+                placeholder="Enter your full name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="border border-gray-300 p-2 rounded w-full"
+                className="border border-gray-300 p-2 bg-[#F2F4F6] rounded w-full"
                 required
               />
             </div>
 
             {/* Role Input */}
             <div>
-              <label className="block mb-1">Role</label>
+              <label className="block mb-1">Role *</label>
               <select
                 name="role"
                 value={formData.role}
                 onChange={handleInputChange}
-                className="border border-gray-300 p-2 rounded w-full"
+                className="border border-gray-300 p-2 bg-[#F2F4F6] rounded w-full"
               >
                 <option value="">Select your role</option>
                 {roles.map((role) => (
@@ -107,26 +108,28 @@ const RegisterStaff = ({ toggleForm }) => {
 
             {/* Email Input */}
             <div>
-              <label className="block mb-1">Email</label>
+              <label className="block mb-1">Email *</label>
               <input
                 type="email"
                 name="email"
+                placeholder="Enter email address"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="border border-gray-300 p-2 rounded w-full"
+                className="border border-gray-300 p-2 bg-[#F2F4F6] rounded w-full"
                 required
               />
             </div>
 
             {/* Password Input */}
             <div>
-              <label className="block mb-1">Password</label>
+              <label className="block mb-1">Password *</label>
               <input
                 type="password"
                 name="password"
+                placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="border border-gray-300 p-2 rounded w-full"
+                className="border border-gray-300 p-2 bg-[#F2F4F6] rounded w-full"
                 required
               />
             </div>

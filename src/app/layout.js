@@ -1,7 +1,5 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import { Provider } from "react-redux";
-import store from "./libs/store";
 import ReduxProvider from "./libs/Provider";
 
 // Font setup

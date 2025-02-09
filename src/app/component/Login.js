@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../utils/Apis";
 import { login, loadUser } from "../libs/features/authSlice";
+import { FaLock } from "react-icons/fa";
+import { LuMail } from "react-icons/lu";
 
 const Login = () => {
   const router = useRouter();
@@ -48,7 +50,7 @@ const Login = () => {
     setLoading(true);
     try {
       const { token, user } = await loginUser(formData);
-      
+
       dispatch(login({ token, user }));
       setSuccessMessage("Login successful! Redirecting...");
 
@@ -65,9 +67,9 @@ const Login = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="fixed inset-0 flex justify-center items-center">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-2/4 lg:w-1/4 border-[#123962] border">
+    <div className="w-full  mx-auto p-4">
+      <div className="w-full inset-0 flex justify-center items-center">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-2/4 lg:w-2.2/4 border-[#123962] border">
           <h2 className="text-xl font-bold mb-4">Login</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -75,27 +77,31 @@ const Login = () => {
             </div>
 
             {/* Email Input */}
-            <div>
-              <label className="block mb-1">Email</label>
+            <label className="block mb-1">Email *</label>
+            <div className="border border-gray-300 bg pl-3 flex justify-center items-center gap-4 rounded w-full">
+              <LuMail className="text-[#123962]"/>
               <input
                 type="email"
                 name="email"
+                placeholder="Enter email address"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="border border-gray-300 p-2 rounded w-full"
+                className="border-none bg-[#F2F4F6] p-2 w-full "
                 required
               />
             </div>
 
             {/* Password Input */}
-            <div>
-              <label className="block mb-1">Password</label>
+            <label className="block mb-1">Password *</label>
+            <div className="border border-gray-300 bg pl-3 flex justify-center items-center gap-4 rounded w-full">
+              <FaLock className="text-[#123962]"/>
               <input
                 type="password"
                 name="password"
+                placeholder="Enter email address"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="border border-gray-300 p-2 rounded w-full"
+                className="border-none bg-[#F2F4F6] p-2 w-full"
                 required
               />
             </div>
@@ -112,18 +118,17 @@ const Login = () => {
 
             {/* Submit Button */}
             <div className="text-right">
-            <button
+              <button
                 type="submit"
                 className="text-[#123962] px-4 py-2 rounded hover:text-[#0e2c4f]"
-                onClick={()=> {router.push("/appdata");}}
+                onClick={() => { router.push("/appdata"); }}
               >
                 Continue as Guest
               </button>
               <button
                 type="submit"
-                className={`bg-[#123962] text-white px-4 py-2 rounded hover:bg-[#0e2c4f] ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`bg-[#123962] text-white px-4 py-2 rounded hover:bg-[#0e2c4f] ${loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 disabled={loading}
               >
                 {loading ? "Logging in..." : "Login"}

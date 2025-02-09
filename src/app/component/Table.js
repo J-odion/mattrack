@@ -62,7 +62,7 @@ const DynamicTable = () => {
                     {report.disbursed || report.received}
                   </td>{/* { 6 } */}
                   <td className="py-2 px-4 text-[12px] border-b">{report.site}</td>{/* { 7 } */}
-                  <td className="py-2 px-4 text-[12px] border-b">{report.houseType && report.houseNumber}</td>{/* { 8 } */}
+                  <td className="py-2 px-4 text-[12px] border-b">{report.houseType}{ report.houseNumber}</td>{/* { 8 } */}
                   <td className="py-2 px-4 text-[12px] border-b">{report.purpose}</td>{/* { 9 } */}
               </tr>
             ))}

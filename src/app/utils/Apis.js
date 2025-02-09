@@ -93,7 +93,7 @@ export const fetchTableData = async () => {
 
 export const addRecievedData = async (credentials) => {
   try {
-    const response = await axios.post("/data", credentials);
+    const response = await apiClient.post("/data", credentials);
     console.log()
     return response.data;
   } catch (error) {
@@ -105,7 +105,7 @@ export const addRecievedData = async (credentials) => {
 
 export const addDisbursedData = async (credentials) => {
   try {
-    const response = await axios.post("/disburseddata", credentials);
+    const response = await apiClient.post("/disburseddata", credentials);
     return response.data;
   } catch (error) {
     console.error("API Error:", error.response?.data || error.message);
