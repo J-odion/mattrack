@@ -24,25 +24,23 @@ const DynamicTable = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Inventory Data</h1>
-
+    <div className=" w-full mx-auto p-4">
       {loading && <p>Loading data...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-        <table className="min-w-full border border-gray-300">
+        <table className="min-w-full">
           <thead>
-            <tr>
-              <th className="py-2 text-[12px] px-4 border-b">Date</th> {/* { 1 } */}
-              <th className="py-2 text-[12px] px-4 border-b">Material Name</th>{/* { 2 } */}
-              <th className="py-2 text-[12px] px-4 border-b">Category</th>{/* { 3 } */}
-              <th className="py-2 text-[12px] px-4 border-b">Quantity</th>{/* { 4 } */}
-              <th className="py-2 text-[12px] px-4 border-b">Unit</th>{/* { 5 } */}
-              <th className="py-2 text-[12px] px-4 border-b">Management</th>{/* { 7 } */}
-              <th className="py-2 text-[12px] px-4 border-b">Site Location</th>{/* { 6 } */}
-              <th className="py-2 text-[12px] px-4 border-b">House Type / Number</th>{/* { 8 } */}
-              <th className="py-2 text-[12px] px-4 border-b">Purpose</th>{/* { 9 } */}
+            <tr className="bg-gray-100 font-normal text-left">
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Date</th> {/* { 1 } */}
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Material Name</th>{/* { 2 } */}
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Category</th>{/* { 3 } */}
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Quantity</th>{/* { 4 } */}
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Unit</th>{/* { 5 } */}
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Management</th>{/* { 7 } */}
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Site Location</th>{/* { 6 } */}
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">House Type / Number</th>{/* { 8 } */}
+              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Purpose</th>{/* { 9 } */}
             </tr>
           </thead>
           <tbody>

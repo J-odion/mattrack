@@ -37,7 +37,6 @@ export const loginUser = async (credentials) => {
 
     if (response.data && response.data.token && response.data.payload.user) {
       localStorage.setItem("authToken", response.data.token);
-
       return { token: response.data.token, user: response.data.payload.user };
     } else {
       throw new Error("Invalid response data");
@@ -133,7 +132,107 @@ export const fetchAllInventory = async () => {
   }
 };
 
+// request material
+export const requestMaterial = async (credentials) => {
+  try {
+    const response = await apiClient.post("/requestMaterial", credentials);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error;
+  }
+};
 
+// Accept material request
+export const reviewMaterialRequest = async (id, data) => {
+  try {
+    const response = await apiClient.post(`/reviewMaterialRequest/${id}`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Get material requests
+export const getMaterialRequest = async () => {
+  try {
+    const response = await apiClient.get("/requestMaterial");
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const addStandardAllocation = async (credentials) => {
+  try {
+    const response = await apiClient.post("/schedule", credentials);
+    console.log()
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw the actual error, not a generic message
+  }
+
+};
+
+export const viewAllStaff = async () => {
+  try {
+    const response = await apiClient.get("/allStaff");
+    console.log()
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw the actual error, not a generic message
+  }
+
+};
+
+// Edit a specific staff member
+export const editStaff = async (id, credentials) => {
+  try {
+    const response = await apiClient.put(`/allStaff/${id}`, credentials);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw actual error for handling in UI
+  }
+};
+
+// Delete a specific staff member
+export const deleteStaff = async (id) => {
+  try {
+    const response = await apiClient.delete(`/allStaff/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// request material schedule
+export const createSchedule = async (credentials) => {
+  try {
+    const response = await apiClient.post("/schedule", credentials);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const viewSchedule = async () => {
+  try {
+    const response = await apiClient.get("/schedule");
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw the actual error, not a generic message
+  }
+
+};
 
 
 
