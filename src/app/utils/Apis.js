@@ -146,8 +146,6 @@ export const requestMaterial = async (credentials) => {
 // Accept material request
 export const reviewMaterialRequest = async (id, data) => {
   try {
-    const response = await apiClient.put(`/reviewMaterialRequest/${id}`, data);
-    return response.data;
   } catch (error) {
     throw error;
   }
