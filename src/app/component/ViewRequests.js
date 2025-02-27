@@ -35,9 +35,9 @@ const ViewRequest = () => {
     }
   }, [user, dispatch]);
 
-   // Fallback role if user is null
-   const userRole = user ? user.role : "guest";
-   const userName = user ? user.name : "guest";
+  // Fallback role if user is null
+  const userRole = user ? user.role : "guest";
+  const userName = user ? user.name : "guest";
 
   const handleViewClick = (request) => {
     setSelectedRequest(request);
@@ -49,7 +49,7 @@ const ViewRequest = () => {
       console.error("Selected request or ID is undefined");
       return;
     }
-  
+
     try {
       console.log("Submitting review for ID:", selectedRequest._id); // Debugging log
       await reviewMaterialRequest(selectedRequest._id, { status, comment });
@@ -60,7 +60,7 @@ const ViewRequest = () => {
       console.error("Error submitting review:", err);
     }
   };
-  
+
 
   return (
     <div className="container mx-auto p-4">
@@ -104,71 +104,68 @@ const ViewRequest = () => {
             <p><strong>Purpose:</strong> {selectedRequest.purpose}</p>
             <p><strong>Site:</strong> {selectedRequest.siteLocation}</p>
             <p><strong>House Type:</strong> {selectedRequest.houseType}</p>
+            <p ><strong>Status:</strong> <span className="text-lg uppercase ">{selectedRequest.status}</span></p>
 
             <div>
-              {reports.map((material, index) =>(
-                <div key={index}> 
-                <p>{material.materialCategory}</p>
-                <p>{material.materialName}</p>
-                <p>{material.quantity}</p>
-                <p>{material.materialCategory}</p>
+              {reports.map((material, index) => (
+                <div key={index}>
+                  <p>{material.materialCategory}</p>
+                  <p>{material.materialName}</p>
+                  <p>{material.quantity}</p>
+                  <p>{material.materialCategory}</p>
                 </div>
               ))}
             </div>
 
             {userRole === "admin" || userRole === "projectmanager" ? (
-              <>
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Add a comment..."
-                  className="border p-2 w-full mt-4"
-                />
-                <div className="flex gap-2 mt-4">
-                  <button
-                    onClick={() => handleReviewAction("approved")}
-                    className="bg-green-600 text-white p-2 rounded"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => handleReviewAction("rejected")}
-                    className="bg-red-600 text-white p-2 rounded"
-                  >
-                    Reject
-                  </button>
-                  <button
-                    onClick={() => setIsModalOpen(false)}
-                    className="bg-gray-400 text-white p-2 rounded"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </>
-            ) : userRole === "storekeeper" ? (
-              <>
-                <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
-                <button className="bg-blue-600 text-white p-2 rounded mt-4">
-                  Disburse
-                </button>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="bg-gray-400 text-white p-2 rounded mt-2"
-                >
-                  Close
-                </button>
-              </>
-            ) : (
-              <>
-                <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="bg-gray-400 text-white p-2 rounded mt-4"
-                >
-                  Close
-                </button>
-              </>
-            )}
+  selectedRequest?.status === "pending" ? (
+    <>
+      <textarea
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        placeholder="Add a comment..."
+        className="border p-2 w-full mt-4"
+      />
+      <div className="flex gap-2 mt-4">
+        <button
+          onClick={() => handleReviewAction("approved")}
+          className="bg-green-600 text-white p-2 rounded"
+        >
+          Approve
+        </button>
+        <button
+          onClick={() => handleReviewAction("rejected")}
+          className="bg-red-600 text-white p-2 rounded"
+        >
+          Reject
+        </button>
+      </div>
+    </>
+  ) : (
+    <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
+  )
+) : userRole === "storekeeper" ? (
+  <>
+    <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
+    <button className="bg-blue-600 text-white p-2 rounded mt-4">
+      Disburse
+    </button>
+  </>
+) : (
+  <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
+)}
+
+
+{/* Close button always available for all users */}
+<div className="mt-4">
+  <button
+    onClick={() => setIsModalOpen(false)}
+    className="bg-gray-400 text-white p-2 rounded"
+  >
+    Close
+  </button>
+</div>
+
           </div>
         </div>
       )}

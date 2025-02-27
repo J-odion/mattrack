@@ -2,12 +2,15 @@
 import React, { useState, useEffect } from "react";
 import { Purpose, house_types, sites } from "../data/data";
 import { requestMaterial, viewHouseSchedule,  } from "../utils/Apis";
+import { useSelector } from "react-redux";
 
 const RequestMatForm = ({ toggleForm }) => {
+  const userInfo = useSelector((state) => state.auth.user);
+
   const [formData, setFormData] = useState({
     siteLocation: "",
     houseType: "",
-    name: "",
+    name: userInfo?.name || "" ,
     purpose: "",
     materials: [],
   });
@@ -63,46 +66,6 @@ const RequestMatForm = ({ toggleForm }) => {
   }, [formData.siteLocation, formData.houseType, formData.purpose]);
   
 
-  // useEffect(() => {
-  //   const fetchMaterials = async () => {
-  //     if (formData.siteLocation && formData.houseType && formData.purpose) {
-  //       try {
-  //         const response = await viewHouseSchedule({
-  //           siteLocation: formData.siteLocation,
-  //           houseType: formData.houseType,
-  //           purpose: formData.purpose,
-  //         });
-  
-  //         if (Array.isArray(response.data)) {
-  //           // Extract materials from each object and flatten into one array
-  //           const extractedMaterials = response.data.flatMap((item) => item.materials);
-  
-  //           setFetchedMaterials(extractedMaterials);
-  
-  //           setFormData((prev) => ({
-  //             ...prev,
-  //             materials: extractedMaterials.map((material) => ({
-  //               materialName: material.materialName,
-  //               unit: material.unit,
-  //               quantity: material.maxQuantity || "", // Adjusted to maxQuantity
-  //             })),
-  //           }));
-  //         } else {
-  //           console.error("API response is not an array:", response.data);
-  //           setFetchedMaterials([]);
-  //           setFormData((prev) => ({ ...prev, materials: [] }));
-  //         }
-  //       } catch (error) {
-  //         console.error("Failed to fetch materials:", error);
-  //         setFetchedMaterials([]);
-  //         setFormData((prev) => ({ ...prev, materials: [] }));
-  //       }
-  //     }
-  //   };
-  
-  //   fetchMaterials();
-  // }, [formData.siteLocation, formData.houseType, formData.purpose]);
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -170,7 +133,8 @@ const RequestMatForm = ({ toggleForm }) => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="border border-gray-300 p-2 rounded w-full"
+                    readOnly
+                    className="border border-gray-300 p-2 rounded bg-gray-100 w-full"
                   />
                 </div>
                 <div>
