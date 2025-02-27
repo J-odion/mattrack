@@ -140,7 +140,6 @@ export default function Navbar() {
                     Send Message
                   </button>
                 )}
-
               {/* User Icon and Role */}
             </div>
           </div>

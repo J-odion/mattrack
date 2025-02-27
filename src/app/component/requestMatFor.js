@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { categories, Purpose, house_types, sites } from "../data/data";
-import { requestMaterial, getMaterialRequest, viewSchedule } from "../utils/Apis";
+import { Purpose, house_types, sites } from "../data/data";
+import { requestMaterial, viewHouseSchedule,  } from "../utils/Apis";
 
 const RequestMatForm = ({ toggleForm }) => {
   const [formData, setFormData] = useState({
@@ -25,16 +25,15 @@ const RequestMatForm = ({ toggleForm }) => {
 
   useEffect(() => {
     const fetchMaterials = async () => {
-      if (formData.siteLocation && formData.houseTypes && formData.purpose) {
+      if (formData.siteLocation && formData.houseType && formData.purpose) {
         try {
-          const response = await viewSchedule({
+          const response = await viewHouseSchedule({
             siteLocation: formData.siteLocation,
             houseType: formData.houseType,
             purpose: formData.purpose,
           });
   
           if (Array.isArray(response.data)) {
-            // Extract materials from each object and flatten into one array
             const extractedMaterials = response.data.flatMap((item) => item.materials);
   
             setFetchedMaterials(extractedMaterials);
@@ -44,7 +43,7 @@ const RequestMatForm = ({ toggleForm }) => {
               materials: extractedMaterials.map((material) => ({
                 materialName: material.materialName,
                 unit: material.unit,
-                quantity: material.maxQuantity || "", // Adjusted to maxQuantity
+                quantity: material.maxQuantity || "",
               })),
             }));
           } else {
@@ -61,34 +60,31 @@ const RequestMatForm = ({ toggleForm }) => {
     };
   
     fetchMaterials();
-  }, [formData.siteLocation, formData.houseTypes, formData.purpose]);
+  }, [formData.siteLocation, formData.houseType, formData.purpose]);
   
-
 
   // useEffect(() => {
   //   const fetchMaterials = async () => {
-  //     if (formData.siteLocation && formData.houseTypes && formData.purpose) {
+  //     if (formData.siteLocation && formData.houseType && formData.purpose) {
   //       try {
-  //         const response = await viewSchedule({
+  //         const response = await viewHouseSchedule({
   //           siteLocation: formData.siteLocation,
-  //           houseType: formData.houseTypes,
+  //           houseType: formData.houseType,
   //           purpose: formData.purpose,
   //         });
   
-  //         // Ensure response is an array
-  //         if (Array.isArray(response.data.data)) {
+  //         if (Array.isArray(response.data)) {
   //           // Extract materials from each object and flatten into one array
-  //           const extractedMaterials = response.data.data.flatMap((item) => item.materials);
+  //           const extractedMaterials = response.data.flatMap((item) => item.materials);
   
   //           setFetchedMaterials(extractedMaterials);
   
   //           setFormData((prev) => ({
   //             ...prev,
   //             materials: extractedMaterials.map((material) => ({
-  //               materialCategory: material.category || "", // Ensure category exists
   //               materialName: material.materialName,
   //               unit: material.unit,
-  //               quantity: material.quantity || "", // Default quantity if missing
+  //               quantity: material.maxQuantity || "", // Adjusted to maxQuantity
   //             })),
   //           }));
   //         } else {
@@ -105,7 +101,7 @@ const RequestMatForm = ({ toggleForm }) => {
   //   };
   
   //   fetchMaterials();
-  // }, [formData.siteLocation, formData.houseTypes, formData.purpose]);
+  // }, [formData.siteLocation, formData.houseType, formData.purpose]);
   
 
   const handleInputChange = (e) => {
@@ -196,7 +192,7 @@ const RequestMatForm = ({ toggleForm }) => {
                 <div>
                   <label className="block mb-1">House Type</label>
                   <select
-                    name="houseTypes"
+                    name="houseType"
                     value={formData.houseType}
                     onChange={handleInputChange}
                     className="border border-gray-300 p-2 rounded w-full"
@@ -218,7 +214,7 @@ const RequestMatForm = ({ toggleForm }) => {
                   {Array.isArray(fetchedMaterials) && fetchedMaterials.map((material, index) => (
                     <div
                       key={index}
-                      className="grid grid-cols-6 items-center gap-4 mb-4 border p-2 rounded"
+                      className="grid grid-cols-6 items-center gap-4 mb-4  p-2 rounded"
                     >
                       <div>
                         <label className="block mb-1">Material Name</label>

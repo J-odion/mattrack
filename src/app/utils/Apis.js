@@ -234,6 +234,20 @@ export const viewSchedule = async () => {
 
 };
 
+export const viewHouseSchedule = async (params) => {
+  try {
+    const response = await apiClient.get("/houseschedule", { params });
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw the actual error, not a generic message
+  }
+
+};
+
+
+
 
 
 export default apiClient;
