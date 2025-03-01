@@ -14,7 +14,7 @@ export default function Home() {
       </div>
       <div className="h-full w-full flex flex-col p-14  justify-center items-center">
         <a href="/" className="absolute z-50 top-4">
-          <Image src="/assets/logo.PNG" width={140} height={38} alt="Logo" />
+          <Image src="/assets/logo.png" width={140} height={38} alt="Logo" />
         </a>
         <Login />
       </div>
