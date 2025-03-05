@@ -331,7 +331,6 @@ export const sites = [
   "Karsana",
   "Guzape",
   "Idogwari",
-  "Idu",
   "Karmo 1",
   "Karmo 2",
   "Karmo 3"
