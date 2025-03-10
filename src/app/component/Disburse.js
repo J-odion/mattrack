@@ -2,8 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { categories, house_types, Purpose, sites } from "../data/data";
 import { addDisbursedData } from "../utils/Apis";
+import { useSelector } from "react-redux";
+
 
 const DisburseData = ({ toggleForm }) => {
+  const userInfo = useSelector((state) => state.auth.user);
+
   const [formData, setFormData] = useState({
     disbursed: "disbursed",
     materialCategory: "",
@@ -11,7 +15,7 @@ const DisburseData = ({ toggleForm }) => {
     quantity: "",
     siteLocation: "",
     unit: "",
-    storeKeepersName: "",
+    storeKeepersName: userInfo?.name || "" ,
     recipientName: "",
     purpose: "",
     houseType: "",
@@ -56,7 +60,7 @@ const DisburseData = ({ toggleForm }) => {
     e.preventDefault();
     try {
       await addDisbursedData(formData);
-      setNotification({ message: "Data successfully submitted!", type: "success" });
+      setNotification({ message: "Materials successfully disbursed!", type: "success" });
       toggleForm();
     } catch (error) {
       setNotification({
@@ -84,24 +88,6 @@ const DisburseData = ({ toggleForm }) => {
           <h2 className="text-lg font-bold mb-4">Disburse Material</h2>
           <form onSubmit={onSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-4">
-              {/* Material Category */}
-              <div>
-                <label className="block mb-1 text-2xs">Material Category</label>
-                <select
-                  name="materialCategory"
-                  value={formData.materialCategory}
-                  onChange={handleInputChange}
-                  className="border border-gray-300 text-2xs p-2 rounded w-full"
-                >
-                  <option value="">Select a Category</option>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category.name}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               {/* Material Name */}
               <div>
                 <label className="block mb-1 text-2xs">Material Name</label>

@@ -118,53 +118,53 @@ const ViewRequest = () => {
             </div>
 
             {userRole === "admin" || userRole === "projectmanager" ? (
-  selectedRequest?.status === "pending" ? (
-    <>
-      <textarea
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        placeholder="Add a comment..."
-        className="border p-2 w-full mt-4"
-      />
-      <div className="flex gap-2 mt-4">
-        <button
-          onClick={() => handleReviewAction("approved")}
-          className="bg-green-600 text-white p-2 rounded"
-        >
-          Approve
-        </button>
-        <button
-          onClick={() => handleReviewAction("rejected")}
-          className="bg-red-600 text-white p-2 rounded"
-        >
-          Reject
-        </button>
-      </div>
-    </>
-  ) : (
-    <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
-  )
-) : userRole === "storekeeper" ? (
-  <>
-    <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
-    <button className="bg-blue-600 text-white p-2 rounded mt-4">
-      Disburse
-    </button>
-  </>
-) : (
-  <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
-)}
+              selectedRequest?.status === "pending" ? (
+                <>
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Add a comment..."
+                    className="border p-2 w-full mt-4"
+                  />
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      onClick={() => handleReviewAction("approved")}
+                      className="bg-green-600 text-white p-2 rounded"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleReviewAction("rejected")}
+                      className="bg-red-600 text-white p-2 rounded"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
+              )
+            ) : userRole === "storekeeper" ? (
+              <>
+                <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
+                <button className="bg-blue-600 text-white p-2 rounded mt-4">
+                  Disburse
+                </button>
+              </>
+            ) : (
+              <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
+            )}
 
 
-{/* Close button always available for all users */}
-<div className="mt-4">
-  <button
-    onClick={() => setIsModalOpen(false)}
-    className="bg-gray-400 text-white p-2 rounded"
-  >
-    Close
-  </button>
-</div>
+            {/* Close button always available for all users */}
+            <div className="mt-4">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-gray-400 text-white p-2 rounded"
+              >
+                Close
+              </button>
+            </div>
 
           </div>
         </div>

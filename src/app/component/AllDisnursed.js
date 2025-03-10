@@ -34,7 +34,6 @@ const AllDisbursed = () => {
             <tr className="bg-gray-100 font-normal text-left">
               <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Date</th> {/* { 1 } */}
               <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Material Name</th>{/* { 2 } */}
-              <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Category</th>{/* { 3 } */}
               <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Quantity</th>{/* { 4 } */}
               <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Unit</th>{/* { 5 } */}
               <th className="py-2 font-normal text-left text-[12px] px-4 border-b">Recipient Name</th>{/* { 7 } */}
@@ -53,7 +52,6 @@ const AllDisbursed = () => {
                     day: "numeric",
                   })} </td>{/* { 1 } */}
                   <td className="py-2 px-4 text-[12px] border-b">{report.material || report.materialName}</td>{/* { 2 } */}
-                  <td className="py-2 px-4 text-[12px] border-b">{report.subMaterial || report.materialCategory}</td>{/* { 3 } */}
                   <td className="py-2 px-4 text-[12px] border-b">{report.quantity}</td>{/* { 4 } */}
                   <td className="py-2 px-4 text-[12px] border-b">{report.unit}</td>{/* { 5 } */}
                   <td className="py-2 px-4 text-[12px] border-b">

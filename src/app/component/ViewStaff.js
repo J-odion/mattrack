@@ -70,7 +70,7 @@ const ViewStaff = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="w-full mx-auto p-4">
       {error && <p className="text-red-500">{error}</p>}
       {!loading && !error && staffList.length === 0 && (
         <p>There are no staff members available at this time.</p>
