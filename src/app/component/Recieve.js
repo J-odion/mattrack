@@ -6,14 +6,14 @@ import { useSelector } from "react-redux";
 
 const RecieveMat = ({ toggleForm }) => {
     const userInfo = useSelector((state) => state.auth.user);
-    
+
     // Initialize with empty materials array
     const [formData, setFormData] = useState({
         received: "received",
         materials: [],
         siteLocation: "",
         date: new Date().toISOString().split("T")[0], // Format as YYYY-MM-DD
-        name: userInfo?.name || "" ,
+        user: userInfo?.name || "",
     })
 
     const [notification, setNotification] = useState({ message: "", type: "" })
@@ -190,6 +190,19 @@ const RecieveMat = ({ toggleForm }) => {
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+
+
+                            <div>
+                                <label className="block mb-1">storekeeper's Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.user}
+                                    onChange={handleInputChange}
+                                    readOnly
+                                    className="border border-gray-300 p-2 rounded bg-gray-100 w-full"
+                                />
                             </div>
                         </div>
 
