@@ -60,7 +60,7 @@ const DisburseData = ({ toggleForm }) => {
     e.preventDefault();
     try {
       await addDisbursedData(formData);
-      setNotification({ message: "Materials successfully disbursed!", type: "success" });
+      setNotification({ message: "Data successfully disbursed!", type: "success" });
       toggleForm();
     } catch (error) {
       setNotification({

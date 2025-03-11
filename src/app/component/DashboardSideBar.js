@@ -11,12 +11,12 @@ import { logout } from "../libs/features/authSlice";
 const DashboardSideBar = () => {
 
     const dispatch = useDispatch();
-  const router = useRouter();
+    const router = useRouter();
 
-  const handleLogout = () => {
-    dispatch(logout()); // Clear Redux state and localStorage
-    router.push("/"); // Redirect to login page
-  };
+    const handleLogout = () => {
+        dispatch(logout()); // Clear Redux state and localStorage
+        router.push("/"); // Redirect to login page
+    };
 
 
 
@@ -32,10 +32,10 @@ const DashboardSideBar = () => {
             </div>
             {/* menus */}
             <div></div>
-            
+
             <div className="flex w-full p-6 bottom-0 items-end align-bottom h-full">
                 <button onClick={handleLogout} className="flex  items-center gap-2 justify-center ">
-                    <LuLogOut color="white" size={20} /> 
+                    <LuLogOut color="white" size={20} />
                     <p>Logout</p>
                 </button>
             </div>
