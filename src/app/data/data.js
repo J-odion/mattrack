@@ -308,7 +308,9 @@ export const categories = [
       { "name": "2\"CONCRETE NAILS (50 pkts/carton)", "unit": "packet" },
       { "name": "4\" CONCRETE NAILS (20pkt/carton)", "unit": "packet" },
       { "name": "3\" CHINA NAILS", "unit": "carton" },
-      { "name": "4\" CHINA NAILS", "unit": "carton" }
+      { "name": "4\" CHINA NAILS", "unit": "carton" },
+      { "name": "DPM ", "unit": "roll" },
+      { "name": "KARA ", "unit": "nos" },
     ]
   }
 ]
