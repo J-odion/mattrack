@@ -15,7 +15,7 @@ const DisburseData = ({ toggleForm }) => {
     quantity: "",
     siteLocation: "",
     unit: "",
-    storeKeepersName: userInfo?.name || "" ,
+    storeKeepersName: userInfo?.name || "",
     recipientName: "",
     purpose: "",
     houseType: "",
@@ -58,10 +58,12 @@ const DisburseData = ({ toggleForm }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(formData)
     try {
       await addDisbursedData(formData);
-      setNotification({ message: "Data successfully disbursed!", type: "success" });
       toggleForm();
+      setNotification({ message: "Data successfully submitted!", type: "success" });
     } catch (error) {
       setNotification({
         type: "error",
@@ -75,9 +77,8 @@ const DisburseData = ({ toggleForm }) => {
       {/* Notification Message */}
       {notification.message && (
         <div
-          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${
-            notification.type === "success" ? "bg-green-500" : "bg-red-500"
-          }`}
+          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${notification.type === "success" ? "bg-green-500" : "bg-red-500"
+            }`}
         >
           {notification.message}
         </div>
@@ -88,6 +89,24 @@ const DisburseData = ({ toggleForm }) => {
           <h2 className="text-lg font-bold mb-4">Disburse Material</h2>
           <form onSubmit={onSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-4">
+              {/* Material Category */}
+              <div>
+                <label className="block mb-1 text-2xs">Material Category</label>
+                <select
+                  name="materialCategory"
+                  value={formData.materialCategory}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 text-2xs p-2 rounded w-full"
+                >
+                  <option value="">Select a Category</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category.name}>
+                      {category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* Material Name */}
               <div>
                 <label className="block mb-1 text-2xs">Material Name</label>
@@ -103,7 +122,7 @@ const DisburseData = ({ toggleForm }) => {
                     .find((category) => category.name === formData.materialCategory)
                     ?.materials.map((material, index) => (
                       <option key={index} value={material.name}>
-                        {material.name}
+                        {material.name.charAt(0).toUpperCase() + material.name.slice(1).toLowerCase()}
                       </option>
                     ))}
                 </select>
@@ -212,7 +231,7 @@ const DisburseData = ({ toggleForm }) => {
                 className="border border-gray-300 p-2 rounded w-full"
               />
             </div>
-            
+
 
             {/* Submit Button */}
             <div className="text-right">
