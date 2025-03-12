@@ -42,8 +42,22 @@ const DisburseData = ({ toggleForm }) => {
       updatedFormData.houseType = "";
     }
 
+    if (name === "materialName") {
+      // Find the selected material and set the unit automatically
+      const selectedCategory = categories.find(
+        (category) => category.name === formData.materialCategory
+      );
+
+      const selectedMaterial = selectedCategory?.materials.find(
+        (material) => material.name === value
+      );
+
+      updatedFormData.unit = selectedMaterial ? selectedMaterial.unit : "";
+    }
+
     setFormData(updatedFormData);
   };
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -168,6 +182,18 @@ const DisburseData = ({ toggleForm }) => {
                   className="border border-gray-300 text-2xs p-2 rounded w-full"
                 />
               </div>
+              {/* Unit (Automatically Set) */}
+              <div>
+                <label className="block text-2xs mb-1">Unit</label>
+                <input
+                  type="text"
+                  name="unit"
+                  value={formData.unit}
+                  className="border border-gray-300 text-2xs p-2 rounded w-full bg-gray-100"
+                  readOnly
+                />
+              </div>
+
 
               {/* Site Location */}
               <div>
