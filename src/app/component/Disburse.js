@@ -1,9 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { categories, house_types, Purpose, sites } from "../data/data";
+import { categories, Purpose, locations } from "../data/data";
 import { addDisbursedData } from "../utils/Apis";
 import { useSelector } from "react-redux";
-
 
 const DisburseData = ({ toggleForm }) => {
   const userInfo = useSelector((state) => state.auth.user);
@@ -14,15 +13,17 @@ const DisburseData = ({ toggleForm }) => {
     materialName: "",
     quantity: "",
     siteLocation: "",
+    houseType: "",
+    constructionNumber: "",
     unit: "",
     storeKeepersName: userInfo?.name || "",
     recipientName: "",
     purpose: "",
-    houseType: "",
     date: new Date().toISOString().split("T")[0],
   });
 
   const [notification, setNotification] = useState({ message: "", type: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (notification.message) {
@@ -33,24 +34,12 @@ const DisburseData = ({ toggleForm }) => {
     }
   }, [notification]);
 
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData, [name]: value };
 
-    if (name === "materialCategory") {
-      updatedFormData.materialName = "";
-      updatedFormData.unit = "";
-    } else if (name === "materialName") {
-      const selectedCategory = categories.find(
-        (category) => category.name === formData.materialCategory
-      );
-      if (selectedCategory) {
-        const selectedMaterial = selectedCategory.materials.find(
-          (material) => material.name === value
-        );
-        updatedFormData.unit = selectedMaterial ? selectedMaterial.unit : "";
-      }
+    if (name === "siteLocation") {
+      updatedFormData.houseType = "";
     }
 
     setFormData(updatedFormData);
@@ -58,17 +47,33 @@ const DisburseData = ({ toggleForm }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    console.log(formData)
     try {
       await addDisbursedData(formData);
-      toggleForm();
       setNotification({ message: "Data successfully submitted!", type: "success" });
+      setFormData({
+        disbursed: "disbursed",
+        materialCategory: "",
+        materialName: "",
+        quantity: "",
+        siteLocation: "",
+        houseType: "",
+        constructionNumber: "",
+        unit: "",
+        storeKeepersName: userInfo?.name || "",
+        recipientName: "",
+        purpose: "",
+        date: new Date().toISOString().split("T")[0],
+      });
+      toggleForm();
     } catch (error) {
       setNotification({
         type: "error",
         message: error.response?.data?.details || "Something went wrong. Try again!",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -89,7 +94,31 @@ const DisburseData = ({ toggleForm }) => {
           <h2 className="text-lg font-bold mb-4">Disburse Material</h2>
           <form onSubmit={onSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-4">
-              {/* Material Category */}
+              {/* Storekeeper's Name */}
+              <div>
+                <label className="block mb-1 text-2xs">Storekeeper</label>
+                <input
+                  type="text"
+                  name="storekeeper"
+                  value={formData.storeKeepersName}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 text-2xs p-2 rounded w-full"
+                />
+              </div>
+
+              {/* Engineer's Name */}
+              <div>
+                <label className="block mb-1 text-2xs">Engineer's Name</label>
+                <input
+                  type="text"
+                  name="recipientName"
+                  value={formData.recipientName}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 text-2xs p-2 rounded w-full"
+                />
+              </div>
+
+
               <div>
                 <label className="block mb-1 text-2xs">Material Category</label>
                 <select
@@ -101,7 +130,7 @@ const DisburseData = ({ toggleForm }) => {
                   <option value="">Select a Category</option>
                   {categories.map((category, index) => (
                     <option key={index} value={category.name}>
-                      {category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}
+                      {category.name}
                     </option>
                   ))}
                 </select>
@@ -122,7 +151,7 @@ const DisburseData = ({ toggleForm }) => {
                     .find((category) => category.name === formData.materialCategory)
                     ?.materials.map((material, index) => (
                       <option key={index} value={material.name}>
-                        {material.name.charAt(0).toUpperCase() + material.name.slice(1).toLowerCase()}
+                        {material.name}
                       </option>
                     ))}
                 </select>
@@ -140,19 +169,6 @@ const DisburseData = ({ toggleForm }) => {
                 />
               </div>
 
-              {/* Unit (Auto-filled) */}
-              <div>
-                <label className="block text-2xs mb-1">Unit of Measurement</label>
-                <input
-                  type="text"
-                  name="unit"
-                  value={formData.unit}
-                  onChange={handleInputChange}
-                  className="border border-gray-300 text-2xs p-2 rounded w-full bg-gray-100"
-                  readOnly
-                />
-              </div>
-
               {/* Site Location */}
               <div>
                 <label className="block text-2xs mb-1">Site Location</label>
@@ -163,24 +179,12 @@ const DisburseData = ({ toggleForm }) => {
                   className="border border-gray-300 text-2xs p-2 rounded w-full"
                 >
                   <option value="">Select a Site Location</option>
-                  {sites.map((site, index) => (
-                    <option key={index} value={site}>
-                      {site}
+                  {locations.map((site, index) => (
+                    <option key={index} value={site.name}>
+                      {site.name}
                     </option>
                   ))}
                 </select>
-              </div>
-
-              {/* Recipient Name */}
-              <div>
-                <label className="block text-2xs mb-1">Recipient Name</label>
-                <input
-                  type="text"
-                  name="recipientName"
-                  value={formData.recipientName}
-                  onChange={handleInputChange}
-                  className="border border-gray-300 text-2xs p-2 rounded w-full"
-                />
               </div>
 
               {/* House Type */}
@@ -191,14 +195,29 @@ const DisburseData = ({ toggleForm }) => {
                   value={formData.houseType}
                   onChange={handleInputChange}
                   className="border border-gray-300 text-2xs p-2 rounded w-full"
+                  disabled={!formData.siteLocation}
                 >
                   <option value="">Select a House Type</option>
-                  {house_types.map((type, index) => (
-                    <option key={index} value={type}>
-                      {type}
-                    </option>
-                  ))}
+                  {locations
+                    .find((site) => site.name === formData.siteLocation)
+                    ?.houseTypes.map((house, index) => (
+                      <option key={index} value={house.type}>
+                        {house.type}
+                      </option>
+                    ))}
                 </select>
+              </div>
+
+              {/* Construction Number (Fixed) */}
+              <div>
+                <label className="block text-2xs mb-1">Construction Number</label>
+                <input
+                  type="text"
+                  name="constructionNumber"
+                  value={formData.constructionNumber}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 text-2xs p-2 rounded w-full"
+                />
               </div>
 
               {/* Purpose */}
@@ -220,19 +239,6 @@ const DisburseData = ({ toggleForm }) => {
               </div>
             </div>
 
-            {/* Store Keeper's Name */}
-            <div>
-              <label className="block mb-1">Store Keeper's Name</label>
-              <input
-                type="text"
-                name="storeKeepersName"
-                value={formData.storeKeepersName}
-                onChange={handleInputChange}
-                className="border border-gray-300 p-2 rounded w-full"
-              />
-            </div>
-
-
             {/* Submit Button */}
             <div className="text-right">
               <button
@@ -242,8 +248,12 @@ const DisburseData = ({ toggleForm }) => {
               >
                 Cancel
               </button>
-              <button type="submit" className="bg-[#123962] text-white px-4 py-2 rounded hover:bg-[#123962]">
-                Submit
+              <button
+                type="submit"
+                className="bg-[#123962] text-white px-4 py-2 rounded hover:bg-[#123962] disabled:opacity-50"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Submit"}
               </button>
             </div>
           </form>

@@ -5,7 +5,30 @@ export const Purpose = [
   "SECOND FLOOR TO ROOF LEVEL"
 ]
 export const house_types = [
-  "SM", "FD", "QUAD", "D", "MS", "APH"
+  "FD209",
+  "FD206",
+  "FD235",
+  "FD237", 
+  "D90", 
+  "FD186", 
+  "QD1", 
+  "D161", "SM3", "D09",
+  "SM7A", "SM14", "APH2", "CESSPOOL", "FD216", "SM40", "D58", "FD203", "SM120", "QD74",
+  "FD24", "SM30", "FD161", "FD37", "QDX1 (KARMO2)", "KUJE SITE", "D111", "KARMO1", "STANDARD ESTATE",
+  "FD268", "SM33", "SM123", "SM7", "FD246", "SM121", "APH3", "SM28", "SM112", "SM113",
+  "SM7A", "KARMO3", "SM5/6 KARMO2", "SM50", "SM136", "SM137", "SM138", "SM122", "QQD10",
+  "SM119", "SM31", "SM34", "SM7 KARMO3", "SM7 & SM8 KARMO3", "SM9", "SMD1", "SMD3", "SMD4",
+  "SMD5", "SMD7", "SMD8", "SMD9", "SMD10", "SMD12", "SMD14", "PERIMETER", "WATERLINE",
+  "HOF CITY WORKS", "IDU SITE", "LOKOGOMA", "THT", "SC5 & 6 KARMO2", "SC5 KARMO2",
+  "SM10 KARMO3", "SC11 KARMO2", "QDX2 KARMO2", "D174", "D82", "D59", "D66", "D76", "D109",
+  "D105", "D280", "D282", "D307", "D318", "D249", "D248", "D128", "D117", "D102", "D123",
+  "D140", "D141", "D149", "D59", "D55", "D60", "D105", "D175", "FD185", "FD220", "FD253",
+  "FD240", "FD267", "FD268", "FD237", "FD216", "FD217", "FD202", "FD170", "FD217", "FD216",
+  "SM7", "SM10", "SM121", "SM123", "SM7A", "SM40", "SM125", "SM136", "SM137", "SM138",
+  "SM141", "SM50", "SM119", "SM136", "SM137", "SM138", "SM7 KARMO3", "SM31", "D134", "D249",
+  "D304", "D305", "D270", "SM33", "SM9", "SM8 KARMO3", "FD240", "FD210", "FD253", "SM121",
+  "SM119", "SM31", "SM34", "FD253", "SM119", "FD253", "FD220", "FD226", "SM31", "SM119",
+  "FD236", "FD217", "D276", "SM118"
 ]
 export const categories = [
   {
@@ -285,9 +308,12 @@ export const categories = [
     "name": "Gum",
     "materials": [
       { "name": "ABRO GUM [SMALL]", "unit": "tin" },
-      { "name": "ABRO GUM [MEDIUM]", "unit": "tin" },
-      { "name": "ABRO GUM [BIG]", "unit": "tin" },
-      { "name": "ABRO GUM [SMALLEST]", "unit": "tin" },
+      { "name": "ABRO GUM [SMALL]", "unit": "tin" },
+      { "name": "ABRO GUM [SMALL]", "unit": "tin" },
+      { "name": "ABRO GUM [SMALL]", "unit": "tin" },
+      { "name": "ABRO GUM [SMALL]", "unit": "tin" },
+      { "name": "ABRO GUM [SMALL]", "unit": "tin" },
+      { "name": "ABRO GUM [SMALL]", "unit": "tin" },
     ]
   },
   {
@@ -308,22 +334,59 @@ export const categories = [
       { "name": "2\"CONCRETE NAILS (50 pkts/carton)", "unit": "packet" },
       { "name": "4\" CONCRETE NAILS (20pkt/carton)", "unit": "packet" },
       { "name": "3\" CHINA NAILS", "unit": "carton" },
-      { "name": "4\" CHINA NAILS", "unit": "carton" },
-      { "name": "DPM ", "unit": "roll" },
-      { "name": "KARA ", "unit": "nos" },
-      { "name": "BAMBOO ", "unit": "length" },
+      { "name": "4\" CHINA NAILS", "unit": "carton" }
     ]
   }
 ]
-export const sites = [
-  "Idu Hof Community",
-  "Jahi ",
-  "Kafe",
-  "Jabi",
-  "Karsana",
-  "Guzape",
-  "Idogwari",
-  "Karmo 1",
-  "Karmo 2",
-  "Karmo 3"
+export const locations = [
+  {
+    "name": "Idu Hof City",
+    "houseTypes": [
+      { "type": "FD", "constructionNumber": "101" },
+      { "type": "SMD", "constructionNumber": "102" },
+      { "type": "APH", "constructionNumber": "103" },
+      { "type": "QD", "constructionNumber": "104" },
+      { "type": "MS", "constructionNumber": "105" }
+    ]
+  },
+  {
+    "name": "Jabi",
+    "houseTypes": [
+      { "type": "APH", "constructionNumber": "201" }
+    ]
+  },
+  {
+    "name": "Jahi",
+    "houseTypes": [
+      { "type": "FD", "constructionNumber": "301" },
+      { "type": "APH", "constructionNumber": "302" }
+    ]
+  },
+  {
+    "name": "Kafe",
+    "houseTypes": [
+      { "type": "SMD", "constructionNumber": "401" },
+      { "type": "QD", "constructionNumber": "402" }
+    ]
+  },
+  {
+    "name": "Karmo 1",
+    "houseTypes": [
+      { "type": "SM", "constructionNumber": "501" }
+    ]
+  },
+  {
+    "name": "Karmo 2",
+    "houseTypes": [
+      { "type": "SM", "constructionNumber": "601" },
+      { "type": "D", "constructionNumber": "602" },
+      { "type": "QD", "constructionNumber": "603" }
+    ]
+  },
+  {
+    "name": "Karmo 3",
+    "houseTypes": [
+      { "type": "SM", "constructionNumber": "701" }
+    ]
+  }
 ];
