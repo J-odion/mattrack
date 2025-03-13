@@ -390,3 +390,13 @@ export const locations = [
     ]
   }
 ];
+
+export const sites = [
+  "Karmo 1",
+  "Karmo 2",
+  "Karmo 3",
+  "Kafe",
+  "Jabi",
+  "Idu Hof City",
+
+]

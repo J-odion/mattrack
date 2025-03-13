@@ -20,6 +20,11 @@ const DisburseData = ({ toggleForm }) => {
     recipientName: "",
     purpose: "",
     date: new Date().toISOString().split("T")[0],
+    assignedUser: {
+      id: userInfo?.id || "",
+      name: userInfo?.name || "",
+      email: userInfo?.email || "",
+    },
   });
 
   const [notification, setNotification] = useState({ message: "", type: "" });
@@ -79,6 +84,11 @@ const DisburseData = ({ toggleForm }) => {
         recipientName: "",
         purpose: "",
         date: new Date().toISOString().split("T")[0],
+        assignedUser: {
+          id: userInfo?.id || "",
+          name: userInfo?.name || "",
+          email: userInfo?.email || "",
+        },
       });
       toggleForm();
     } catch (error) {
@@ -96,7 +106,7 @@ const DisburseData = ({ toggleForm }) => {
       {/* Notification Message */}
       {notification.message && (
         <div
-          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${notification.type === "success" ? "bg-green-500" : "bg-red-500"
+          className={`fixed z-[9999] top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${notification.type === "success" ? "bg-green-500" : "bg-red-500"
             }`}
         >
           {notification.message}
@@ -108,6 +118,11 @@ const DisburseData = ({ toggleForm }) => {
           <h2 className="text-lg font-bold mb-4">Disburse Material</h2>
           <form onSubmit={onSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-4">
+              {/* Assigned User (Hidden Fields) */}
+              <input type="hidden" name="assignedUserId" value={formData.assignedUser.id} />
+              <input type="hidden" name="assignedUserName" value={formData.assignedUser.name} />
+              <input type="hidden" name="assignedUserEmail" value={formData.assignedUser.email} />
+
               {/* Storekeeper's Name */}
               <div>
                 <label className="block mb-1 text-2xs">Storekeeper</label>
@@ -131,7 +146,6 @@ const DisburseData = ({ toggleForm }) => {
                   className="border border-gray-300 text-2xs p-2 rounded w-full"
                 />
               </div>
-
 
               <div>
                 <label className="block mb-1 text-2xs">Material Category</label>
