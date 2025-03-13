@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 
 const RecieveMat = ({ toggleForm }) => {
     const userInfo = useSelector((state) => state.auth.user);
-
+      const [isSubmitting, setIsSubmitting] = useState(false);
+    
     // Initialize with empty materials array
     const [formData, setFormData] = useState({
         received: "received",
@@ -120,6 +121,7 @@ const RecieveMat = ({ toggleForm }) => {
 
     const onSubmit = async (e) => {
         e.preventDefault()
+        setIsSubmitting(true);
 
         if (formData.materials.length === 0) {
             setNotification({
@@ -153,6 +155,8 @@ const RecieveMat = ({ toggleForm }) => {
                 message: error.response?.data?.details || "Error submitting data. Please try again.",
                 type: "error",
             })
+        } finally{
+            setIsSubmitting(false);
         }
     }
 
@@ -334,8 +338,8 @@ const RecieveMat = ({ toggleForm }) => {
                             >
                                 Cancel
                             </button>
-                            <button type="submit" className="bg-[#123962] text-white px-4 py-2 rounded hover:bg-opacity-90">
-                                Submit
+                            <button type="submit" className="bg-[#123962] text-white px-4 py-2 rounded hover:bg-opacity-90" disabled={isSubmitting}>
+                            {isSubmitting ? "Submitting..." : "Submit"}
                             </button>
                         </div>
                     </form>
