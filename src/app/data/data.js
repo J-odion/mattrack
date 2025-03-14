@@ -196,6 +196,9 @@ export const categories = [
     "name": "ELECTRICALS",
     "materials": [
       { "name": "20MM PIPE", "unit": "nos" },
+      { "name": "25MM PIPE", "unit": "nos" },
+      { "name": "25MM 4 WAY JUNCTION BOX", "unit": "nos" },
+      { "name": "20MM ELBOW", "unit": "nos" },
       { "name": "1.5MM CABLE RED", "unit": "bundle" },
       { "name": "1.5MM CABLE GREEN", "unit": "bundle" },
       { "name": "1.5MM CABLE BLACK", "unit": "bundle" },
@@ -227,6 +230,7 @@ export const categories = [
       { "name": "STREET LIGHT", "unit": "nos" },
       { "name": "SOLAR PANELS", "unit": "nos" },
       { "name": "WINDOW FRAMES", "unit": "nos" },
+      { "name": "FIRE EXTINGUISHER BALL", "unit": "nos" },
       { "name": "GLASS DOOR", "unit": "nos" },
       { "name": "SILVER EDGE TAPE", "unit": "roll" },
       { "name": "BLACK EDGE TAPE", "unit": "roll" },
