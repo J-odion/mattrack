@@ -386,6 +386,6 @@ export const sites = [
   "Karmo 3",
   "Kafe",
   "Jabi",
+  "Jahi",
   "Idu Hof City",
-
 ]
