@@ -297,6 +297,7 @@ export const categories = [
   {
     "name": "REINFORCEMENT",
     "materials": [
+      { "name": "Y25mm", "unit": "lengths" },
       { "name": "Y20", "unit": "lengths" },
       { "name": "Y16", "unit": "lengths" },
       { "name": "Y12", "unit": "lengths" },
