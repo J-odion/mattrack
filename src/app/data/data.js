@@ -185,6 +185,7 @@ export const categories = [
         { "name": "4\"×45", "unit": "nos" },
         { "name": "40mm PE threaded tee", "unit": "nos" },
         { "name": "40mm PE threaded elbow", "unit": "nos" },
+        { "name": "Core Rubber", "unit": "nos" },
         { "name": "3×2 tee", "unit": "nos" },
         { "name": "6×45", "unit": "nos" },
         { "name": "6x8 Socket", "unit": "nos" },
@@ -344,7 +345,8 @@ export const categories = [
       { "name": "2\"CONCRETE NAILS (50 pkts/carton)", "unit": "packet" },
       { "name": "4\" CONCRETE NAILS (20pkt/carton)", "unit": "packet" },
       { "name": "3\" CHINA NAILS", "unit": "carton" },
-      { "name": "4\" CHINA NAILS", "unit": "carton" }
+      { "name": "4\" CHINA NAILS", "unit": "carton" },
+      { "name": "100m polystyrene", "unit": "pcs" }
     ]
   }
 ]
