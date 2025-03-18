@@ -62,7 +62,6 @@ export const categories = [
       { "name": "MID PROFILE FOR 8MM PANEL BLACK PER LENGTH 300CM", "unit": "nos" },
       { "name": "PROFILE FOR LED STRIP BLACK PER LENGTH OF 300CM", "unit": "nos" },
       { "name": "1MM SILVER MIRROR PANEL 122 X 244CM", "unit": "nos" },
-      { "name": "31KG SCREEDING PAINT", "unit": "bucket" },
       { "name": "15KG ACRYLIC", "unit": "bucket" },
       { "name": "WALL SATIN PAINT", "unit": "bucket" },
       { "name": "DOVE GREY PAINT", "unit": "bucket" },
@@ -73,7 +72,6 @@ export const categories = [
       { "name": "100m polystyrene", "unit": "pcs" },
       { "name": "1\" polystyrene", "unit": "pcs" },
       { "name": "40kg POP cement", "unit": "bags" },
-      { "name": "31kg Screeding paint", "unit": "bucket" },
       { "name": "15kg Acrylic", "unit": "bucket" },
       { "name": "Pre-Cast rings", "unit": "pcs" },
       { "name": "30 x 81 Staircase tiles", "unit": "pcs" },
@@ -125,11 +123,18 @@ export const categories = [
       { "name": "20 litres light grey wall paint", "unit": "bucket" },
       { "name": "20 litres satin white wall paint", "unit": "bucket" },
       { "name": "20 litres of paint light grey", "unit": "bucket" },
-      { "name": "20 litres POP screeding paint", "unit": "bucket" },
+      { "name": "8 steps profile ladder", "unit": "set" },
+      { "name": "60 x 60cm Virony tiles", "unit": "carton" },
+      { "name": "5kg Kerakoll fuga", "unit": "bag" },
+      { "name": "60 x 120cm Virony Tiles", "unit": "carton" },
+      { "name": "60 x 120cm Virony Tiles", "unit": "carton" },
+      { "name": "60 x 60cm Golden Crown Ceramic tiles", "unit": "carton" },
+      { "name": "81 x 81 Dark Skylar tile", "unit": "sqm" },
+      { "name": "80 x 80 dark grey tiles", "unit": "carton" },
+      { "name": "600 x 1200mm Carara white tiles", "unit": "carton" },
+      { "name": "top Bond", "unit": "Kg" },
+      { "name": " ", "unit": " " },
 
-      {
-
-      }
     ]
   },
   {
