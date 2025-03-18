@@ -2,7 +2,8 @@ export const Purpose = [
   "GROUND TO FIRST FLOOR",
   "FOUNDATION TO GROUND FLOOR",
   "FIRST TO SECOND FLOOR",
-  "SECOND FLOOR TO ROOF LEVEL"
+  "SECOND FLOOR TO ROOF LEVEL",
+  "OTHER"
 ]
 export const house_types = [
   "FD209",
@@ -600,5 +601,7 @@ export const sites = [
   "Jabi",
   "Guzape",
   "Jahi",
+  "Karasana",
   "Idu Hof City",
+  "Other"
 ]
