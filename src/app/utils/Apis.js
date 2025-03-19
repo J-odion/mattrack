@@ -122,6 +122,16 @@ export const fetchDisbursedData = async () => {
   }
 };
 
+export const transferData = async (credentials) => {
+  try {
+    const response = await apiClient.post("/disburseddata", credentials);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw the actual error, not a generic message
+  }
+};
+
 export const fetchAllInventory = async () => {
   try {
     const response = await apiClient.get("/inventory");

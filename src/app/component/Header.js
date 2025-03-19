@@ -17,6 +17,7 @@ export default function Navbar() {
   const [isAddDisburseOpen, setIsAddDisburseOpen] = useState(false);
   const [isAddRecieveOpen, setIsAddRecieveOpen] = useState(false);
   const [isRequestMatOpen, setIsRequestMatOpen] = useState(false);
+  const [isTransferMatOpen, setIsTransferMatOpen] = useState(false);
   const [isContact, setIsContact] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -31,6 +32,9 @@ export default function Navbar() {
   };
   const toggleRecieve = () => {
     setIsAddRecieveOpen(!isAddRecieveOpen);
+  };
+  const toggleTransfer = () => {
+    setIsTransferMatOpen(!isTransferMatOpen);
   };
   const toggleRequestMat = () => {
     setIsRequestMatOpen(!isRequestMatOpen);
@@ -76,6 +80,15 @@ export default function Navbar() {
 
               {(userRole === "storekeepers") && (
                 <button
+                  onClick={toggleRecieve}
+                  className="bg-[#123962] w-[132px] h-[40px] text-[#FFFFFF] px-4 py-1 text-[12px] rounded-md"
+                >
+                  Transfer Materia
+                </button>
+              )}
+
+              {(userRole === "storekeepers") && (
+                <button
                   onClick={toggleDisburse}
                   className="bg-[#123962] w-[132px] h-[40px] text-[#FFFFFF] px-4 py-1 text-[12px] rounded-md"
                 >
@@ -101,7 +114,7 @@ export default function Navbar() {
               )} */}
 
               {/* Show Add staff for admin */}
-              {userRole === "admin" && (
+              {/* {userRole === "admin" && (
                 <button
                   onClick={toggleRegister}
                   className="text-[#123962] border-[#123962] border w-[132px] h-[40px] bg-[#fff] font-semibold px-4 py-1 text-[12px] rounded-md"
@@ -114,22 +127,22 @@ export default function Navbar() {
                 <button className="text-[#132124] h-[40px] bg-[#F7F8FA] px-4 py-1 text-[12px] rounded-md">
                   View All Staffs
                 </button>
-              )}
+              )} */}
 
-              {(userRole === "storekeepers" ||
+              {/* {(userRole === "storekeepers" ||
                 userRole === "engineers" ||
                 userRole === "viewer" ||
                 userRole === "projectManager") && (
                   <button className="text-[#132124] border-[1.3px] border-[#123962] w-[150px] h-[40px] px-4 py-1 text-[12px] rounded-md">
                     View Schedules
                   </button>
-                )}
+                )} */}
 
 
 
 
               {/* Show Contact Management for all roles except guest */}
-              {(userRole === "storekeepers" ||
+              {/* {(userRole === "storekeepers" ||
                 userRole === "engineers" ||
                 userRole === "viewer" ||
                 userRole === "projectManager") && (
@@ -139,7 +152,7 @@ export default function Navbar() {
                   >
                     Send Message
                   </button>
-                )}
+                )} */}
               {/* User Icon and Role */}
             </div>
           </div>
@@ -245,6 +258,15 @@ export default function Navbar() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
           <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
             <RequestMatForm toggleForm={toggleRequestMat} />
+          </div>
+        </div>
+      )}
+
+            {/* Transfer Material Pop-up form */}
+            {isTransferMatOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+            <RequestMatForm toggleForm={toggleTransfer} />
           </div>
         </div>
       )}
