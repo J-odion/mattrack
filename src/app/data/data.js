@@ -30,7 +30,7 @@ export const house_types = [
   "SM141", "SM50", "SM119", "SM136", "SM137", "SM138", "SM7 KARMO3", "SM31", "D134", "D249",
   "D304", "D305", "D270", "SM33", "SM9", "SM8 KARMO3", "FD240", "FD210", "FD253", "SM121",
   "SM119", "SM31", "SM34", "FD253", "SM119", "FD253", "FD220", "FD226", "SM31", "SM119",
-  "FD236", "FD217", "D276", "SM118", "other"
+  "FD236", "FD217", "D276", "SM118", 
 ]
 export const categories = [
   {
@@ -118,6 +118,7 @@ export const categories = [
       { "name": "Acrylic", "unit": "bucket" },
       { "name": "20 litres outside paint", "unit": "bucket" },
       { "name": "20 litres satin paint", "unit": "bucket" },
+      { "name": "4 litres gloss paint black", "unit": "bucket" },
       { "name": "5kg tile grouting fillers", "unit": "packet" },
       { "name": "dry wall screw 6 x 2", "unit": "packet" },
       { "name": "20 litres dark grey paint", "unit": "bucket" },
