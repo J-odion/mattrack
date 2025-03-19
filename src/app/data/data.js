@@ -131,7 +131,7 @@ export const categories = [
       { "name": "80 x 80 dark grey tiles", "unit": "carton" },
       { "name": "600 x 1200mm Carara white tiles", "unit": "carton" },
       { "name": "top Bond", "unit": "Kg" },
-      { "name": " ", "unit": " " },
+      { "name": "Silver spray paint", "unit": "pcs" },
 
     ]
   },
@@ -437,7 +437,6 @@ export const categories = [
       { "name": "lighting profile silver", "unit": "pcs" },
       { "name": "spotlight", "unit": "pcs" },
       { "name": "insulation tape", "unit": "pcs" },
-      { "name": "Silver spray paint", "unit": "pcs" },
       { "name": "Strip Light", "unit": "pcs" },
       { "name": "1 Gang Switch", "unit": "pcs" },
       { "name": "2 Gang Switch ", "unit": "pcs" },
@@ -523,8 +522,6 @@ export const categories = [
       { "name": "Door engine", "unit": "pcs" },
       { "name": "Door handle", "unit": "pcs" },
       { "name": "1mm Silver Mirror Panel 122 x 244cm", "unit": "nos" },
-      { "name": "Long floor drain", "unit": "pcs" },
-      { "name": "Magic Waste", "unit": "pcs" },
     ]
   }
 ]
