@@ -164,7 +164,7 @@ export const reviewMaterialRequest = async (id, data) => {
 // Get material requests
 export const getMaterialRequest = async () => {
   try {
-    const response = await apiClient.get("/requestMaterial");
+    const response = await apiClient.get("/requestMat");
     console.log(response)
     return response.data;
   } catch (error) {
