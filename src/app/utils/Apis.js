@@ -112,6 +112,16 @@ export const addDisbursedData = async (credentials) => {
   }
 };
 
+export const sendMat = async (credentials) => {
+  try {
+    const response = await apiClient.post("/transfer", credentials);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Throw the actual error, not a generic message
+  }
+};
+
 export const fetchDisbursedData = async () => {
   try {
     const response = await apiClient.get("/disburseddata");

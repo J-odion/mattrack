@@ -304,6 +304,9 @@ export const categories = [
         { "name": "1\" tigre pipe", "unit": "nos" },
         { "name": "1\" ball guage", "unit": "nos" },
         { "name": "", "unit": "nos" },
+        {"name": "extractor", "unit":"nos"},
+      { "name": "WC", "unit": "pcs" },
+      {"name": "2\" plug", "unit":"nos"},
       ]    
   },
   {
@@ -434,7 +437,6 @@ export const categories = [
       { "name": "Smart Multifunctional Control Panel ", "unit": "pcs" },
       { "name": "Zigbee Single Wall Socket", "unit": "pcs" },
       { "name": "40 x 40 head shower", "unit": "pcs" },
-      { "name": "master WC", "unit": "pcs" },
       { "name": "steam machine", "unit": "pcs" },
       { "name": "2 in 1 cinema speaker", "unit": "pcs" },
       { "name": "6.5\" ceiling speaker", "unit": "pcs" },
@@ -539,7 +541,7 @@ export const locations = [
       { "type": "SMD", "constructionNumber": "102" },
       { "type": "APH", "constructionNumber": "103" },
       { "type": "QD", "constructionNumber": "104" },
-      { "type": "MS", "constructionNumber": "105" }
+      { "type": "MS", "constructionNumber": "105" },
     ]
   },
   {
@@ -581,7 +583,10 @@ export const locations = [
     "houseTypes": [
       { "type": "SM", "constructionNumber": "701" }
     ]
-  }
+  },
+  {
+    "name": "Others",
+  },
 ];
 
 export const sites = [

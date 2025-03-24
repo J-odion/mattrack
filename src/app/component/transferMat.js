@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Purpose, house_types, sites } from "../data/data";
-import { requestMaterial, viewHouseSchedule,  } from "../utils/Apis";
+import { sendMat } from "../utils/Apis";
 import { useSelector } from "react-redux";
 
 const TransferMat = ({ toggleForm }) => {
@@ -30,7 +30,7 @@ const TransferMat = ({ toggleForm }) => {
     const fetchMaterials = async () => {
       if (formData.siteLocation && formData.houseType && formData.purpose) {
         try {
-          const response = await viewHouseSchedule({
+          const response = await sendMat({
             siteLocation: formData.siteLocation,
             houseType: formData.houseType,
             purpose: formData.purpose,
