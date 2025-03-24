@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Purpose, house_types, sites } from "../data/data";
+import { sites, categories } from "../data/data";
 import { sendMat } from "../utils/Apis";
 import { useSelector } from "react-redux";
 
@@ -8,13 +8,16 @@ const TransferMat = ({ toggleForm }) => {
   const userInfo = useSelector((state) => state.auth.user);
 
   const [formData, setFormData] = useState({
-    siteLocation: "",
-    houseType: "",
-    name: userInfo?.name || "" ,
-    purpose: "",
+    fromSite: "",
+    toSite: "",
     materials: [],
   });
-  const [fetchedMaterials, setFetchedMaterials] = useState([]);
+  const [materialInput, setMaterialInput] = useState({
+    category: "",
+    materialName: "",
+    quantity: "",
+    unit: "",
+})
   const [notification, setNotification] = useState({ message: "", type: "" });
 
   useEffect(() => {
@@ -26,210 +29,271 @@ const TransferMat = ({ toggleForm }) => {
     }
   }, [notification]);
 
-  useEffect(() => {
-    const fetchMaterials = async () => {
-      if (formData.siteLocation && formData.houseType && formData.purpose) {
-        try {
-          const response = await sendMat({
-            siteLocation: formData.siteLocation,
-            houseType: formData.houseType,
-            purpose: formData.purpose,
-          });
-  
-          if (Array.isArray(response.data)) {
-            const extractedMaterials = response.data.flatMap((item) => item.materials);
-  
-            setFetchedMaterials(extractedMaterials);
-  
-            setFormData((prev) => ({
-              ...prev,
-              materials: extractedMaterials.map((material) => ({
-                materialName: material.materialName,
-                unit: material.unit,
-                quantity: material.maxQuantity || "",
-              })),
-            }));
-          } else {
-            console.error("API response is not an array:", response.data);
-            setFetchedMaterials([]);
-            setFormData((prev) => ({ ...prev, materials: [] }));
-          }
-        } catch (error) {
-          console.error("Failed to fetch materials:", error);
-          setFetchedMaterials([]);
-          setFormData((prev) => ({ ...prev, materials: [] }));
-        }
-      }
-    };
-  
-    fetchMaterials();
-  }, [formData.siteLocation, formData.houseType, formData.purpose]);
-  
+ 
+  const removeMaterial = (index) => {
+    const updatedMaterials = [...formData.materials]
+    updatedMaterials.splice(index, 1)
+    setFormData({
+      ...formData,
+      materials: updatedMaterials,
+    })
+  }
 
+  const addMaterial = () => {
+    if (!materialInput.materialName || !materialInput.quantity) {
+      setNotification({
+        message: "Please fill in material name and quantity",
+        type: "error",
+      })
+      return
+    }
+    const newMaterial = {
+      category: materialInput.category,
+      materialName: materialInput.materialName,
+      quantity: Number.parseFloat(materialInput.quantity) || 0,
+      unit: materialInput.unit,
+    }
+
+    setFormData({
+      ...formData,
+      materials: [...formData.materials, newMaterial],
+    })
+
+    // Reset material input fields
+    setMaterialInput({
+      category: "",
+      materialName: "",
+      quantity: "",
+      unit: "",
+    })
+  }
+
+  const updateMaterial = (index, field, value) => {
+    const updatedMaterials = [...formData.materials]
+    updatedMaterials[index] = {
+      ...updatedMaterials[index],
+      [field]: field === "quantity" ? Number.parseFloat(value) || 0 : value,
+    }
+
+    setFormData({
+      ...formData,
+      materials: updatedMaterials,
+    })
+  }
+
+
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target
+  //   const updatedMaterialInput = { ...materialInput, [name]: value }
+
+  //   if (name === "category") {
+  //     updatedMaterialInput.materialName = ""
+  //     updatedMaterialInput.unit = ""
+  //   } else if (name === "materialName") {
+  //     const selectedCategory = categories.find((category) => category.name === materialInput.category)
+  //     if (selectedCategory) {
+  //       const selectedMaterial = selectedCategory.materials.find((material) => material.name === value)
+  //       updatedMaterialInput.unit = selectedMaterial ? selectedMaterial.unit : ""
+  //     }
+  //   }
+
+  //   setMaterialInput(updatedMaterialInput)
+  // }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  
+    if (name === "fromSite" || name === "toSite") {
+      // Update formData for site selections
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    } else {
+      // Update materialInput for material selection
+      const updatedMaterialInput = { ...materialInput, [name]: value };
+  
+      if (name === "category") {
+        updatedMaterialInput.materialName = "";
+        updatedMaterialInput.unit = "";
+      } else if (name === "materialName") {
+        const selectedCategory = categories.find((category) => category.name === materialInput.category);
+        if (selectedCategory) {
+          const selectedMaterial = selectedCategory.materials.find((material) => material.name === value);
+          updatedMaterialInput.unit = selectedMaterial ? selectedMaterial.unit : "";
+        }
+      }
+  
+      setMaterialInput(updatedMaterialInput);
+    }
   };
 
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await requestMaterial(formData);
-      setNotification({ message: "Data successfully submitted!", type: "success" });
+      await sendMat({ ...formData, createdBy: userInfo.id });
+      setNotification({ message: "Transfer successfully initiated!", type: "success" });
       toggleForm();
     } catch (error) {
       setNotification({
         type: "error",
-        message: error.response?.data?.details || "Something went wrong. Try again!",
+        message: error.response?.data?.error || "Something went wrong. Try again!",
       });
     }
-  };
-
-  const removeMaterial = (index) => {
-    const updatedMaterials = formData.materials.filter((_, i) => i !== index);
-    setFormData({ ...formData, materials: updatedMaterials });
   };
 
   return (
     <div className="container mx-auto p-4">
       {notification.message && (
-        <div
-          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${
-            notification.type === "success" ? "bg-green-500" : "bg-red-500"
-          }`}
-        >
+        <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${notification.type === "success" ? "bg-green-500" : "bg-red-500"}`}>
           {notification.message}
         </div>
       )}
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white overflow-y-scroll p-6 rounded-lg h-[60%] shadow-lg w-1/2">
-          <h2 className="text-lg font-bold mb-4">Request Material</h2>
-          <form onSubmit={handleSubmit} className="space-y-6 text-xs">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
+          <h2 className="text-lg font-bold mb-4">Initiate Material Transfer</h2>
+          <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             <div>
-              <h3 className="text-md font-semibold mb-2">General Information</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <label className="block mb-1">From Site</label>
+              <select name="fromSite" value={formData.fromSite} onChange={handleInputChange} className="border p-2 rounded w-full">
+                <option value="">Select Source Site</option>
+                {sites.map((site, idx) => (
+                  <option key={idx} value={site}>{site}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block mb-1">To Site</label>
+              <select name="toSite" value={formData.toSite} onChange={handleInputChange} className="border p-2 rounded w-full">
+                <option value="">Select Destination Site</option>
+                {sites.map((site, idx) => (
+                  <option key={idx} value={site}>{site}</option>
+                ))}
+              </select>
+            </div>
+            {/* Add Material Form */}
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold mb-3">Add Material</h3>
+              <div className="grid md:grid-cols-4 gap-3">
+                {/* Material Category */}
                 <div>
-                  <label className="block mb-1">Site Location</label>
+                  <label className="block mb-1 text-sm">Material Category</label>
                   <select
-                    name="siteLocation"
-                    value={formData.siteLocation}
+                    name="category"
+                    value={materialInput.category}
                     onChange={handleInputChange}
                     className="border border-gray-300 p-2 rounded w-full"
                   >
-                    <option value="">Select a Site Location</option>
-                    {sites.map((site, idx) => (
-                      <option key={idx} value={site}>
-                        {site}
+                    <option value="">Select a Category</option>
+                    {categories.map((category, index) => (
+                      <option key={index} value={category.name}>
+                        {category.name}
                       </option>
                     ))}
                   </select>
                 </div>
+                {/* Material Name */}
                 <div>
-                  <label className="block mb-1">Engineer's Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
+                  <label className="block mb-1 text-sm">Material Name</label>
+                  <select
+                    name="materialName"
+                    value={materialInput.materialName}
                     onChange={handleInputChange}
-                    readOnly
-                    className="border border-gray-300 p-2 rounded bg-gray-100 w-full"
+                    className="border border-gray-300 p-2 rounded w-full"
+                  >
+                    <option value="">Select a Material</option>
+                    {categories
+                      .find((category) => category.name === materialInput.category)
+                      ?.materials.map((material, index) => (
+                        <option key={index} value={material.name}>
+                          {material.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                {/* Quantity */}
+                <div>
+                  <label className="block mb-1 text-sm">Quantity</label>
+                  <input
+                    type="number"
+                    name="quantity"
+                    value={materialInput.quantity}
+                    onChange={handleInputChange}
+                    className="border border-gray-300 p-2 rounded w-full"
                   />
                 </div>
+                {/* Unit of Measurement */}
                 <div>
-                  <label className="block mb-1">Purpose</label>
-                  <select
-                    name="purpose"
-                    value={formData.purpose}
+                  <label className="block mb-1 text-sm">Unit</label>
+                  <input
+                    type="text"
+                    name="unit"
+                    value={materialInput.unit}
                     onChange={handleInputChange}
-                    className="border border-gray-300 p-2 rounded w-full"
-                  >
-                    <option value="">Select a Purpose</option>
-                    {Purpose.map((purpose, index) => (
-                      <option key={index} value={purpose}>
-                        {purpose}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block mb-1">House Type</label>
-                  <select
-                    name="houseType"
-                    value={formData.houseType}
-                    onChange={handleInputChange}
-                    className="border border-gray-300 p-2 rounded w-full"
-                  >
-                    <option value="">Select a House Type</option>
-                    {house_types.map((house_type, index) => (
-                      <option key={index} value={house_type}>
-                        {house_type}
-                      </option>
-                    ))}
-                  </select>
+                    className="border border-gray-300 p-2 rounded w-full bg-gray-100"
+                    readOnly
+                  />
                 </div>
               </div>
-            </div>
-            <div className="container overflow-hidden w-full h-full">
-              <div className="h-[70%] overflow-y-hidden">
-                <div className="">
-                  <h3 className="text-md font-semibold mb-2">Materials</h3>
-                  {Array.isArray(fetchedMaterials) && fetchedMaterials.map((material, index) => (
-                    <div
-                      key={index}
-                      className="grid grid-cols-6 items-center gap-4 mb-4  p-2 rounded"
-                    >
-                      <div>
-                        <label className="block mb-1">Material Name</label>
-                        <input
-                          type="text"
-                          name="materialName"
-                          value={material.materialName || "N/A"}
-                          readOnly
-                          className="border border-gray-300 p-2 rounded w-full bg-gray-100"
-                        />
-                      </div>
-                      <div>
-                        <label className="block mb-1">Unit</label>
-                        <input
-                          type="text"
-                          name="unit"
-                          value={material.unit}
-                          readOnly
-                          className="border border-gray-300 p-2 rounded w-full bg-gray-100"
-                        />
-                      </div>
-                      <div>
-                        <label className="block mb-1">Quantity</label>
-                        <input
-                          type="number"
-                          name="quantity"
-                          value={material.maxQuantity || "N/A"}
-                          readOnly
-                          onChange={(e) => handleMaterialChange(index, e)}
-                          className="border border-gray-300 p-2 rounded w-full bg-gray-100"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="text-right">
+              <div className="mt-3 text-right">
                 <button
                   type="button"
-                  onClick={toggleForm}
-                  className="bg-white border border-[#123962] text-[#123962] px-4 py-2 rounded mr-2"
+                  onClick={addMaterial}
+                  className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-[#123962] text-white px-4 py-2 rounded"
-                >
-                  Submit
+                  Add Material
                 </button>
               </div>
+            </div>
+
+            {/* Materials Table */}
+            {formData.materials.length > 0 && (
+              <div className="overflow-x-auto">
+                <h3 className="font-semibold mb-2">Added Materials</h3>
+                <table className="min-w-full bg-white border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="py-2 px-4 border-b text-left">Category</th>
+                      <th className="py-2 px-4 border-b text-left">Material Name</th>
+                      <th className="py-2 px-4 border-b text-left">Quantity</th>
+                      <th className="py-2 px-4 border-b text-left">Unit</th>
+                      <th className="py-2 px-4 border-b text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {formData.materials.map((material, index) => (
+                      <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
+                        <td className="py-2 px-4 border-b">{material.category}</td>
+                        <td className="py-2 px-4 border-b">{material.materialName}</td>
+                        <td className="py-2 px-4 border-b">
+                          <input
+                            type="number"
+                            value={material.quantity}
+                            onChange={(e) => updateMaterial(index, "quantity", e.target.value)}
+                            className="border border-gray-300 p-1 rounded w-full"
+                          />
+                        </td>
+                        <td className="py-2 px-4 border-b">{material.unit}</td>
+                        <td className="py-2 px-4 border-b">
+                          <button
+                            type="button"
+                            onClick={() => removeMaterial(index)}
+                            className="text-red-600 hover:text-red-800"
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            <div className="text-right">
+              <button type="button" onClick={toggleForm} className="bg-white border border-[#123962] text-[#123962] px-4 py-2 rounded mr-2">Cancel</button>
+              <button type="submit" className="bg-[#123962] text-white px-4 py-2 rounded">Submit</button>
             </div>
           </form>
         </div>

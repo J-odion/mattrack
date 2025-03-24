@@ -11,6 +11,7 @@ import { loadUser } from "../libs/features/authSlice";
 import DisburseData from "./Disburse";
 import RecieveMat from "./Recieve";
 import AddStaff from "./addStaff";
+import TransferMat from "./transferMat";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -80,7 +81,7 @@ export default function Navbar() {
 
               {(userRole === "storekeepers") && (
                 <button
-                  onClick={toggleRecieve}
+                  onClick={toggleTransfer}
                   className="bg-[#123962] w-[132px] h-[40px] text-[#FFFFFF] px-4 py-1 text-[12px] rounded-md"
                 >
                   Transfer Materia
@@ -266,7 +267,7 @@ export default function Navbar() {
             {isTransferMatOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
           <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
-            <RequestMatForm toggleForm={toggleTransfer} />
+            <TransferMat toggleForm={toggleTransfer} />
           </div>
         </div>
       )}
