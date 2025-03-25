@@ -38,6 +38,7 @@ export const categories = [
     "materials": [
       { "name": "SHARP SAND", "unit": "trip" },
       { "name": "CHIPPINGS", "unit": "trip" },
+      { "name": "concrete disc", "unit": "nos" },
       { "name": "HARDCORE", "unit": "trip" },
       { "name": "PLASTER SAND", "unit": "trip" },
       { "name": "CEMENT", "unit": "bag" },
@@ -146,6 +147,7 @@ export const categories = [
         { "name": "40mm PE Socket", "unit": "nos" },
         { "name": "63mm PE Elbow", "unit": "nos" },
         { "name": "63mm PE tee", "unit": "nos" },
+        { "name": "black silicone", "unit": "nos"},
         { "name": "32mm PE tee", "unit": "nos" },
         { "name": "40mm M/F inner threaded elbow", "unit": "nos" },
         { "name": "32mm PE Adaptor", "unit": "nos" },
