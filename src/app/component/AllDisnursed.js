@@ -74,8 +74,7 @@ const AllDisbursed = () => {
     }
 
     if (material) {
-      filtered = filtered.filter(report =>
-        (report.materials || []).some(m => m.materialName === material)
+      filtered = filtered.filter(report => report.materialName === material
       );
     }
 
@@ -151,7 +150,7 @@ const AllDisbursed = () => {
           onChange={(e) => setMaterial(e.target.value)}
         >
           <option value="">Filter by Material</option>
-          {[...new Set(reports.flatMap(report => (report.materials || []).map(m => m.materialName)))].map((mat, idx) => (
+          {[...new Set(reports.flatMap(report => report.materialName))].map((mat, idx) => (
             <option key={idx} value={mat}>{mat}</option>
           ))}
         </select>
