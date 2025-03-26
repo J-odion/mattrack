@@ -18,9 +18,10 @@ const AllDisbursed = () => {
   const [siteLocation, setSiteLocation] = useState("");
   const [purpose, setPurpose] = useState("");
   const [material, setMaterial] = useState("");
+  const [recipientName, setRecipientName] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [sortOrder, setSortOrder] = useState("desc"); // Sorting order
+  const [sortOrder, setSortOrder] = useState("desc");
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -78,13 +79,25 @@ const AllDisbursed = () => {
       );
     }
 
+    if (recipientName) {
+      filtered = filtered.filter(report => report.recipientName === recipientName
+      );
+    }
+
     setFilteredReports(filtered);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [searchQuery, siteLocation, purpose, material, startDate, endDate, reports]);
+  }, [searchQuery, siteLocation, purpose, material, startDate, endDate, recipientName, reports]);
 
+   // Sorting Function
+   const sortedReports = [...filteredReports].sort((a, b) => {
+    return sortOrder === "asc"
+      ? new Date(a.date) - new Date(b.date)
+      : new Date(b.date) - new Date(a.date);
+  });
+  
   // Pagination Logic
-  const totalPages = Math.ceil(filteredReports.length / ITEMS_PER_PAGE);
-  const paginatedData = filteredReports.slice(
+  const totalPages = Math.ceil(sortedReports.length / ITEMS_PER_PAGE);
+  const paginatedData = sortedReports.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
@@ -155,14 +168,27 @@ const AllDisbursed = () => {
           ))}
         </select>
 
+        <select
+          className="border px-3 py-2 rounded w-1/4"
+          value={material}
+          onChange={(e) => setRecipientName(e.target.value)}
+        >
+          <option value="">Filter by Recipient</option>
+          {[...new Set(reports.flatMap(report => report.recipientName))].map((mat, idx) => (
+            <option key={idx} value={mat}>{mat}</option>
+          ))}
+        </select>
+
         <button
           onClick={() => {
             setSearchQuery("");
             setSiteLocation("");
             setPurpose("");
             setMaterial("");
+            setRecipientName("");
             setStartDate(null);
             setEndDate(null);
+
           }}
           className="px-4 py-2 border rounded bg-red-500 text-white hover:bg-red-600"
         >
@@ -178,16 +204,17 @@ const AllDisbursed = () => {
           <table className="min-w-full h-[60%] border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100 text-left">
-                <th className="py-2 px-4 border">Date <button onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}> 
+                <th className="py-2 px-4 border">Date
+                  <button onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}>
                     {sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />}
-                  </button></th>
+                  </button>
+                </th>
                 <th className="py-2 px-4 border">Site Location</th>
                 <th className="py-2 px-4 border">House Type</th>
                 <th className="py-2 px-4 border">Construction No.</th>
                 <th className="py-2 px-4 border">Material Name</th>
                 <th className="py-2 px-4 border">Quantity</th>
                 <th className="py-2 px-4 border">Unit</th>
-                <th className="py-2 px-4 border">Storekeeper</th>
                 <th className="py-2 px-4 border">Recipient</th>
                 <th className="py-2 px-4 border">Purpose</th>
               </tr>
@@ -203,7 +230,6 @@ const AllDisbursed = () => {
                   {/* <td className="py-2 px-4">{(report.materials || []).map(m => m.materialName).join(", ")}</td> */}
                   <td className="py-2 px-4">{report.quantity}</td>
                   <td className="py-2 px-4">{report.unit}</td>
-                  <td className="py-2 px-4">{report.storeKeepersName}</td>
                   <td className="py-2 px-4">{report.recipientName}</td>
                   <td className="py-2 px-4">{report.purpose}</td>
                 </tr>

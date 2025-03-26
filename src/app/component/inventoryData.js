@@ -110,6 +110,20 @@ const InventoryData = () => {
             <option key={material} value={material}>{material}</option>
           ))}
         </select>
+
+        <button
+          onClick={() => {
+            setSearchTerm("");
+            setSiteLocation("");
+            setPurpose("");
+            setMaterial("");
+            setStartDate(null);
+            setEndDate(null);
+          }}
+          className="px-4 py-2 border rounded bg-red-500 text-white hover:bg-red-600"
+        >
+          Clear Filters
+        </button>
       </div>
 
       {loading && <p>Fetching Inventory data...</p>}

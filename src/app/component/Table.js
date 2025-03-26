@@ -1,6 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { fetchTableData } from "../utils/Apis";
+import DatePicker from "react-datepicker";
+import { FaSortDown, FaSortUp } from "react-icons/fa";
+
+const ITEMS_PER_PAGE = 12; // Items per page
 
 const DynamicTable = () => {
   const [reports, setReports] = useState([]);
@@ -15,13 +19,23 @@ const DynamicTable = () => {
   const [siteLocation, setSiteLocation] = useState("");
   const [purpose, setPurpose] = useState("");
   const [material, setMaterial] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const loadReports = async () => {
       try {
         const data = await fetchTableData();
-        setReports(data);
-        setFilteredReports(data); // Initialize filtered reports
+        if (Array.isArray(data)) {
+          setReports(data);
+          setFilteredReports(data);
+        } else {
+          console.error("Invalid API response: Expected an array", data);
+          setReports([]); // Ensure reports is an array
+          setFilteredReports([]);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -33,11 +47,11 @@ const DynamicTable = () => {
 
   // Filtering Function
   useEffect(() => {
-    let filtered = reports;
+    let filtered = reports ? [...reports] : [];
 
     if (searchQuery) {
       filtered = filtered.filter(report =>
-        report.siteLocation.toLowerCase().includes(searchQuery.toLowerCase())
+        report.siteLocation?.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -45,19 +59,40 @@ const DynamicTable = () => {
       filtered = filtered.filter(report => report.siteLocation === siteLocation);
     }
 
+    if (startDate && endDate) {
+      filtered = filtered.filter(report => {
+        const reportDate = new Date(report.date);
+        return reportDate >= startDate && reportDate <= endDate;
+      });
+    }
+
     if (purpose) {
       filtered = filtered.filter(report => report.purpose === purpose);
     }
 
     if (material) {
-      filtered = filtered.filter(report =>
-        report.materials.some(m => m.materialName === material)
-      );
+      filtered = filtered.filter(report => report.materials?.some(m => m.materialName === material));
     }
 
     setFilteredReports(filtered);
-  }, [searchQuery, siteLocation, purpose, material, reports]);
+    setCurrentPage(1); // Reset to first page when filters change
+  }, [searchQuery, siteLocation, purpose, material, startDate, endDate, reports]);
 
+  // Sorting Function
+  const sortedReports = [...filteredReports].sort((a, b) => {
+    return sortOrder === "asc"
+      ? new Date(a.date) - new Date(b.date)
+      : new Date(b.date) - new Date(a.date);
+  });
+
+  // Pagination Logic
+  const totalPages = Math.ceil(sortedReports.length / ITEMS_PER_PAGE);
+  const paginatedData = sortedReports.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  // Modal Handling
   const openModal = (materials) => {
     setSelectedMaterials(materials);
     setIsModalOpen(true);
@@ -86,32 +121,44 @@ const DynamicTable = () => {
           onChange={(e) => setSiteLocation(e.target.value)}
         >
           <option value="">Filter by Site Location</option>
-          {Array.isArray(reports) && [...new Set(reports.map(report => report.siteLocation))].map((loc, idx) => (
+          {[...new Set(reports.map(report => report.siteLocation))].map((loc, idx) => (
             <option key={idx} value={loc}>{loc}</option>
           ))}
         </select>
 
-        <select
-          className="border px-3 py-2 rounded w-1/4"
-          value={purpose}
-          onChange={(e) => setPurpose(e.target.value)}
-        >
-          <option value="">Filter by Purpose</option>
-          {Array.isArray(reports) && [...new Set(reports.map(report => report.purpose))].map((purp, idx) => (
-            <option key={idx} value={purp}>{purp}</option>
-          ))}
-        </select>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
+          placeholderText="Start Date"
+          className="border text-xs px-3 py-2 rounded w-full"
+        />
+        <DatePicker
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          minDate={startDate}
+          placeholderText="End Date"
+          className="border text-xs px-3 py-2 rounded w-full"
+        />
 
-        <select
-          className="border px-3 py-2 rounded w-1/4"
-          value={material}
-          onChange={(e) => setMaterial(e.target.value)}
+        <button
+          onClick={() => {
+            setSearchQuery("");
+            setSiteLocation("");
+            setPurpose("");
+            setMaterial("");
+            setStartDate(null);
+            setEndDate(null);
+          }}
+          className="px-4 py-2 border rounded bg-red-500 text-white hover:bg-red-600"
         >
-          <option value="">Filter by Material</option>
-          {Array.isArray(reports) && [...new Set(reports.flatMap(report => report.materials.map(m => m.materialName)))].map((mat, idx) => (
-            <option key={idx} value={mat}>{mat}</option>
-          ))}
-        </select>
+          Clear Filters
+        </button>
       </div>
 
       {/* Table */}
@@ -119,49 +166,66 @@ const DynamicTable = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-        <table className="min-w-[50%]">
-          <thead>
-            <tr className="bg-gray-100 font-normal text-left">
-              <th className="py-2 px-4 border-b text-[12px]">Date</th>
-              <th className="py-2 px-4 border-b text-[12px]">Site Location</th>
-              <th className="py-2 px-4 border-b text-[12px]">Materials</th>
-              <th className="py-2 px-4 border-b text-[12px]">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-
-
-
-            {Array.isArray(filteredReports) ? (
-              filteredReports.map((report, index) => (
-                <tr key={index}>
-                  <td className="py-2 px-4 border-b text-[12px]">
-                    {new Date(report.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </td>
-                  <td className="py-2 px-4 border-b text-[12px]">{report.siteLocation}</td>
-                  <td className="py-2 px-4 border-b text-[12px]">{report.materials?.length || 0} items</td>
-                  <td className="py-2 px-4 border-b text-[12px]">
-                    <button
-                      onClick={() => openModal(report.materials)}
-                      className="bg-[#123962] text-white px-3 py-1 rounded text-sm hover:bg-[#123979]"
-                    >
-                      View
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="text-center p-4">No data available</td>
+        <div>
+          <table className="min-w-[50%]">
+            <thead>
+              <tr className="bg-gray-100 font-normal text-left">
+                <th className="py-2 px-4 border">
+                  Date
+                  <button onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}>
+                    {sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />}
+                  </button>
+                </th>
+                <th className="py-2 px-4 border">Site Location</th>
+                <th className="py-2 px-4 border">Materials</th>
+                <th className="py-2 px-4 border">Action</th>
               </tr>
-            )}
+            </thead>
+            <tbody>
+              {paginatedData.length > 0 ? (
+                paginatedData.map((report, index) => (
+                  <tr key={index}>
+                    <td className="py-2 px-4 border">
+                      {new Date(report.date).toLocaleDateString()}
+                    </td>
+                    <td className="py-2 px-4 border">{report.siteLocation}</td>
+                    <td className="py-2 px-4 border">{report.materials?.length || 0} items</td>
+                    <td className="py-2 px-4 border">
+                      <button
+                        onClick={() => openModal(report.materials)}
+                        className="bg-[#123962] text-white px-3 py-1 rounded text-sm hover:bg-[#123979]"
+                      >
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center p-4">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
 
-          </tbody>
-        </table>
+          <div className="flex w-[50%] justify-between mt-4">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300"
+            >
+              Previous
+            </button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Modal */}
