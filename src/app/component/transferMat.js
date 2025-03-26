@@ -82,24 +82,6 @@ const TransferMat = ({ toggleForm }) => {
   }
 
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target
-  //   const updatedMaterialInput = { ...materialInput, [name]: value }
-
-  //   if (name === "category") {
-  //     updatedMaterialInput.materialName = ""
-  //     updatedMaterialInput.unit = ""
-  //   } else if (name === "materialName") {
-  //     const selectedCategory = categories.find((category) => category.name === materialInput.category)
-  //     if (selectedCategory) {
-  //       const selectedMaterial = selectedCategory.materials.find((material) => material.name === value)
-  //       updatedMaterialInput.unit = selectedMaterial ? selectedMaterial.unit : ""
-  //     }
-  //   }
-
-  //   setMaterialInput(updatedMaterialInput)
-  // }
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
   

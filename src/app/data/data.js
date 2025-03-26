@@ -6,6 +6,7 @@ export const Purpose = [
   "WATER LINE",
   "OTHER"
 ]
+export const houseType = ["SM", "FD", "QD", "MS", "SD"]
 export const house_types = [
   "FD209",
   "FD206",

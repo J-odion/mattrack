@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Purpose, house_types, sites } from "../data/data";
+import { Purpose, houseType, sites } from "../data/data";
 import { requestMaterial, viewHouseSchedule,  } from "../utils/Apis";
 import { useSelector } from "react-redux";
 
@@ -162,7 +162,7 @@ const RequestMatForm = ({ toggleForm }) => {
                     className="border border-gray-300 p-2 rounded w-full"
                   >
                     <option value="">Select a House Type</option>
-                    {house_types.map((house_type, index) => (
+                    {houseType.map((house_type, index) => (
                       <option key={index} value={house_type}>
                         {house_type}
                       </option>

@@ -11,7 +11,7 @@ export default function Home() {
       <div className="w-1/6">
         <DashboardSideBar />
       </div>
-      <div className=" w-full h-full overflow-y-hidden pb-4">
+      <div className=" w-full h-full overflow-y-hidden p">
         <div className="w-full">
           <Navbar />
         </div>

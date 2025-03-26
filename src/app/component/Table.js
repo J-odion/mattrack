@@ -86,7 +86,7 @@ const DynamicTable = () => {
           onChange={(e) => setSiteLocation(e.target.value)}
         >
           <option value="">Filter by Site Location</option>
-          {[...new Set(reports.map(report => report.siteLocation))].map((loc, idx) => (
+          {Array.isArray(reports) && [...new Set(reports.map(report => report.siteLocation))].map((loc, idx) => (
             <option key={idx} value={loc}>{loc}</option>
           ))}
         </select>
@@ -97,7 +97,7 @@ const DynamicTable = () => {
           onChange={(e) => setPurpose(e.target.value)}
         >
           <option value="">Filter by Purpose</option>
-          {[...new Set(reports.map(report => report.purpose))].map((purp, idx) => (
+          {Array.isArray(reports) && [...new Set(reports.map(report => report.purpose))].map((purp, idx) => (
             <option key={idx} value={purp}>{purp}</option>
           ))}
         </select>
@@ -108,7 +108,7 @@ const DynamicTable = () => {
           onChange={(e) => setMaterial(e.target.value)}
         >
           <option value="">Filter by Material</option>
-          {[...new Set(reports.flatMap(report => report.materials.map(m => m.materialName)))].map((mat, idx) => (
+          {Array.isArray(reports) && [...new Set(reports.flatMap(report => report.materials.map(m => m.materialName)))].map((mat, idx) => (
             <option key={idx} value={mat}>{mat}</option>
           ))}
         </select>
@@ -129,27 +129,37 @@ const DynamicTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredReports.map((report, index) => (
-              <tr key={index}>
-                <td className="py-2 px-4 border-b text-[12px]">
-                  {new Date(report.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </td>
-                <td className="py-2 px-4 border-b text-[12px]">{report.siteLocation}</td>
-                <td className="py-2 px-4 border-b text-[12px]">{report.materials.length} items</td>
-                <td className="py-2 px-4 border-b text-[12px]">
-                  <button
-                    onClick={() => openModal(report.materials)}
-                    className="bg-[#123962] text-white px-3 py-1 rounded text-sm hover:bg-[#123979]"
-                  >
-                    View
-                  </button>
-                </td>
+
+
+
+            {Array.isArray(filteredReports) ? (
+              filteredReports.map((report, index) => (
+                <tr key={index}>
+                  <td className="py-2 px-4 border-b text-[12px]">
+                    {new Date(report.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </td>
+                  <td className="py-2 px-4 border-b text-[12px]">{report.siteLocation}</td>
+                  <td className="py-2 px-4 border-b text-[12px]">{report.materials?.length || 0} items</td>
+                  <td className="py-2 px-4 border-b text-[12px]">
+                    <button
+                      onClick={() => openModal(report.materials)}
+                      className="bg-[#123962] text-white px-3 py-1 rounded text-sm hover:bg-[#123979]"
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center p-4">No data available</td>
               </tr>
-            ))}
+            )}
+
           </tbody>
         </table>
       )}

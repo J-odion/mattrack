@@ -122,13 +122,21 @@ export const sendMat = async (credentials) => {
   }
 };
 
+
 export const fetchDisbursedData = async () => {
   try {
     const response = await apiClient.get("/disburseddata");
+
+    // Ensure the response contains an array
+    if (!response.data || !Array.isArray(response.data)) {
+      console.error("Invalid response format:", response.data);
+      return [];
+    }
+
     return response.data;
   } catch (error) {
-    console.error("Error fetching table data:", error);
-    throw error;
+    console.error("Error fetching table data:", error.message);
+    return []; // Return an empty array instead of throwing an error
   }
 };
 

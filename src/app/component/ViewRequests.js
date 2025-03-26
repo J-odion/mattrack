@@ -104,7 +104,7 @@ const ViewRequest = () => {
             <p><strong>Purpose:</strong> {selectedRequest.purpose}</p>
             <p><strong>Site:</strong> {selectedRequest.siteLocation}</p>
             <p><strong>House Type:</strong> {selectedRequest.houseType}</p>
-            <p ><strong>Status:</strong> <span className="text-lg uppercase ">{selectedRequest.status}</span></p>
+            <p><strong>Status:</strong> <span className="text-lg uppercase ">{selectedRequest.status}</span></p>
 
             <div>
               {reports.map((material, index) => (

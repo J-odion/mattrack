@@ -16,7 +16,7 @@ export default function Subcat() {
 
 
   return (
-    <section className="py-[26px] gap-y-[14px] w-full h-[90%] lg:w-full px-[30px] lg:px-[100px] text-[12px] justify-center flex flex-col mx-auto items-center">
+    <section className="py-[2px] gap-y-[4px] w-full h-[90%] lg:w-full px-[30px] lg:px-[100px] text-[12px] justify-center flex flex-col mx-auto items-center">
       <div id="services" className="grid w-[90%] border-[#E5E7EB] border-b-2  lg:grid-cols-2 gap-[24px] ">
         <div className="flex gap-4 ">
           <button
