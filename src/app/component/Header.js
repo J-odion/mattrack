@@ -62,7 +62,7 @@ export default function Navbar() {
       <nav className="flex w-full justify-center items-center bg-white ">
         <div className=" w-full lg:w-[1280px] flex justify-between items-center gap-4 ">
 
-          <div className="w-3/4 flex flex-col ">
+          <div className="w-3/4 py-4 flex gap-2 flex-col ">
             <div className="text-xl font-bold">
               <p>Inventory</p>
             </div>

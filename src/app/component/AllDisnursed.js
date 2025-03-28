@@ -16,6 +16,8 @@ const AllDisbursed = () => {
   // Filters
   const [searchQuery, setSearchQuery] = useState("");
   const [siteLocation, setSiteLocation] = useState("");
+  const [houseType, sethouseType] = useState("");
+  const [constructionNumber, setconstructionNumber] = useState("");
   const [purpose, setPurpose] = useState("");
   const [material, setMaterial] = useState("");
   const [recipientName, setRecipientName] = useState("");
@@ -84,9 +86,20 @@ const AllDisbursed = () => {
       );
     }
 
+    if (houseType) {
+      filtered = filtered.filter(report => report.houseType === houseType
+      );
+    }
+
+    
+    if (constructionNumber) {
+      filtered = filtered.filter(report => report.constructionNumber === constructionNumber
+      );
+    }
+
     setFilteredReports(filtered);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [searchQuery, siteLocation, purpose, material, startDate, endDate, recipientName, reports]);
+  }, [searchQuery, siteLocation, purpose, material, startDate, endDate, recipientName, reports, houseType, constructionNumber]);
 
    // Sorting Function
    const sortedReports = [...filteredReports].sort((a, b) => {
@@ -170,11 +183,33 @@ const AllDisbursed = () => {
 
         <select
           className="border px-3 py-2 rounded w-1/4"
-          value={material}
+          value={recipientName}
           onChange={(e) => setRecipientName(e.target.value)}
         >
           <option value="">Filter by Recipient</option>
           {[...new Set(reports.flatMap(report => report.recipientName))].map((mat, idx) => (
+            <option key={idx} value={mat}>{mat}</option>
+          ))}
+        </select>
+
+        <select
+          className="border px-3 py-2 rounded w-1/4"
+          value={houseType}
+          onChange={(e) => sethouseType(e.target.value)}
+        >
+          <option value="">Filter by House Types</option>
+          {[...new Set(reports.flatMap(report => report.houseType))].map((mat, idx) => (
+            <option key={idx} value={mat}>{mat}</option>
+          ))}
+        </select>
+
+        <select
+          className="border px-3 py-2 rounded w-1/4"
+          value={constructionNumber}
+          onChange={(e) => setconstructionNumber(e.target.value)}
+        >
+          <option value="">Filter by Construction Number</option>
+          {[...new Set(reports.flatMap(report => report.constructionNumber))].map((mat, idx) => (
             <option key={idx} value={mat}>{mat}</option>
           ))}
         </select>
@@ -188,7 +223,8 @@ const AllDisbursed = () => {
             setRecipientName("");
             setStartDate(null);
             setEndDate(null);
-
+            sethouseType("")
+            setconstructionNumber("")
           }}
           className="px-4 py-2 border rounded bg-red-500 text-white hover:bg-red-600"
         >
