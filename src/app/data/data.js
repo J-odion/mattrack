@@ -172,7 +172,6 @@ export const categories = [
         { "name": "Gasket", "unit": "nos" },
         { "name": "2\" Gasket", "unit": "nos" },
         { "name": "4\" Gasket", "unit": "nos" },
-        { "name": "½ PPR", "unit": "nos" },
         { "name": "4\"CAP Lock", "unit": "nos" },
         { "name": "1\" Ref pipe", "unit": "nos" },
         { "name": "¾ ref pipe", "unit": "nos" },
@@ -481,7 +480,11 @@ export const categories = [
       { "name": "Y12", "unit": "lengths" },
       { "name": "Y10", "unit": "lengths" },
       { "name": "Y8", "unit": "lengths" },
-      { "name": "Y8 TNT", "unit": "lengths" },
+      { "name": "Y8 TMT", "unit": "lengths" },
+      { "name": "Y10 TMT", "unit": "lengths" },
+      { "name": "Y12 TMT", "unit": "lengths" },
+      { "name": "Y16 TMT", "unit": "lengths" },
+      { "name": "Y20 TMT", "unit": "lengths" },
       { "name": "BINDING WIRE", "unit": "roll" }
     ]
   },
