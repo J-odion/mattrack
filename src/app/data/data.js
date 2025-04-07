@@ -611,7 +611,8 @@ export const sites = [
   "Jabi",
   "Guzape",
   "Jahi",
-  "Karasana",
+  "Karasana 1",
+  "Karasana 2",
   "Idu Hof City",
   "Other"
 ]
