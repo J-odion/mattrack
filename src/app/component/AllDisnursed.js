@@ -4,8 +4,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchDisbursedData } from "../utils/Apis";
 import { FaSortDown, FaSortUp } from "react-icons/fa";
+import Pagination from "./Pgination";
 
-const ITEMS_PER_PAGE = 14; // Items per page
+const ITEMS_PER_PAGE = 12; // Items per page
 
 const AllDisbursed = () => {
   const [reports, setReports] = useState([]); // Ensure it's an array
@@ -101,13 +102,13 @@ const AllDisbursed = () => {
     setCurrentPage(1); // Reset to first page when filters change
   }, [searchQuery, siteLocation, purpose, material, startDate, endDate, recipientName, reports, houseType, constructionNumber]);
 
-   // Sorting Function
-   const sortedReports = [...filteredReports].sort((a, b) => {
+  // Sorting Function
+  const sortedReports = [...filteredReports].sort((a, b) => {
     return sortOrder === "asc"
       ? new Date(a.date) - new Date(b.date)
       : new Date(b.date) - new Date(a.date);
   });
-  
+
   // Pagination Logic
   const totalPages = Math.ceil(sortedReports.length / ITEMS_PER_PAGE);
   const paginatedData = sortedReports.slice(
@@ -236,11 +237,11 @@ const AllDisbursed = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-        <>
-          <table className="min-w-full h-[60%] border-collapse border border-gray-300">
-            <thead>
+        <div className="w-full h-full">
+          <table className="w-full border-collapse border-none ">
+            <thead className="border-none">
               <tr className="bg-gray-100 text-left">
-                <th className="py-2 px-4 border">Date
+                <th className="py-2 px-4 ">Date
                   <button onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}>
                     {sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />}
                   </button>
@@ -255,43 +256,29 @@ const AllDisbursed = () => {
                 <th className="py-2 px-4 border">Purpose</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="border-none border-b border-b-gray-300">
               {paginatedData.map((report, index) => (
                 <tr key={index} className="border-t">
-                  <td className="py-2 px-4">{new Date(report.date).toLocaleDateString()}</td>
-                  <td className="py-2 px-4">{report.siteLocation}</td>
-                  <td className="py-2 px-4">{report.houseType}</td>
-                  <td className="py-2 px-4">{report.constructionNumber || "N/A"}</td>
-                  <td className="py-2 px-4">{report.materialName}</td>
-                  {/* <td className="py-2 px-4">{(report.materials || []).map(m => m.materialName).join(", ")}</td> */}
-                  <td className="py-2 px-4">{report.quantity}</td>
-                  <td className="py-2 px-4">{report.unit}</td>
-                  <td className="py-2 px-4">{report.recipientName}</td>
-                  <td className="py-2 px-4">{report.purpose}</td>
+                  <td className="py-3 px-4">{new Date(report.date).toLocaleDateString()}</td>
+                  <td className="py-3 px-4">{report.siteLocation}</td>
+                  <td className="py-3 px-4">{report.houseType}</td>
+                  <td className="py-3 px-4">{report.constructionNumber || "N/A"}</td>
+                  <td className="py-3 px-4">{report.materialName}</td>
+                  {/* <td className="py-3 px-4">{(report.materials || []).map(m => m.materialName).join(", ")}</td> */}
+                  <td className="py-3 px-4">{report.quantity}</td>
+                  <td className="py-3 px-4">{report.unit}</td>
+                  <td className="py-3 px-4">{report.recipientName}</td>
+                  <td className="py-3 px-4">{report.purpose}</td>
                 </tr>
               ))}
             </tbody>
           </table>
 
 
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300"
-            >
-              Previous
-            </button>
-            <span>Page {currentPage} of {totalPages}</span>
-            <button
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300"
-            >
-              Next
-            </button>
+          <div className=" w-[100%] flex justify-between mt-4">
+            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
           </div>
-        </>
+        </div>
       )}
     </div>
   );

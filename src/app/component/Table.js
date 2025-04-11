@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { fetchTableData } from "../utils/Apis";
 import DatePicker from "react-datepicker";
 import { FaSortDown, FaSortUp } from "react-icons/fa";
+import Pagination from "./Pgination";
 
 const ITEMS_PER_PAGE = 12; // Items per page
 
@@ -166,8 +167,8 @@ const DynamicTable = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-        <div>
-          <table className="min-w-[50%]">
+        <div className="w-full">
+          <table className="w-full">
             <thead>
               <tr className="bg-gray-100 font-normal text-left">
                 <th className="py-2 px-4 border">
@@ -208,22 +209,8 @@ const DynamicTable = () => {
             </tbody>
           </table>
 
-          <div className="flex w-[50%] justify-between mt-4">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300"
-            >
-              Previous
-            </button>
-            <span>Page {currentPage} of {totalPages}</span>
-            <button
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300"
-            >
-              Next
-            </button>
+          <div className=" w-full mt-6 flex justify-between">
+            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
           </div>
         </div>
       )}

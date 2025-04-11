@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { fetchAllInventory } from "../utils/Apis";
+import Pagination from "./Pgination";
 
 const InventoryData = () => {
   const [reports, setReports] = useState([]);
@@ -17,6 +18,7 @@ const InventoryData = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 15;
+
 
   useEffect(() => {
     const loadReports = async () => {
@@ -131,7 +133,7 @@ const InventoryData = () => {
 
       {!loading && !error && (
         <div className="w-full h-full ">
-          <table className="min-w-[60%] h-[60%] border-collapse border border-gray-200">
+          <table className="w-full h-[60%] border-collapse border-b border-b-gray-200">
             <thead>
               <tr className="bg-gray-100 font-normal text-left">
                 <th className="py-2 px-4 border">Material Name</th>
@@ -152,22 +154,8 @@ const InventoryData = () => {
             </tbody>
           </table>
 
-          <div className=" w-[60%] flex justify-between mt-4">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300"
-            >
-              Previous
-            </button>
-            <span>Page {currentPage} of {totalPages}</span>
-            <button
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300"
-            >
-              Next
-            </button>
+          <div className=" w-[100%] flex justify-between mt-4">
+            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
           </div>
         </div>
       )}
