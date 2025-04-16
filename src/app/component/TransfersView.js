@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaTimes } from "react-icons/fa";
 
 
-const ViewRequest = () => {
+const TransferView = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -72,7 +72,7 @@ const ViewRequest = () => {
       )}
 
       <div className="w-[90%]">
-        <p className="font-bold text-2xl mb-6">View All Engineers' Requests</p>
+        <p className="font-bold text-2xl mb-6">View All Transfer Requests</p>
         <section className="flex flex-col gap-4">
           {reports.map((request) => (
             <div
@@ -85,7 +85,7 @@ const ViewRequest = () => {
                 <p className="text-sm font-medium">{request.purpose}</p>
                 <p className="text-sm font-medium">{request.siteLocation}</p>
                 <p className="text-sm font-medium">{request.status}</p>
-                <p className="text-sm font-medium">{request.houseType} / {request.constructionNo}</p>
+                <p className="text-sm font-medium">{request.houseType}</p>
               </div>
 
               <button
@@ -145,42 +145,13 @@ const ViewRequest = () => {
               </table>
             </div>
 
-            {userRole === "admin" || userRole === "projectmanager" ? (
-              selectedRequest?.status === "pending" ? (
-                <>
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Add a comment..."
-                    className="border p-2 w-full mt-4"
-                  />
-                  <div className="flex gap-2 mt-4">
-                    <button
-                      onClick={() => handleReviewAction("approved")}
-                      className="bg-green-600 text-white p-2 rounded"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => handleReviewAction("rejected")}
-                      className="bg-red-600 text-white p-2 rounded"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
-              )
-            ) : userRole === "storekeeper" ? (
+            {userRole  === "storekeeper" && (
               <>
-                <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
+                
                 <button className="bg-blue-600 text-white p-2 rounded mt-4">
-                  Disburse
+                  Accept Transfer
                 </button>
               </>
-            ) : (
-              <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
             )}
 
             {/* Close button always available for all users */}
@@ -200,4 +171,4 @@ const ViewRequest = () => {
   );
 };
 
-export default ViewRequest;
+export default TransferView;

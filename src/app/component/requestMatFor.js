@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Purpose, houseType, sites } from "../data/data";
-import { requestMaterial, viewHouseSchedule,  } from "../utils/Apis";
+import { requestMaterial, viewSchedule, } from "../utils/Apis";
 import { useSelector } from "react-redux";
 
 const RequestMatForm = ({ toggleForm }) => {
@@ -10,9 +10,10 @@ const RequestMatForm = ({ toggleForm }) => {
   const [formData, setFormData] = useState({
     siteLocation: "",
     houseType: "",
-    name: userInfo?.name || "" ,
+    name: userInfo?.name || "",
     purpose: "",
     materials: [],
+    constructionNo: ""
   });
   const [fetchedMaterials, setFetchedMaterials] = useState([]);
   const [notification, setNotification] = useState({ message: "", type: "" });
@@ -30,17 +31,17 @@ const RequestMatForm = ({ toggleForm }) => {
     const fetchMaterials = async () => {
       if (formData.siteLocation && formData.houseType && formData.purpose) {
         try {
-          const response = await viewHouseSchedule({
+          const response = await viewSchedule({
             siteLocation: formData.siteLocation,
             houseType: formData.houseType,
             purpose: formData.purpose,
           });
-  
+
           if (Array.isArray(response.data)) {
             const extractedMaterials = response.data.flatMap((item) => item.materials);
-  
+
             setFetchedMaterials(extractedMaterials);
-  
+
             setFormData((prev) => ({
               ...prev,
               materials: extractedMaterials.map((material) => ({
@@ -61,10 +62,9 @@ const RequestMatForm = ({ toggleForm }) => {
         }
       }
     };
-  
+
     fetchMaterials();
   }, [formData.siteLocation, formData.houseType, formData.purpose]);
-  
 
 
   const handleInputChange = (e) => {
@@ -96,9 +96,8 @@ const RequestMatForm = ({ toggleForm }) => {
     <div className="container mx-auto p-4">
       {notification.message && (
         <div
-          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${
-            notification.type === "success" ? "bg-green-500" : "bg-red-500"
-          }`}
+          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${notification.type === "success" ? "bg-green-500" : "bg-red-500"
+            }`}
         >
           {notification.message}
         </div>
@@ -132,7 +131,6 @@ const RequestMatForm = ({ toggleForm }) => {
                     type="text"
                     name="name"
                     value={formData.name}
-                    onChange={handleInputChange}
                     readOnly
                     className="border border-gray-300 p-2 rounded bg-gray-100 w-full"
                   />
@@ -169,16 +167,28 @@ const RequestMatForm = ({ toggleForm }) => {
                     ))}
                   </select>
                 </div>
+
+
+                <div>
+                  <label className="block mb-1">Constructuion Number</label>
+                  <input
+                    type="text"
+                    name="constructionNo"
+                    value={formData.constructionNo}
+                    onChange={handleInputChange}
+                    className="border border-gray-300 p-2 rounded bg-gray-100 w-full"
+                  />
+                </div>
               </div>
             </div>
             <div className="container overflow-hidden w-full h-full">
               <div className="h-[70%] overflow-y-hidden">
                 <div className="">
                   <h3 className="text-md font-semibold mb-2">Materials</h3>
-                  {Array.isArray(fetchedMaterials) && fetchedMaterials.map((material, index) => (
+                  {Array.isArray(formData.materials) && formData.materials.map((material, index) => (
                     <div
                       key={index}
-                      className="grid grid-cols-6 items-center gap-4 mb-4  p-2 rounded"
+                      className="grid grid-cols-4 items-center gap-4 mb-4  p-2 rounded"
                     >
                       <div>
                         <label className="block mb-1">Material Name</label>
@@ -205,7 +215,7 @@ const RequestMatForm = ({ toggleForm }) => {
                         <input
                           type="number"
                           name="quantity"
-                          value={material.maxQuantity || "N/A"}
+                          value={material.quantity || "N/A"}
                           readOnly
                           onChange={(e) => handleMaterialChange(index, e)}
                           className="border border-gray-300 p-2 rounded w-full bg-gray-100"
@@ -225,7 +235,18 @@ const RequestMatForm = ({ toggleForm }) => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#123962] text-white px-4 py-2 rounded"
+                  disabled={
+                    !formData.siteLocation ||
+                    !formData.houseType ||
+                    !formData.purpose ||
+                    formData.materials.length === 0
+                  }
+                  className={`px-4 py-2 rounded text-white ${!formData.siteLocation || !formData.houseType || !formData.purpose || formData.materials.length === 0
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-[#123962]'
+                    }`}
+
+                    
                 >
                   Submit
                 </button>

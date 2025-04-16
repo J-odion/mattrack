@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { sites, categories } from "../data/data";
 import { sendMat } from "../utils/Apis";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { loadUser } from "../libs/features/authSlice";
 
 const TransferMat = ({ toggleForm }) => {
-  const userInfo = useSelector((state) => state.auth.user);
 
   const [formData, setFormData] = useState({
     fromSite: "",
@@ -17,8 +17,23 @@ const TransferMat = ({ toggleForm }) => {
     materialName: "",
     quantity: "",
     unit: "",
-})
+  })
   const [notification, setNotification] = useState({ message: "", type: "" });
+
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(loadUser());
+    }
+  }, [user, dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({ ...prev, createdBy: user }));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (notification.message) {
@@ -29,7 +44,7 @@ const TransferMat = ({ toggleForm }) => {
     }
   }, [notification]);
 
- 
+
   const removeMaterial = (index) => {
     const updatedMaterials = [...formData.materials]
     updatedMaterials.splice(index, 1)
@@ -84,7 +99,7 @@ const TransferMat = ({ toggleForm }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (name === "fromSite" || name === "toSite") {
       // Update formData for site selections
       setFormData((prev) => ({
@@ -94,7 +109,7 @@ const TransferMat = ({ toggleForm }) => {
     } else {
       // Update materialInput for material selection
       const updatedMaterialInput = { ...materialInput, [name]: value };
-  
+
       if (name === "category") {
         updatedMaterialInput.materialName = "";
         updatedMaterialInput.unit = "";
@@ -105,26 +120,40 @@ const TransferMat = ({ toggleForm }) => {
           updatedMaterialInput.unit = selectedMaterial ? selectedMaterial.unit : "";
         }
       }
-  
+
       setMaterialInput(updatedMaterialInput);
     }
   };
 
-  
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.fromSite === formData.toSite) {
+      setNotification({ message: "Source and destination sites must be different", type: "error" });
+      return;
+    }
+
     try {
-      await sendMat({ ...formData, createdBy: userInfo.id });
-      setNotification({ message: "Transfer successfully initiated!", type: "success" });
-      toggleForm();
-    } catch (error) {
-      setNotification({
-        type: "error",
-        message: error.response?.data?.error || "Something went wrong. Try again!",
+      if (!formData.fromSite || !formData.toSite || formData.materials.length === 0) {
+        setNotification({ message: "Please complete the form properly", type: "error" });
+        return;
+      }
+
+      await sendMat({
+        ...formData,
+        requester: user.name,
       });
+
+      setNotification({ message: "Transfer request submitted successfully!", type: "success" });
+      setFormData({ fromSite: "", toSite: "", materials: [] });
+      toggleForm()
+    } catch (error) {
+      console.error("Transfer error:", error); // Add this
+      setNotification({ message: "Failed to submit transfer request", type: "error" });
     }
   };
+
+
 
   return (
     <div className="container mx-auto p-4">
@@ -274,8 +303,9 @@ const TransferMat = ({ toggleForm }) => {
               </div>
             )}
             <div className="text-right">
+              {!user && <p className="text-red-500 text-sm mt-1">You must be logged in to submit a request.</p>}
               <button type="button" onClick={toggleForm} className="bg-white border border-[#123962] text-[#123962] px-4 py-2 rounded mr-2">Cancel</button>
-              <button type="submit" className="bg-[#123962] text-white px-4 py-2 rounded">Submit</button>
+              <button disabled={!user} type="submit" className={`px-4 py-2 rounded ${user ? 'bg-[#123962] text-white' : 'bg-gray-400 text-gray-200 cursor-not-allowed'}`}>Submit</button>
             </div>
           </form>
         </div>

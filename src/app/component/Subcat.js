@@ -4,11 +4,12 @@ import DynamicTable from "./Table";
 import AllDisbursed from "./AllDisnursed";
 import InventoryData from "./inventoryData";
 import ViewRequest from "./ViewRequests";
+import TransferView from "./TransfersView";
 
 
 
 export default function Subcat() {
-  const [selectedTable, setSelectedTable] = useState("received");
+  const [selectedTable, setSelectedTable] = useState("inventory");
 
   const handleTableChange = (table) => {
     setSelectedTable(table);
@@ -38,6 +39,12 @@ export default function Subcat() {
             Outward
           </button>
           <button
+            onClick={() => handleTableChange("transfers")}
+            className={`px-4 text-[#123962] w-[200px] h-[50px] bg-none font-semibold py-1 text-[12px] ${selectedTable === "transfers" ? "border-[#123962] border-b-2" : "border-b-none"}`}
+          >
+            Transfers
+          </button>
+          <button
             onClick={() => handleTableChange("requests")}
             className={`px-4 text-[#123962] w-[300px] h-[50px] bg-none font-semibold py-1 text-[12px] ${selectedTable === "requests" ? "border-[#123962] border-b-2" : "border-b-none"}`}
           >
@@ -51,6 +58,7 @@ export default function Subcat() {
         {selectedTable === "received" && <DynamicTable />}
         {selectedTable === "disbursed" && <AllDisbursed />}
         {selectedTable === "requests" && <ViewRequest />}
+        {selectedTable === "transfers" && <TransferView />}
       </div>
 
     </section>

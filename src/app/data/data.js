@@ -1,12 +1,12 @@
 export const Purpose = [
-  "GROUND TO FIRST FLOOR",
   "FOUNDATION TO GROUND FLOOR",
+  "GROUND TO FIRST FLOOR",
   "FIRST TO SECOND FLOOR",
   "SECOND FLOOR TO ROOF LEVEL",
   "WATER LINE",
   "OTHER"
 ]
-export const houseType = ["SM", "FD", "QD", "MS", "SD"]
+export const houseType = ["SM","", "FD", "QD", "MS", "SD", "D"]
 export const house_types = [
   "FD209",
   "FD206",
@@ -551,10 +551,13 @@ export const locations = [
   {
     "name": "Idu Hof City",
     "houseTypes": [
+      { "type": "D", "constructionNumber": "105" },
       { "type": "FD", "constructionNumber": "101" },
+      { "type": "SM", "constructionNumber": "105" },
       { "type": "SMD", "constructionNumber": "102" },
       { "type": "APH", "constructionNumber": "103" },
       { "type": "QD", "constructionNumber": "104" },
+      { "type": "QQD", "constructionNumber": "104" },
       { "type": "MS", "constructionNumber": "105" },
     ]
   },
@@ -562,6 +565,7 @@ export const locations = [
     "name": "Jabi",
     "houseTypes": [
       { "type": "APH", "constructionNumber": "201" }
+      { "type": "SM", "constructionNumber": "201" }
     ]
   },
   {
