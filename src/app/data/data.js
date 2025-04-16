@@ -564,7 +564,7 @@ export const locations = [
   {
     "name": "Jabi",
     "houseTypes": [
-      { "type": "APH", "constructionNumber": "201" }
+      { "type": "APH", "constructionNumber": "201" },
       { "type": "SM", "constructionNumber": "201" }
     ]
   },
