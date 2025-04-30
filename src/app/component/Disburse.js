@@ -84,6 +84,7 @@ const DisburseData = ({ toggleForm }) => {
         storeKeepersName: userInfo?.name || "",
         recipientName: "",
         purpose: "",
+        levelofwork: "",
         date: new Date().toISOString().split("T")[0],
         assignedUser: {
           id: userInfo?.id || "",
