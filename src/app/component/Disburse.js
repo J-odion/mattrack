@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { categories, Purpose, locations } from "../data/data";
+import { categories, Purpose, Purposes, locations } from "../data/data";
 import { addDisbursedData } from "../utils/Apis";
 import { useSelector } from "react-redux";
 
@@ -19,6 +19,7 @@ const DisburseData = ({ toggleForm }) => {
     storeKeepersName: userInfo?.name || "",
     recipientName: "",
     purpose: "",
+    levelofwork: "",
     date: new Date().toISOString().split("T")[0],
     assignedUser: {
       id: userInfo?.id || "",
@@ -117,7 +118,7 @@ const DisburseData = ({ toggleForm }) => {
         <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-2/3">
           <h2 className="text-lg font-bold mb-4">Disburse Material</h2>
           <form onSubmit={onSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               {/* Assigned User (Hidden Fields) */}
               <input type="hidden" name="assignedUserId" value={formData.assignedUser.id} />
               <input type="hidden" name="assignedUserName" value={formData.assignedUser.name} />
@@ -259,22 +260,41 @@ const DisburseData = ({ toggleForm }) => {
                   className="border border-gray-300 text-2xs p-2 rounded w-full"
                 />
               </div>
+              {/* Level of Work */}
+              <div>
+                <label className="block mb-1 text-2xs">Level of work</label>
+                <select
+                  name="levelofwork"
+                  value={formData.levelofwork}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 text-2xs p-2 rounded w-full"
+                >
+                  <option value="">Select a level of work</option>
+                  {Purposes.map((level, index) => (
+                    <option key={index} value={level.name}>
+                      {level.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               {/* Purpose */}
               <div>
-                <label className="block text-2xs mb-1">Purpose</label>
+                <label className="block mb-1 text-2xs">Purpose</label>
                 <select
                   name="purpose"
                   value={formData.purpose}
                   onChange={handleInputChange}
                   className="border border-gray-300 text-2xs p-2 rounded w-full"
+                  disabled={!formData.levelofwork}
                 >
                   <option value="">Select a Purpose</option>
-                  {Purpose.map((purpose, index) => (
-                    <option key={index} value={purpose}>
-                      {purpose}
-                    </option>
-                  ))}
+                  {Purposes.find((item) => item.name === formData.levelofwork)
+                    ?.work.map((work, index) => (
+                      <option key={index} value={work}>
+                        {work}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>

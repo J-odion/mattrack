@@ -5,18 +5,13 @@ import { loadUser } from "../libs/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPlus, FaTimes } from "react-icons/fa";
 
-const ViewRequest = () => {
+const ViewSchedules = () => {
   const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newSchedule, setNewSchedule] = useState({
-    houseType: "",
-    purpose: "",
-    siteLocation: "",
-    materials: [],
-  });
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -29,35 +24,24 @@ const ViewRequest = () => {
     }
   }, [user, dispatch]);
 
+  const loadSchedules = async () => {
+    try {
+      const response = await viewSchedule();
+      setSchedules(response?.data || []);
+    } catch (err) {
+      setError("Failed to fetch schedules.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadSchedules = async () => {
-      try {
-        const data = await viewSchedule();
-        setSchedules(data.data || []);
-      } catch (err) {
-        setError(err.message || "Failed to load schedule.");
-      } finally {
-        setLoading(false);
-      }
-    };
     loadSchedules();
   }, []);
 
-  const handleAddSchedule = async () => {
-    try {
-      await createSchedule(newSchedule);
-      setShowAddForm(false);
-      setNewSchedule({
-        houseType: "",
-        purpose: "",
-        siteLocation: "",
-        materials: [],
-      });
-      const updatedData = await viewSchedule();
-      setSchedules(updatedData.data || []);
-    } catch (err) {
-      console.error("Failed to create schedule:", err);
-    }
+  const handleViewClick = (schedule) => {
+    setSelectedSchedule(schedule);
+    setIsModalOpen(true);
   };
 
   return (
@@ -76,77 +60,80 @@ const ViewRequest = () => {
 
       {error && <p className="text-red-500">{error}</p>}
       {loading && <p>Loading schedules...</p>}
-
       {!loading && !error && schedules.length === 0 && (
         <p>No schedules found.</p>
       )}
 
-      {schedules.map((schedule) => (
-        <div
-          key={schedule._id}
-          className="mb-4 p-4 border rounded shadow-sm bg-gray-50"
-        >
-          <h3 className="font-semibold text-md mb-2">{schedule.purpose}</h3>
-          <p><strong>House Type:</strong> {schedule.houseType}</p>
-          <p><strong>Location:</strong> {schedule.siteLocation}</p>
-          <div className="mt-2">
-            <p className="font-semibold">Materials:</p>
-            <ul className="list-disc list-inside text-sm">
-              {schedule.materials.map((mat, idx) => (
-                <li key={idx}>
-                  {mat.materialName} - {mat.maxQuantity} {mat.unit}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ))}
-
-      {showAddForm && (
-        <div className="mt-6 border p-4 rounded shadow-md bg-white">
-          <h3 className="text-lg font-bold mb-4">New Schedule</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input
-              type="text"
-              placeholder="House Type"
-              value={newSchedule.houseType}
-              onChange={(e) =>
-                setNewSchedule({ ...newSchedule, houseType: e.target.value })
-              }
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              placeholder="Purpose"
-              value={newSchedule.purpose}
-              onChange={(e) =>
-                setNewSchedule({ ...newSchedule, purpose: e.target.value })
-              }
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              placeholder="Site Location"
-              value={newSchedule.siteLocation}
-              onChange={(e) =>
-                setNewSchedule({ ...newSchedule, siteLocation: e.target.value })
-              }
-              className="border p-2 rounded"
-            />
-          </div>
-
-          {/* Optionally add a material entry section here */}
-
-          <button
-            onClick={handleAddSchedule}
-            className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+      <div className="space-y-4">
+        {schedules.map((schedule) => (
+          <div
+            key={schedule._id}
+            className="flex items-center justify-between border-b py-2 px-4 rounded bg-gray-100"
           >
-            Submit Schedule
-          </button>
+            <div className="flex flex-col md:flex-row md:items-center md:gap-10 w-full">
+              <p className="font-medium text-sm">
+                <strong>Site:</strong> {schedule.siteLocation}
+              </p>
+              <p className="font-medium text-sm">
+                <strong>Purpose:</strong> {schedule.purpose}
+              </p>
+            </div>
+            <button
+              onClick={() => handleViewClick(schedule)}
+              className="bg-blue-950 text-white px-4 py-2 rounded hover:bg-blue-800"
+            >
+              View
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {isModalOpen && selectedSchedule && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white w-[90%] md:w-[40%] max-h-[80vh] overflow-y-auto p-6 rounded shadow-lg">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-bold">Schedule Details</h3>
+              <button onClick={() => setIsModalOpen(false)}>
+                <FaTimes size={20} />
+              </button>
+            </div>
+
+            <div className="mb-4">
+              <p><strong>Site Location:</strong> {selectedSchedule.siteLocation}</p>
+              <p><strong>Purpose:</strong> {selectedSchedule.purpose}</p>
+              <p><strong>House Type:</strong> {selectedSchedule.houseType}</p>
+            </div>
+
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="py-2 px-4 border">Material Name</th>
+                  <th className="py-2 px-4 border">Max Quantity</th>
+                  <th className="py-2 px-4 border">Unit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedSchedule.materials.map((mat, idx) => (
+                  <tr key={idx}>
+                    <td className="py-2 px-4 border">{mat.materialName}</td>
+                    <td className="py-2 px-4 border">{mat.maxQuantity}</td>
+                    <td className="py-2 px-4 border">{mat.unit}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="mt-6 w-full bg-gray-600 text-white py-2 rounded"
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-export default ViewRequest;
+export default ViewSchedules;
