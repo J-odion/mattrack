@@ -485,7 +485,7 @@ export const categories = [
       { "name": "Y12 TMT", "unit": "lengths" },
       { "name": "Y16 TMT", "unit": "lengths" },
       { "name": "Y20 TMT", "unit": "lengths" },
-      { "name": "BINDING WIRE", "unit": "roll" }
+      { "name": "BINDING WIRE", "unit": "kg" }
     ]
   },
   {
