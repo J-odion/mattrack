@@ -16,7 +16,7 @@ const DisburseData = ({ toggleForm }) => {
     houseType: "",
     constructionNumber: "",
     unit: "",
-    storeKeepersName: userInfo?.name || "",
+    storeKeeperName: userInfo?.name || "",
     recipientName: "",
     purpose: "",
     levelofwork: "",
@@ -81,7 +81,7 @@ const DisburseData = ({ toggleForm }) => {
         houseType: "",
         constructionNumber: "",
         unit: "",
-        storeKeepersName: userInfo?.name || "",
+        storeKeeperName: userInfo?.name || "",
         recipientName: "",
         purpose: "",
         levelofwork: "",
@@ -131,7 +131,7 @@ const DisburseData = ({ toggleForm }) => {
                 <input
                   type="text"
                   name="storekeeper"
-                  value={formData.storeKeepersName}
+                  value={formData.storeKeeperName}
                   onChange={handleInputChange}
                   className="border border-gray-300 text-2xs p-2 rounded w-full"
                 />

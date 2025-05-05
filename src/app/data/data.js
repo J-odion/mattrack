@@ -639,18 +639,18 @@ export const sites = [
 export const Purposes = [
   {
     "name": "FOUNDATION TO DPC",
-    "work": [ "Setting Out and Blinding", "Excavation Total", "Foundation Iron Work", "Foundation Casting", "Blockwork", "Formwork for Columns", "Casting of columns and blockholes","Backfilling and Compaction", "Oversite formwork", "Placing of DPM, Hardcore & BRC mesh","Additional Cantilever work", "Oversite Concrete casting for DPC "]
+    "work": [ "Setting Out and Blinding", "Excavation Total", "Foundation Iron Work", "Foundation Casting", "Blockwork", "Formwork for Columns", "Casting of columns and blockholes","Backfilling and Compaction", "Oversite formwork", "Placing of DPM, Hardcore & BRC mesh","Additional Cantilever work", "Oversite Concrete casting for DPC ", "Plmubing Work"]
   },
   {
     "name": "GROUND TO FIRST FLOOR",
-    "work": [ "Formwork for Columns", "Column Extension Ironworks", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams"]
+    "work": [ "Formwork for Columns", "Column Extension Ironworks", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
   },
   {
     "name": "FIRST TO SECOND FLOOR",
-    "work": [ "Column Extension Ironworks", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams"]
+    "work": [ "Column Extension Ironworks", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
   },
   {
     "name": "SECOND FLOOR TO ROOF",
-    "work": [ "Column Extension Ironworks", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams"]
+    "work": [ "Column Extension Ironworks", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
   },
 ]
