@@ -318,16 +318,16 @@ export const categories = [
         { "name": "1\" ball guage", "unit": "nos" },
         { "name": "", "unit": "nos" },
         {"name": "extractor", "unit":"nos"},
-      { "name": "WC", "unit": "pcs" },
-      {"name": "2\" plug", "unit":"nos"},
-      {"name": "3\" cap plug", "unit":"nos"},
-      {"name": "clip", "unit":"nos"},
-      {"name": "tee", "unit":"nos"},
-      {"name": "4\" vent", "unit":"nos"},
-      {"name": "¾ x 1\" bushe", "unit":"nos"},
-      {"name": "¾ × ½ bushe", "unit":"nos"},
-      {"name": "gas hose", "unit":"nos"},
-      {"name": "gas hose clip", "unit":"nos"},
+        { "name": "WC", "unit": "pcs" },
+        {"name": "2\" plug", "unit":"nos"},
+        {"name": "3\" cap plug", "unit":"nos"},
+        {"name": "clip", "unit":"nos"},
+        {"name": "tee", "unit":"nos"},
+        {"name": "4\" vent", "unit":"nos"},
+        {"name": "¾ x 1\" bushe", "unit":"nos"},
+        {"name": "¾ × ½ bushe", "unit":"nos"},
+        {"name": "gas hose", "unit":"nos"},
+        {"name": "gas hose clip", "unit":"nos"},
 
       ]    
   },
@@ -643,14 +643,14 @@ export const Purposes = [
   },
   {
     "name": "GROUND TO FIRST FLOOR",
-    "work": [ "Formwork for Columns", "Column Extension Ironworks", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+    "work": [ "Formwork for Columns","Block work", "Column Extension Ironworks", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
   },
   {
     "name": "FIRST TO SECOND FLOOR",
-    "work": [ "Column Extension Ironworks", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+    "work": [ "Column Extension Ironworks", "Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
   },
   {
     "name": "SECOND FLOOR TO ROOF",
-    "work": [ "Column Extension Ironworks", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+    "work": [ "Column Extension Ironworks","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
   },
 ]
