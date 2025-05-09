@@ -6,7 +6,7 @@ export const Purpose = [
   "WATER LINE",
   "OTHER"
 ]
-export const houseType = ["SM","", "FD", "QD", "MS", "SD", "D"]
+export const houseType = ["SM", "FD", "QD", "MS", "SD", "D"]
 export const house_types = [
   "FD209",
   "FD206",
@@ -144,6 +144,7 @@ export const categories = [
         { "name": "63mm ×40mm inner threaded PE tee", "unit": "nos" },
         { "name": "40mm PE Cap Plug", "unit": "nos" },
         { "name": "63mm PE Cap Plug", "unit": "nos" },
+        { "name": "3 x 3 Patteess", "unit": "nos" },
         { "name": "63mm PE Adaptor", "unit": "nos" },
         { "name": "63mm inner threaded PE tee", "unit": "nos" },
         { "name": "63mm M/F inner threaded PE Socket", "unit": "nos" },
@@ -198,6 +199,7 @@ export const categories = [
         { "name": "3×90 ash bend", "unit": "nos" },
         { "name": "4\"air vent", "unit": "nos" },
         { "name": "3\"air vent", "unit": "nos" },
+        { "name": "¾ PPR Adaptor", "unit": "nos" },
         { "name": "¾ 1\" White M/F Adaptor", "unit": "nos" },
         { "name": "¾×1\" elbow", "unit": "nos" },
         { "name": "Flexible hose", "unit": "nos" },
@@ -313,10 +315,8 @@ export const categories = [
         { "name": "Magic waste", "unit": "nos" },
         { "name": "Pan Connectors", "unit": "pcs" },
         { "name": "Selvic tank", "unit": "nos" },
-        { "name": "", "unit": "nos" },
         { "name": "1\" tigre pipe", "unit": "nos" },
         { "name": "1\" ball guage", "unit": "nos" },
-        { "name": "", "unit": "nos" },
         {"name": "extractor", "unit":"nos"},
         { "name": "WC", "unit": "pcs" },
         {"name": "2\" plug", "unit":"nos"},
@@ -476,6 +476,12 @@ export const categories = [
       { "name": "Pendant Glass Light (White)", "unit": "pcs" },
       { "name": "100cm Chandelier", "unit": "pcs" },
       { "name": "Silicone tube pendant lights", "unit": "pcs" },
+      { "name": "1/2\" copper wire", "unit": "pcs" },
+      { "name": "1/4\" copper wire", "unit": "pcs" },
+      { "name": "Dot tape", "unit": "pcs" },
+      { "name": "2.5 cable", "unit": "pcs" },
+      { "name": "Armor flex tube", "unit": "pcs" },
+      { "name": "flexible pipe", "unit": "pcs" },
     ]
   },
   {
