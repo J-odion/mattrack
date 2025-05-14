@@ -1,169 +1,156 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getMaterialRequest, reviewMaterialRequest } from "../utils/Apis";
+import { getTransfer, recieveMat } from "../utils/Apis";
 import { loadUser } from "../libs/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaTimes } from "react-icons/fa";
 
-
 const TransferView = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    const loadReports = async () => {
-      try {
-        const data = await getMaterialRequest();
-        setReports(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadReports = async () => {
+    setLoading(true);
+    try {
+      const data = await getTransfer();
+      setReports(data);
+    } catch (err) {
+      console.error("Error fetching transfers:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadReports();
   }, []);
+
   useEffect(() => {
-    if (!user) {
-      dispatch(loadUser());
-    }
+    if (!user) dispatch(loadUser());
   }, [user, dispatch]);
 
-  // Fallback role if user is null
-  const userRole = user ? user.role : "guest";
-  const userName = user ? user.name : "guest";
+  const userRole = user?.role || "guest";
+  const userName = user?.name || "guest";
 
   const handleViewClick = (request) => {
     setSelectedRequest(request);
     setIsModalOpen(true);
   };
 
-  const handleReviewAction = async (status) => {
-    if (!selectedRequest || !selectedRequest._id) {
-      console.error("Selected request or ID is undefined");
+  const handleAccept = async () => {
+    if (!selectedRequest) {
+      console.error("No selected transfer request found.");
       return;
     }
-
+  
     try {
-      console.log("Submitting review for ID:", selectedRequest._id); // Debugging log
-      await reviewMaterialRequest(selectedRequest._id, { status, comment });
+      await recieveMat({ transferId: selectedRequest._id, approvedBy: userName });
       setIsModalOpen(false);
-      setComment(""); // Reset comment
-      // Optionally refresh the list
+      loadReports();
     } catch (err) {
-      console.error("Error submitting review:", err);
+      console.error("Error accepting transfer:", err.message);
     }
   };
-
+  
 
   return (
-    <div className="container mx-auto p-4">
-      {error && <p className="text-red-500">{error}</p>}
-
-      {!loading && !error && reports.length === 0 && (
-        <p>There are no requests available at this time.</p>
-      )}
-
-      <div className="w-[90%]">
-        <p className="font-bold text-2xl mb-6">View All Transfer Requests</p>
-        <section className="flex flex-col gap-4">
-          {reports.map((request) => (
+    <div className="container mx-auto px-4 py-6">
+      <h1 className="text-2xl font-bold mb-4">All Transfer Requests</h1>
+      {loading ? (
+        <p>Loading transfers...</p>
+      ) : reports.length === 0 ? (
+        <p>No transfers found.</p>
+      ) : (
+        <div className="grid gap-4">
+          {reports.map((req) => (
             <div
-              key={request._id}
-              className="flex gap-4 w-full items-center border-b rounded-md py-2 px-4 justify-between"
+              key={req._id}
+              className="flex justify-between items-center p-4 border rounded shadow-sm bg-white"
             >
-              <div className="w-[80%] grid grid-cols-6 align-middle justify-center items-center">
-                <p className="text-sm font-medium">{new Date(request.date).toLocaleDateString()}</p>
-                <p className="text-sm font-medium">{request.name}</p>
-                <p className="text-sm font-medium">{request.purpose}</p>
-                <p className="text-sm font-medium">{request.siteLocation}</p>
-                <p className="text-sm font-medium">{request.status}</p>
-                <p className="text-sm font-medium">{request.houseType}</p>
+              <div className="grid grid-cols-5 gap-4 w-[80%] text-sm">
+                <p>{new Date(req.date).toLocaleDateString()}</p>
+                <p>{req.purpose}</p>
+                <p>From: {req.fromSite}</p>
+                <p>To: {req.toSite}</p>
+                <p>Status: <span className="font-medium">{req.status}</span></p>
               </div>
-
               <button
-                onClick={() => handleViewClick(request)}
-                className="bg-blue-950 text-white py-2 px-4 rounded-full"
+                onClick={() => handleViewClick(req)}
+                className="bg-blue-950 text-white px-4 py-2 rounded"
               >
-                View details
+                View
               </button>
             </div>
           ))}
-        </section>
-      </div>
+        </div>
+      )}
 
+      {/* MODAL */}
       {isModalOpen && selectedRequest && (
-        <div className="w-[40%] h-[40%] z-50 mx-auto p-6  absolute  bg-opacity flex items-center justify-center">
-          <div className="bg-white p-6 overflow-scroll h-full  rounded-md shadow-slate-400 shadow-md w-full">
-            <div className="w-full mb-4 flex justify-between items-center">
-              <h2 className="text-xl font-bold ">Material Request Information</h2>
-              <button
-                onClick={() => setIsModalOpen(false)}
-              >
-                <FaTimes size={20} fontWeight={400} />
-              </button>
-            </div>
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
+          {console.log("Selected request:", selectedRequest)}
+          <div className="bg-white rounded-lg w-full max-w-2xl shadow-md p-6 relative max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-600 hover:text-black"
+            >
+              <FaTimes size={20} />
+            </button>
 
-            <div>
-              <div className="flex gap-4 items-center py-2 px-4 justify-between">
-                <div className="flex w-full justify-between gap-4">
-                  <div>
-                    <p className="text-sm ">{selectedRequest.purpose}</p>
-                    <p className="text-sm ">Name: {selectedRequest.name}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm ">House Type: {selectedRequest.houseType}</p>
-                    <p className="text-sm ">Status: {selectedRequest.status}</p>
-                  </div>
-                </div>
+            <h2 className="text-xl font-bold mb-4">Transfer Details</h2>
+
+            <div className="mb-4 grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p><strong>Purpose:</strong> {selectedRequest.purpose}</p>
+                <p><strong>From:</strong> {selectedRequest.fromSite}</p>
+                <p><strong>To:</strong> {selectedRequest.toSite}</p>
               </div>
-
-              <table className="w-full h-[60%] border-collapse border-b border-b-gray-200">
-                <thead>
-                  <tr className="bg-gray-100 font-normal text-left">
-                    <th className="py-2 px-4 border">Material Name</th>
-                    <th className="py-2 px-4 border">Quantity</th>
-                    <th className="py-2 px-4 border">Unit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedRequest.materials && selectedRequest.materials.map((material, index) => (
-                    <tr key={index}>
-                      <td className="py-2 px-4 border">{material.materialName}</td>
-                      <td className="py-2 px-4 border">{material.quantity}</td>
-                      <td className="py-2 px-4 border">{material.unit}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div>
+                <p><strong>Sent By:</strong> {selectedRequest.name}</p>
+                <p><strong>Status:</strong> {selectedRequest.status}</p>
+                <p><strong>Date:</strong> {new Date(selectedRequest.date).toLocaleDateString()}</p>
+              </div>
             </div>
 
-            {userRole  === "storekeeper" && (
-              <>
-                
-                <button className="bg-blue-600 text-white p-2 rounded mt-4">
-                  Accept Transfer
-                </button>
-              </>
+            <h3 className="text-md font-semibold mt-4 mb-2">Materials</h3>
+            <table className="w-full text-sm border">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2 border">Material Name</th>
+                  <th className="px-4 py-2 border">Quantity</th>
+                  <th className="px-4 py-2 border">Unit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedRequest.materials?.map((mat, i) => (
+                  <tr key={i} className="text-center">
+                    <td className="px-4 py-2 border">{mat.materialName}</td>
+                    <td className="px-4 py-2 border">{mat.quantity}</td>
+                    <td className="px-4 py-2 border">{mat.unit}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {userRole === "storekeepers" && selectedRequest.status === "pending" && (
+              <button
+                onClick={handleAccept}
+                className="mt-6 bg-green-600 text-white px-4 py-2 rounded"
+              >
+                Accept Transfer
+              </button>
             )}
 
-            {/* Close button always available for all users */}
-            <div className="mt-4">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="bg-gray-400 text-white p-2 rounded"
-              >
-                Close
-              </button>
-            </div>
-
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="mt-4 ml-2 bg-gray-500 text-white px-4 py-2 rounded"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}

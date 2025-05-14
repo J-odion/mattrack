@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { categories, Purpose, Purposes, locations } from "../data/data";
+import { categories, Purposes, locations } from "../data/data";
 import { addDisbursedData } from "../utils/Apis";
 import { useSelector } from "react-redux";
 

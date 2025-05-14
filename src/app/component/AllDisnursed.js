@@ -20,6 +20,7 @@ const AllDisbursed = () => {
   const [houseType, sethouseType] = useState("");
   const [constructionNumber, setconstructionNumber] = useState("");
   const [purpose, setPurpose] = useState("");
+  const [levelofwork, setLevelOfWork] = useState("");
   const [material, setMaterial] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -92,7 +93,7 @@ const AllDisbursed = () => {
       );
     }
 
-    
+
     if (constructionNumber) {
       filtered = filtered.filter(report => report.constructionNumber === constructionNumber
       );
@@ -268,7 +269,10 @@ const AllDisbursed = () => {
                   <td className="py-3 px-4">{report.quantity}</td>
                   <td className="py-3 px-4">{report.unit}</td>
                   <td className="py-3 px-4">{report.recipientName}</td>
-                  <td className="py-3 px-4">{report.purpose}</td>
+                  <td className="py-3 px-4"><div>
+                    <p className="text-xs">{report.purpose}</p>
+                    <p className="text-[8px] font-bold">{report.levelofwork}</p>
+                  </div></td>
                 </tr>
               ))}
             </tbody>

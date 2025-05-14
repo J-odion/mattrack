@@ -100,61 +100,58 @@ const ViewRequest = () => {
       </div>
 
       {isModalOpen && selectedRequest && (
-        <div className="w-[40%] h-[40%] z-50 mx-auto p-6  absolute  bg-opacity flex items-center justify-center">
-          <div className="bg-white p-6 overflow-scroll h-full  rounded-md shadow-slate-400 shadow-md w-full">
-            <div className="w-full mb-4 flex justify-between items-center">
-              <h2 className="text-xl font-bold ">Material Request Information</h2>
-              <button
-                onClick={() => setIsModalOpen(false)}
-              >
-                <FaTimes size={20} fontWeight={400} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Material Request Information</h2>
+              <button onClick={() => setIsModalOpen(false)}>
+                <FaTimes size={20} />
               </button>
             </div>
 
-            <div>
-              <div className="flex gap-4 items-center py-2 px-4 justify-between">
-                <div className="flex w-full justify-between gap-4">
-                  <div>
-                    <p className="text-sm ">{selectedRequest.purpose}</p>
-                    <p className="text-sm ">Name: {selectedRequest.name}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm ">House Type: {selectedRequest.houseType}</p>
-                    <p className="text-sm ">Status: {selectedRequest.status}</p>
-                  </div>
-                </div>
+            <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+              <div>
+                <p><strong>Name:</strong> {selectedRequest.name}</p>
+                <p><strong>Purpose:</strong> {selectedRequest.purpose}</p>
+                <p><strong>House Type:</strong> {selectedRequest.houseType}</p>
+                <p><strong>Construction No:</strong> {selectedRequest.constructionNo}</p>
               </div>
-
-              <table className="w-full h-[60%] border-collapse border-b border-b-gray-200">
-                <thead>
-                  <tr className="bg-gray-100 font-normal text-left">
-                    <th className="py-2 px-4 border">Material Name</th>
-                    <th className="py-2 px-4 border">Quantity</th>
-                    <th className="py-2 px-4 border">Unit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedRequest.materials && selectedRequest.materials.map((material, index) => (
-                    <tr key={index}>
-                      <td className="py-2 px-4 border">{material.materialName}</td>
-                      <td className="py-2 px-4 border">{material.quantity}</td>
-                      <td className="py-2 px-4 border">{material.unit}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div>
+                <p><strong>Site Location:</strong> {selectedRequest.siteLocation}</p>
+                <p><strong>Status:</strong> {selectedRequest.status}</p>
+                <p><strong>Date:</strong> {new Date(selectedRequest.date).toLocaleDateString()}</p>
+              </div>
             </div>
 
+            <table className="w-full border border-gray-200 mb-4">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="py-2 px-4 border">Material Name</th>
+                  <th className="py-2 px-4 border">Quantity</th>
+                  <th className="py-2 px-4 border">Unit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedRequest.materials?.map((material, index) => (
+                  <tr key={index}>
+                    <td className="py-2 px-4 border">{material.materialName}</td>
+                    <td className="py-2 px-4 border">{material.quantity}</td>
+                    <td className="py-2 px-4 border">{material.unit}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
             {userRole === "admin" || userRole === "projectmanager" ? (
-              selectedRequest?.status === "pending" ? (
+              selectedRequest.status === "pending" ? (
                 <>
                   <textarea
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                     placeholder="Add a comment..."
-                    className="border p-2 w-full mt-4"
+                    className="border p-2 w-full mb-4"
                   />
-                  <div className="flex gap-2 mt-4">
+                  <div className="flex gap-2">
                     <button
                       onClick={() => handleReviewAction("approved")}
                       className="bg-green-600 text-white p-2 rounded"
@@ -183,16 +180,14 @@ const ViewRequest = () => {
               <p className="mt-4"><strong>Admin/PM Comment:</strong> {selectedRequest.comments || "No comment yet"}</p>
             )}
 
-            {/* Close button always available for all users */}
-            <div className="mt-4">
+            <div className="mt-6">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="bg-gray-400 text-white p-2 rounded"
+                className="bg-gray-500 text-white px-4 py-2 rounded"
               >
                 Close
               </button>
             </div>
-
           </div>
         </div>
       )}

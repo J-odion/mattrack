@@ -122,6 +122,44 @@ export const sendMat = async (credentials) => {
   }
 };
 
+export const getTransfer = async () => {
+  try {
+    const response = await apiClient.get("/transfer");
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const recieveMat = async ({ transferId, approvedBy }) => {
+  try {
+    const response = await apiClient.patch(`/transferAccept/${transferId}`, {
+      approvedBy,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+// export const recieveMat = async ({ transferId, approvedBy }) => {
+//   try {
+//     // const response = await apiClient.patch(`/transferAccept/${transferId}`, {
+//     //   approvedBy,
+//     // });
+//     const response = await recieveMat({ transferId: selectedRequest._id, approvedBy: userName });
+//     return response.data;
+//   } catch (error) {
+//     console.error("API Error:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
+
+
 
 export const fetchDisbursedData = async () => {
   try {
