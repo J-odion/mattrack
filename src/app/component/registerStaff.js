@@ -18,7 +18,7 @@ const RegisterStaff = ({ toggleForm }) => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const roles = ["admin", "viewer", "storekeepers", "engineers","account", "ProjectEngineer","projectManager"];
+  const roles = ["admin", "viewer", "storekeepers", "engineers","account", "projectEngineer","projectManager"]; 
 
   const auth = useSelector((state) => state.auth);
 

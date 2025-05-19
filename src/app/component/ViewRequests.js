@@ -142,7 +142,8 @@ const ViewRequest = () => {
               </tbody>
             </table>
 
-            {userRole === "admin" || userRole === "projectmanager" ? (
+
+            {userRole === "admin" || userRole === "projectManager" || userRole === "projectEngineer" ? (
               selectedRequest.status === "pending" ? (
                 <>
                   <textarea
