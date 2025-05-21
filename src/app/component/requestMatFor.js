@@ -10,6 +10,7 @@ const RequestMatForm = ({ toggleForm }) => {
   const [formData, setFormData] = useState({
     siteLocation: "",
     houseType: "",
+    constructionNo: "",
     name: userInfo?.name || "",
     purpose: "",
     materials: [],
