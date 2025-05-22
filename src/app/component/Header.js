@@ -98,7 +98,7 @@ export default function Navbar() {
               )}
 
               {/* Show Request Material for Store Keeper, Engineer, and Admin */}
-              {(userRole === "engineers") && (
+              {(userRole === "engineers" || userRole === "projectEngineer" || userRole === "projectManager" ) && (
                 <button
                   onClick={toggleRequestMat}
                   className="bg-[#123962] w-[152px] h-[40px] text-[#FFFFFF] px-4 py-1 text-[12px] rounded-md"
