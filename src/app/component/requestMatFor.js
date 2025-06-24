@@ -14,7 +14,6 @@ const RequestMatForm = ({ toggleForm }) => {
     name: userInfo?.name || "",
     purpose: "",
     materials: [],
-    constructionNo: ""
   });
   const [fetchedMaterials, setFetchedMaterials] = useState([]);
   const [notification, setNotification] = useState({ message: "", type: "" });
