@@ -254,7 +254,7 @@ const DisburseData = ({ toggleForm }) => {
               <div>
                 <label className="block text-2xs mb-1">Construction Number</label>
                 <input
-                  type="text"
+                  type="number"
                   name="constructionNumber"
                   value={formData.constructionNumber}
                   onChange={handleInputChange}
