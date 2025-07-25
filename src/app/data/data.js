@@ -506,7 +506,9 @@ export const categories = [
       { "name": "Y12 TMT", "unit": "lengths" },
       { "name": "Y16 TMT", "unit": "lengths" },
       { "name": "Y20 TMT", "unit": "lengths" },
-      { "name": "BINDING WIRE", "unit": "kg" }
+      { "name": "BINDING WIRE", "unit": "kg" },
+      { "name": "Wire mesh", "unit": "Roll" },
+      { "name": "Galvanized WIRE", "unit": "Roll" }
     ]
   },
   {
@@ -658,5 +660,13 @@ export const Purposes = [
   {
     "name": "SECOND FLOOR TO ROOF",
     "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+  },
+  {
+    "name": "Plastering",
+    "work": [ "Plastering"]
+  },
+   {
+    "name": "Maintanance",
+    "work": [ "Maintanance"]
   },
 ]
