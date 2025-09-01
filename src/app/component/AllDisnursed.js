@@ -79,24 +79,19 @@ const AllDisbursed = () => {
     }
 
     if (material) {
-      filtered = filtered.filter(report => report.materialName === material
-      );
+      filtered = filtered.filter(report => report.materialName === material);
     }
 
     if (recipientName) {
-      filtered = filtered.filter(report => report.recipientName === recipientName
-      );
+      filtered = filtered.filter(report => report.recipientName === recipientName);
     }
 
     if (houseType) {
-      filtered = filtered.filter(report => report.houseType === houseType
-      );
+      filtered = filtered.filter(report => report.houseType === houseType);
     }
 
-
     if (constructionNumber) {
-      filtered = filtered.filter(report => report.constructionNumber === constructionNumber
-      );
+      filtered = filtered.filter(report => report.constructionNumber === constructionNumber);
     }
 
     setFilteredReports(filtered);
@@ -118,172 +113,230 @@ const AllDisbursed = () => {
   );
 
   return (
-    <div className="container mx-auto p-4">
-      {/* Search & Filters */}
-      <div className="flex flex-wrap gap-3 mb-4">
-        <input
-          type="text"
-          placeholder="Search by Site Location..."
-          className="border text-2xs px-3 py rounded w-1/4"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Search & Filters */}
+        <div className="flex flex-col gap-4 mb-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
+          <input
+            type="text"
+            placeholder="Search by Site Location..."
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
 
-        <select
-          className="border text-2xs px-3 py rounded w-1/4"
-          value={siteLocation}
-          onChange={(e) => setSiteLocation(e.target.value)}
-        >
-          <option value="">Filter by Site Location</option>
-          {(Array.isArray(reports) ? [...new Set(reports.map(report => report.siteLocation))] : []).map((loc, idx) => (
-            <option key={idx} value={loc}>{loc}</option>
-          ))}
-        </select>
+          <select
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={siteLocation}
+            onChange={(e) => setSiteLocation(e.target.value)}
+          >
+            <option value="">Filter by Site Location</option>
+            {(Array.isArray(reports) ? [...new Set(reports.map(report => report.siteLocation))] : []).map((loc, idx) => (
+              <option key={idx} value={loc}>{loc}</option>
+            ))}
+          </select>
 
-        {/* Date Pickers */}
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          placeholderText="Start Date"
-          className="border text-xs px-3 py-2 rounded w-full"
-        />
-        <DatePicker
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          placeholderText="End Date"
-          className="border text-xs px-3 py-2 rounded w-full"
-        />
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Start Date"
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+          />
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            placeholderText="End Date"
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+          />
 
-        <select
-          className="border px-3 py-2 rounded w-1/4"
-          value={purpose}
-          onChange={(e) => setPurpose(e.target.value)}
-        >
-          <option value="">Filter by Purpose</option>
-          {[...new Set(reports.map(report => report.purpose))].map((purp, idx) => (
-            <option key={idx} value={purp}>{purp}</option>
-          ))}
-        </select>
+          <select
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={purpose}
+            onChange={(e) => setPurpose(e.target.value)}
+          >
+            <option value="">Filter by Purpose</option>
+            {[...new Set(reports.map(report => report.purpose))].map((purp, idx) => (
+              <option key={idx} value={purp}>{purp}</option>
+            ))}
+          </select>
 
-        <select
-          className="border px-3 py-2 rounded w-1/4"
-          value={material}
-          onChange={(e) => setMaterial(e.target.value)}
-        >
-          <option value="">Filter by Material</option>
-          {[...new Set(reports.flatMap(report => report.materialName))].map((mat, idx) => (
-            <option key={idx} value={mat}>{mat}</option>
-          ))}
-        </select>
+          <select
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={material}
+            onChange={(e) => setMaterial(e.target.value)}
+          >
+            <option value="">Filter by Material</option>
+            {[...new Set(reports.flatMap(report => report.materialName))].map((mat, idx) => (
+              <option key={idx} value={mat}>{mat}</option>
+            ))}
+          </select>
 
-        <select
-          className="border px-3 py-2 rounded w-1/4"
-          value={recipientName}
-          onChange={(e) => setRecipientName(e.target.value)}
-        >
-          <option value="">Filter by Recipient</option>
-          {[...new Set(reports.flatMap(report => report.recipientName))].map((mat, idx) => (
-            <option key={idx} value={mat}>{mat}</option>
-          ))}
-        </select>
+          <select
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={recipientName}
+            onChange={(e) => setRecipientName(e.target.value)}
+          >
+            <option value="">Filter by Recipient</option>
+            {[...new Set(reports.flatMap(report => report.recipientName))].map((mat, idx) => (
+              <option key={idx} value={mat}>{mat}</option>
+            ))}
+          </select>
 
-        <select
-          className="border px-3 py-2 rounded w-1/4"
-          value={houseType}
-          onChange={(e) => sethouseType(e.target.value)}
-        >
-          <option value="">Filter by House Types</option>
-          {[...new Set(reports.flatMap(report => report.houseType))].map((mat, idx) => (
-            <option key={idx} value={mat}>{mat}</option>
-          ))}
-        </select>
+          <select
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={houseType}
+            onChange={(e) => sethouseType(e.target.value)}
+          >
+            <option value="">Filter by House Types</option>
+            {[...new Set(reports.flatMap(report => report.houseType))].map((mat, idx) => (
+              <option key={idx} value={mat}>{mat}</option>
+            ))}
+          </select>
 
-        <select
-          className="border px-3 py-2 rounded w-1/4"
-          value={constructionNumber}
-          onChange={(e) => setconstructionNumber(e.target.value)}
-        >
-          <option value="">Filter by Construction Number</option>
-          {[...new Set(reports.flatMap(report => report.constructionNumber))].map((mat, idx) => (
-            <option key={idx} value={mat}>{mat}</option>
-          ))}
-        </select>
+          <select
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={constructionNumber}
+            onChange={(e) => setconstructionNumber(e.target.value)}
+          >
+            <option value="">Filter by Construction Number</option>
+            {[...new Set(reports.flatMap(report => report.constructionNumber))].map((mat, idx) => (
+              <option key={idx} value={mat}>{mat}</option>
+            ))}
+          </select>
 
-        <button
-          onClick={() => {
-            setSearchQuery("");
-            setSiteLocation("");
-            setPurpose("");
-            setMaterial("");
-            setRecipientName("");
-            setStartDate(null);
-            setEndDate(null);
-            sethouseType("")
-            setconstructionNumber("")
-          }}
-          className="px-4 py-2 border rounded bg-red-500 text-white hover:bg-red-600"
-        >
-          Clear Filters
-        </button>
-      </div>
-
-      {loading && <p>Fetching All Disbursed data...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-
-      {!loading && !error && (
-        <div className="w-full h-full">
-          <table className="w-full border-collapse border-none ">
-            <thead className="border-none">
-              <tr className="bg-gray-100 text-left">
-                <th className="py-2 px-4 ">Date
-                  <button onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}>
-                    {sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />}
-                  </button>
-                </th>
-                <th className="py-2 px-4 border">Site Location</th>
-                <th className="py-2 px-4 border">House Type</th>
-                <th className="py-2 px-4 border">Construction No.</th>
-                <th className="py-2 px-4 border">Material Name</th>
-                <th className="py-2 px-4 border">Quantity</th>
-                <th className="py-2 px-4 border">Unit</th>
-                <th className="py-2 px-4 border">Recipient</th>
-                <th className="py-2 px-4 border">Purpose</th>
-              </tr>
-            </thead>
-            <tbody className="border-none border-b border-b-gray-300">
-              {paginatedData.map((report, index) => (
-                <tr key={index} className="border-t">
-                  <td className="py-3 px-4">{new Date(report.date).toLocaleDateString()}</td>
-                  <td className="py-3 px-4">{report.siteLocation}</td>
-                  <td className="py-3 px-4">{report.houseType}</td>
-                  <td className="py-3 px-4">{report.constructionNumber || "N/A"}</td>
-                  <td className="py-3 px-4">{report.materialName}</td>
-                  {/* <td className="py-3 px-4">{(report.materials || []).map(m => m.materialName).join(", ")}</td> */}
-                  <td className="py-3 px-4">{report.quantity}</td>
-                  <td className="py-3 px-4">{report.unit}</td>
-                  <td className="py-3 px-4">{report.recipientName}</td>
-                  <td className="py-3 px-4"><div>
-                    <p className="text-xs">{report.purpose}</p>
-                    <p className="text-[8px] font-bold">{report.levelofwork}</p>
-                  </div></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-
-          <div className=" w-[100%] flex justify-between mt-4">
-            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-          </div>
+          <button
+            onClick={() => {
+              setSearchQuery("");
+              setSiteLocation("");
+              setPurpose("");
+              setMaterial("");
+              setRecipientName("");
+              setStartDate(null);
+              setEndDate(null);
+              sethouseType("");
+              setconstructionNumber("");
+            }}
+            className="px-4 py-2 border rounded-md bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 sm:col-span-2 lg:col-span-3"
+          >
+            Clear Filters
+          </button>
         </div>
-      )}
+
+        {loading && <p className="text-center text-gray-600">Fetching All Disbursed data...</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
+
+        {!loading && !error && (
+          <div className="w-full">
+            {/* Desktop Table */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-gray-200 text-left text-sm">
+                    <th className="py-3 px-4">
+                      Date
+                      <button
+                        onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+                        className="ml-2"
+                      >
+                        {sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />}
+                      </button>
+                    </th>
+                    <th className="py-3 px-4">Site Location</th>
+                    <th className="py-3 px-4">House Type</th>
+                    <th className="py-3 px-4">Construction No.</th>
+                    <th className="py-3 px-4">Material Name</th>
+                    <th className="py-3 px-4">Quantity</th>
+                    <th className="py-3 px-4">Unit</th>
+                    <th className="py-3 px-4">Recipient</th>
+                    <th className="py-3 px-4">Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedData.map((report, index) => (
+                    <tr key={index} className="border-b border-gray-200">
+                      <td className="py-3 px-4">{new Date(report.date).toLocaleDateString()}</td>
+                      <td className="py-3 px-4">{report.siteLocation}</td>
+                      <td className="py-3 px-4">{report.houseType}</td>
+                      <td className="py-3 px-4">{report.constructionNumber || "N/A"}</td>
+                      <td className="py-3 px-4">{report.materialName}</td>
+                      <td className="py-3 px-4">{report.quantity}</td>
+                      <td className="py-3 px-4">{report.unit}</td>
+                      <td className="py-3 px-4">{report.recipientName}</td>
+                      <td className="py-3 px-4">
+                        <div>
+                          <p className="text-sm">{report.purpose}</p>
+                          <p className="text-xs font-semibold">{report.levelofwork}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card Layout */}
+            <div className="sm:hidden space-y-4">
+              {paginatedData.map((report, index) => (
+                <div key={index} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm font-semibold">
+                      {new Date(report.date).toLocaleDateString()}
+                    </p>
+                    <button
+                      onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+                      className="text-[#123962]"
+                    >
+                      {sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />}
+                    </button>
+                  </div>
+                  <div className="mt-2 space-y-2">
+                    <p className="text-sm">
+                      <span className="font-medium">Site Location:</span> {report.siteLocation}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">House Type:</span> {report.houseType}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">Construction No.:</span>{" "}
+                      {report.constructionNumber || "N/A"}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">Material:</span> {report.materialName}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">Quantity:</span> {report.quantity}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">Unit:</span> {report.unit}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">Recipient:</span> {report.recipientName}
+                    </p>
+                    <div>
+                      <p className="text-sm">
+                        <span className="font-medium">Purpose:</span> {report.purpose}
+                      </p>
+                      <p className="text-xs font-semibold">{report.levelofwork}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            <div className="mt-6 flex justify-center">
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

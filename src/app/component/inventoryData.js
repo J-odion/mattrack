@@ -19,7 +19,6 @@ const InventoryData = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 15;
 
-
   useEffect(() => {
     const loadReports = async () => {
       try {
@@ -66,99 +65,130 @@ const InventoryData = () => {
   const currentRecords = filteredReports.slice(indexOfFirstRecord, indexOfLastRecord);
   const totalPages = Math.ceil(filteredReports.length / recordsPerPage);
 
+  const handleClearFilters = () => {
+    setSearchTerm("");
+    setFilters({
+      siteLocation: "",
+      unit: "",
+      materialName: "",
+    });
+  };
+
   return (
-    <div className="w-full pt-4">
-      <div className="flex flex-wrap gap-4 mb-4">
-        <input
-          type="text"
-          placeholder="Search by material name..."
-          className="border p-2 rounded w-1/4"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Search & Filters */}
+        <div className="flex flex-col gap-4 mb-6 sm:grid sm:grid-cols-2 lg:grid-cols-4">
+          <input
+            type="text"
+            placeholder="Search by material name..."
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
-        <select
-          name="siteLocation"
-          className="border p-2 rounded"
-          value={filters.siteLocation}
-          onChange={(e) => setFilters({ ...filters, siteLocation: e.target.value })}
-        >
-          <option value="">All Locations</option>
-          {[...new Set(reports.map((item) => item.siteLocation))].map((location) => (
-            <option key={location} value={location}>{location}</option>
-          ))}
-        </select>
+          <select
+            name="siteLocation"
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={filters.siteLocation}
+            onChange={(e) => setFilters({ ...filters, siteLocation: e.target.value })}
+          >
+            <option value="">All Locations</option>
+            {[...new Set(reports.map((item) => item.siteLocation))].map((location) => (
+              <option key={location} value={location}>{location}</option>
+            ))}
+          </select>
 
-        <select
-          name="unit"
-          className="border p-2 rounded"
-          value={filters.unit}
-          onChange={(e) => setFilters({ ...filters, unit: e.target.value })}
-        >
-          <option value="">All Units</option>
-          {[...new Set(reports.map((item) => item.unit))].map((unit) => (
-            <option key={unit} value={unit}>{unit}</option>
-          ))}
-        </select>
+          <select
+            name="unit"
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={filters.unit}
+            onChange={(e) => setFilters({ ...filters, unit: e.target.value })}
+          >
+            <option value="">All Units</option>
+            {[...new Set(reports.map((item) => item.unit))].map((unit) => (
+              <option key={unit} value={unit}>{unit}</option>
+            ))}
+          </select>
 
-        <select
-          name="materialName"
-          className="border p-2 rounded"
-          value={filters.materialName}
-          onChange={(e) => setFilters({ ...filters, materialName: e.target.value })}
-        >
-          <option value="">All Materials</option>
-          {[...new Set(reports.map((item) => item.materialName))].map((material) => (
-            <option key={material} value={material}>{material}</option>
-          ))}
-        </select>
+          <select
+            name="materialName"
+            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            value={filters.materialName}
+            onChange={(e) => setFilters({ ...filters, materialName: e.target.value })}
+          >
+            <option value="">All Materials</option>
+            {[...new Set(reports.map((item) => item.materialName))].map((material) => (
+              <option key={material} value={material}>{material}</option>
+            ))}
+          </select>
 
-        <button
-          onClick={() => {
-            setSearchTerm("");
-            setSiteLocation("");
-            setPurpose("");
-            setMaterial("");
-            setStartDate(null);
-            setEndDate(null);
-          }}
-          className="px-4 py-2 border rounded bg-red-500 text-white hover:bg-red-600"
-        >
-          Clear Filters
-        </button>
-      </div>
-
-      {loading && <p>Fetching Inventory data...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-
-      {!loading && !error && (
-        <div className="w-full h-full ">
-          <table className="w-full h-[60%] border-collapse border-b border-b-gray-200">
-            <thead>
-              <tr className="bg-gray-100 font-normal text-left">
-                <th className="py-2 px-4 border">Material Name</th>
-                <th className="py-2 px-4 border">Quantity</th>
-                <th className="py-2 px-4 border">Unit</th>
-                <th className="py-2 px-4 border">Site Location</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentRecords.map((report, index) => (
-                <tr key={index}>
-                  <td className="py-2 px-4 border">{report.materialName}</td>
-                  <td className="py-2 px-4 border">{report.totalQuantity}</td>
-                  <td className="py-2 px-4 border">{report.unit}</td>
-                  <td className="py-2 px-4 border">{report.siteLocation}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className=" w-[100%] flex justify-between mt-4">
-            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-          </div>
+          <button
+            onClick={handleClearFilters}
+            className="px-4 py-2 border rounded-md bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 sm:col-span-2 lg:col-span-4"
+          >
+            Clear Filters
+          </button>
         </div>
-      )}
+
+        {loading && <p className="text-center text-gray-600">Fetching Inventory data...</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
+
+        {!loading && !error && (
+          <div className="w-full">
+            {/* Desktop Table */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-gray-200 text-left text-sm">
+                    <th className="py-3 px-4">Material Name</th>
+                    <th className="py-3 px-4">Quantity</th>
+                    <th className="py-3 px-4">Unit</th>
+                    <th className="py-3 px-4">Site Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentRecords.map((report, index) => (
+                    <tr key={index} className="border-b border-gray-200">
+                      <td className="py-3 px-4">{report.materialName}</td>
+                      <td className="py-3 px-4">{report.totalQuantity}</td>
+                      <td className="py-3 px-4">{report.unit}</td>
+                      <td className="py-3 px-4">{report.siteLocation}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card Layout */}
+            <div className="sm:hidden space-y-4">
+              {currentRecords.map((report, index) => (
+                <div key={index} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
+                  <div className="space-y-2">
+                    <p className="text-sm">
+                      <span className="font-medium">Material Name:</span> {report.materialName}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">Quantity:</span> {report.totalQuantity}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">Unit:</span> {report.unit}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-medium">Site Location:</span> {report.siteLocation}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            <div className="mt-6 flex justify-center">
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

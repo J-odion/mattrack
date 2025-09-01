@@ -6,8 +6,6 @@ import InventoryData from "./inventoryData";
 import ViewRequest from "./ViewRequests";
 import TransferView from "./TransfersView";
 
-
-
 export default function Subcat() {
   const [selectedTable, setSelectedTable] = useState("inventory");
 
@@ -15,52 +13,60 @@ export default function Subcat() {
     setSelectedTable(table);
   };
 
-
   return (
-    <section className="py-[2px] gap-y-[4px] w-full h-[90%] lg:w-full px-[30px] lg:px-[100px] text-[12px] justify-center flex flex-col mx-auto items-center">
-      <div id="services" className="grid w-[90%] border-[#E5E7EB] border-b-2  lg:grid-cols-2 gap-[24px] ">
-        <div className="flex gap-4 ">
+    <section className="min-h-screen bg-gray-100 py-6 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+      <div className="max-w-7xl w-full">
+        <div id="services" className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 border-b-2 border-gray-200 pb-2">
           <button
             onClick={() => handleTableChange("inventory")}
-            className={`px-4 text-[#123962] w-[200px] h-[50px] bg-none font-semibold py-1 text-[12px]  ${selectedTable === "inventory" ? "border-[#123962] border-b-2" : "border-b-none"}`}
+            className={`flex-1 sm:flex-none sm:w-40 py-3 text-sm font-semibold text-[#123962] rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#123962] ${
+              selectedTable === "inventory" ? "border-b-2 border-[#123962] bg-[#EEF2FF]" : "hover:bg-gray-100"
+            }`}
           >
             Records
           </button>
           <button
             onClick={() => handleTableChange("received")}
-            className={`px-4 text-[#123962] w-[200px] h-[50px] bg-none font-semibold py-1 text-[12px] ${selectedTable === "received" ? "border-[#123962] py-2 border-b-2" : "border-b-none"}`}
+            className={`flex-1 sm:flex-none sm:w-40 py-3 text-sm font-semibold text-[#123962] rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#123962] ${
+              selectedTable === "received" ? "border-b-2 border-[#123962] bg-[#EEF2FF]" : "hover:bg-gray-100"
+            }`}
           >
             Inward
           </button>
           <button
             onClick={() => handleTableChange("disbursed")}
-            className={`px-4 text-[#123962] w-[200px] h-[50px] bg-none font-semibold py-1 text-[12px] ${selectedTable === "disbursed" ? "border-[#123962] border-b-2" : "border-b-none"}`}
+            className={`flex-1 sm:flex-none sm:w-40 py-3 text-sm font-semibold text-[#123962] rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#123962] ${
+              selectedTable === "disbursed" ? "border-b-2 border-[#123962] bg-[#EEF2FF]" : "hover:bg-gray-100"
+            }`}
           >
             Outward
           </button>
           <button
             onClick={() => handleTableChange("transfers")}
-            className={`px-4 text-[#123962] w-[200px] h-[50px] bg-none font-semibold py-1 text-[12px] ${selectedTable === "transfers" ? "border-[#123962] border-b-2" : "border-b-none"}`}
+            className={`flex-1 sm:flex-none sm:w-40 py-3 text-sm font-semibold text-[#123962] rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#123962] ${
+              selectedTable === "transfers" ? "border-b-2 border-[#123962] bg-[#EEF2FF]" : "hover:bg-gray-100"
+            }`}
           >
             Transfers
           </button>
           <button
             onClick={() => handleTableChange("requests")}
-            className={`px-4 text-[#123962] w-[300px] h-[50px] bg-none font-semibold py-1 text-[12px] ${selectedTable === "requests" ? "border-[#123962] border-b-2" : "border-b-none"}`}
+            className={`flex-1 sm:flex-none sm:w-48 py-3 text-sm font-semibold text-[#123962] rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#123962] ${
+              selectedTable === "requests" ? "border-b-2 border-[#123962] bg-[#EEF2FF]" : "hover:bg-gray-100"
+            }`}
           >
             View Requests
           </button>
         </div>
+        {/* Render the corresponding table */}
+        <div className="mt-6 w-full">
+          {selectedTable === "inventory" && <InventoryData />}
+          {selectedTable === "received" && <DynamicTable />}
+          {selectedTable === "disbursed" && <AllDisbursed />}
+          {selectedTable === "requests" && <ViewRequest />}
+          {selectedTable === "transfers" && <TransferView />}
+        </div>
       </div>
-      {/* Render the corresponding table */}
-      <div className="w-full h-[80%] overflow-scroll my-8 pb-8 ">
-        {selectedTable === "inventory" && <InventoryData />}
-        {selectedTable === "received" && <DynamicTable />}
-        {selectedTable === "disbursed" && <AllDisbursed />}
-        {selectedTable === "requests" && <ViewRequest />}
-        {selectedTable === "transfers" && <TransferView />}
-      </div>
-
     </section>
   );
 }

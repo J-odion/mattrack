@@ -79,6 +79,22 @@ export const Resendotp = async (credentials) => {
   }
 };
 
+export const forgetpassword = async (credentials) => {
+  try {
+    const response = await apiClient.post("/login", credentials);
+
+    if (response.data && response.data.token && response.data.payload.user) {
+      localStorage.setItem("authToken", response.data.token);
+      return { token: response.data.token, user: response.data.payload.user };
+    } else {
+      throw new Error("Invalid response data");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw error;
+  }
+};
+
 // Table data
 export const fetchTableData = async () => {
   try {
@@ -144,20 +160,6 @@ export const recieveMat = async ({ transferId, approvedBy }) => {
     throw error;
   }
 };
-
-
-// export const recieveMat = async ({ transferId, approvedBy }) => {
-//   try {
-//     // const response = await apiClient.patch(`/transferAccept/${transferId}`, {
-//     //   approvedBy,
-//     // });
-//     const response = await recieveMat({ transferId: selectedRequest._id, approvedBy: userName });
-//     return response.data;
-//   } catch (error) {
-//     console.error("API Error:", error.response?.data || error.message);
-//     throw error;
-//   }
-// };
 
 
 

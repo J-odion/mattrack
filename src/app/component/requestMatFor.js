@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Purpose, houseType, sites } from "../data/data";
-import { requestMaterial, viewSchedule, } from "../utils/Apis";
+import { requestMaterial, viewSchedule } from "../utils/Apis";
 import { useSelector } from "react-redux";
 
 const RequestMatForm = ({ toggleForm }) => {
@@ -17,6 +17,7 @@ const RequestMatForm = ({ toggleForm }) => {
   });
   const [fetchedMaterials, setFetchedMaterials] = useState([]);
   const [notification, setNotification] = useState({ message: "", type: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (notification.message) {
@@ -66,15 +67,34 @@ const RequestMatForm = ({ toggleForm }) => {
     fetchMaterials();
   }, [formData.siteLocation, formData.houseType, formData.purpose]);
 
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleMaterialChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedMaterials = [...formData.materials];
+    updatedMaterials[index] = {
+      ...updatedMaterials[index],
+      [name]: name === "quantity" ? Number.parseFloat(value) || "" : value,
+    };
+    setFormData({ ...formData, materials: updatedMaterials });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
+    if (!formData.siteLocation || !formData.houseType || !formData.purpose || formData.materials.length === 0) {
+      setNotification({
+        message: "Please fill in all required fields and add at least one material.",
+        type: "error",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       await requestMaterial(formData);
       setNotification({ message: "Data successfully submitted!", type: "success" });
@@ -84,6 +104,8 @@ const RequestMatForm = ({ toggleForm }) => {
         type: "error",
         message: error.response?.data?.details || "Something went wrong. Try again!",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -93,29 +115,30 @@ const RequestMatForm = ({ toggleForm }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
       {notification.message && (
         <div
-          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 ${notification.type === "success" ? "bg-green-500" : "bg-red-500"
-            }`}
+          className={`fixed top-4 left-4 right-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 px-4 py-3 rounded-lg shadow-lg text-white text-sm font-semibold transition-all duration-300 z-50 ${
+            notification.type === "success" ? "bg-green-500" : "bg-red-500"
+          }`}
         >
           {notification.message}
         </div>
       )}
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white overflow-y-scroll p-6 rounded-lg h-[60%] shadow-lg w-1/2">
-          <h2 className="text-lg font-bold mb-4">Request Material</h2>
-          <form onSubmit={handleSubmit} className="space-y-6 text-xs">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl max-h-[90vh] overflow-y-auto">
+          <h2 className="text-lg sm:text-xl font-bold mb-4 text-[#123962]">Request Material</h2>
+          <form onSubmit={handleSubmit} className="space-y-6 text-sm">
             <div>
-              <h3 className="text-md font-semibold mb-2">General Information</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <h3 className="text-base sm:text-lg font-semibold mb-2">General Information</h3>
+              <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-4">
                 <div>
-                  <label className="block mb-1">Site Location</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">Site Location</label>
                   <select
                     name="siteLocation"
                     value={formData.siteLocation}
                     onChange={handleInputChange}
-                    className="border border-gray-300 p-2 rounded w-full"
+                    className="border border-gray-300 p-2 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-[#123962]"
                   >
                     <option value="">Select a Site Location</option>
                     {sites.map((site, idx) => (
@@ -126,22 +149,22 @@ const RequestMatForm = ({ toggleForm }) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block mb-1">Engineer's Name</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">Engineer's Name</label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     readOnly
-                    className="border border-gray-300 p-2 rounded bg-gray-100 w-full"
+                    className="border border-gray-300 p-2 rounded-md bg-gray-100 w-full text-sm focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block mb-1">Purpose</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">Purpose</label>
                   <select
                     name="purpose"
                     value={formData.purpose}
                     onChange={handleInputChange}
-                    className="border border-gray-300 p-2 rounded w-full"
+                    className="border border-gray-300 p-2 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-[#123962]"
                   >
                     <option value="">Select a Purpose</option>
                     {Purpose.map((purpose, index) => (
@@ -152,12 +175,12 @@ const RequestMatForm = ({ toggleForm }) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block mb-1">House Type</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">House Type</label>
                   <select
                     name="houseType"
                     value={formData.houseType}
                     onChange={handleInputChange}
-                    className="border border-gray-300 p-2 rounded w-full"
+                    className="border border-gray-300 p-2 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-[#123962]"
                   >
                     <option value="">Select a House Type</option>
                     {houseType.map((house_type, index) => (
@@ -167,69 +190,106 @@ const RequestMatForm = ({ toggleForm }) => {
                     ))}
                   </select>
                 </div>
-
-
                 <div>
-                  <label className="block mb-1">Constructuion Number</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">Construction Number</label>
                   <input
                     type="text"
                     name="constructionNo"
                     value={formData.constructionNo}
                     onChange={handleInputChange}
-                    className="border border-gray-300 p-2 rounded bg-gray-100 w-full"
+                    className="border border-gray-300 p-2 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-[#123962]"
                   />
                 </div>
               </div>
             </div>
-            <div className="container overflow-hidden w-full h-full">
-              <div className="h-[70%] overflow-y-hidden">
-                <div className="">
-                  <h3 className="text-md font-semibold mb-2">Materials</h3>
-                  {Array.isArray(formData.materials) && formData.materials.map((material, index) => (
-                    <div
-                      key={index}
-                      className="grid grid-cols-4 items-center gap-4 mb-4  p-2 rounded"
-                    >
-                      <div>
-                        <label className="block mb-1">Material Name</label>
-                        <input
-                          type="text"
-                          name="materialName"
-                          value={material.materialName || "N/A"}
-                          readOnly
-                          className="border border-gray-300 p-2 rounded w-full bg-gray-100"
-                        />
-                      </div>
-                      <div>
-                        <label className="block mb-1">Unit</label>
-                        <input
-                          type="text"
-                          name="unit"
-                          value={material.unit}
-                          readOnly
-                          className="border border-gray-300 p-2 rounded w-full bg-gray-100"
-                        />
-                      </div>
-                      <div>
-                        <label className="block mb-1">Quantity</label>
-                        <input
-                          type="number"
-                          name="quantity"
-                          value={material.quantity || "N/A"}
-                          readOnly
-                          onChange={(e) => handleMaterialChange(index, e)}
-                          className="border border-gray-300 p-2 rounded w-full bg-gray-100"
-                        />
+            <div className="w-full">
+              <h3 className="text-base sm:text-lg font-semibold mb-2">Materials</h3>
+              {/* Desktop Materials List */}
+              <div className="hidden sm:block overflow-x-auto">
+                {Array.isArray(formData.materials) && formData.materials.length > 0 ? (
+                  <table className="min-w-full bg-white border border-gray-200">
+                    <thead>
+                      <tr className="bg-gray-100 text-left text-sm">
+                        <th className="py-2 px-4 border-b">Material Name</th>
+                        <th className="py-2 px-4 border-b">Unit</th>
+                        <th className="py-2 px-4 border-b">Quantity</th>
+                        <th className="py-2 px-4 border-b">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {formData.materials.map((material, index) => (
+                        <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
+                          <td className="py-2 px-4 border-b text-sm">{material.materialName || "N/A"}</td>
+                          <td className="py-2 px-4 border-b text-sm">{material.unit}</td>
+                          <td className="py-2 px-4 border-b">
+                            <input
+                              type="number"
+                              name="quantity"
+                              value={material.quantity}
+                              onChange={(e) => handleMaterialChange(index, e)}
+                              className="border border-gray-300 p-1 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-[#123962]"
+                            />
+                          </td>
+                          <td className="py-2 px-4 border-b">
+                            <button
+                              type="button"
+                              onClick={() => removeMaterial(index)}
+                              className="text-red-600 hover:text-red-800 text-sm"
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="text-sm text-gray-500">No materials available. Please select site location, house type, and purpose.</p>
+                )}
+              </div>
+              {/* Mobile Card Layout */}
+              <div className="sm:hidden space-y-4">
+                {Array.isArray(formData.materials) && formData.materials.length > 0 ? (
+                  formData.materials.map((material, index) => (
+                    <div key={index} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
+                      <div className="space-y-2">
+                        <p className="text-sm">
+                          <span className="font-medium">Material Name:</span> {material.materialName || "N/A"}
+                        </p>
+                        <p className="text-sm">
+                          <span className="font-medium">Unit:</span> {material.unit}
+                        </p>
+                        <div>
+                          <label className="block mb-1 text-sm font-medium text-gray-700">Quantity:</label>
+                          <input
+                            type="number"
+                            name="quantity"
+                            value={material.quantity}
+                            onChange={(e) => handleMaterialChange(index, e)}
+                            className="border border-gray-300 p-2 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-[#123962]"
+                          />
+                        </div>
+                        <div className="text-right">
+                          <button
+                            type="button"
+                            onClick={() => removeMaterial(index)}
+                            className="text-red-600 hover:text-red-800 text-sm"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No materials available. Please select site location, house type, and purpose.</p>
+                )}
               </div>
-              <div className="text-right">
+              <div className="flex justify-end gap-3 mt-4">
                 <button
                   type="button"
                   onClick={toggleForm}
-                  className="bg-white border border-[#123962] text-[#123962] px-4 py-2 rounded mr-2"
+                  className="border border-[#123962] text-[#123962] px-4 py-2 rounded-md text-sm hover:bg-[#123962] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#123962]"
                 >
                   Cancel
                 </button>
@@ -239,16 +299,20 @@ const RequestMatForm = ({ toggleForm }) => {
                     !formData.siteLocation ||
                     !formData.houseType ||
                     !formData.purpose ||
-                    formData.materials.length === 0
+                    formData.materials.length === 0 ||
+                    isSubmitting
                   }
-                  className={`px-4 py-2 rounded text-white ${!formData.siteLocation || !formData.houseType || !formData.purpose || formData.materials.length === 0
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-[#123962]'
-                    }`}
-
-                    
+                  className={`px-4 py-2 rounded-md text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#123962] ${
+                    !formData.siteLocation ||
+                    !formData.houseType ||
+                    !formData.purpose ||
+                    formData.materials.length === 0 ||
+                    isSubmitting
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-[#123962] hover:bg-[#0e2c4f]"
+                  }`}
                 >
-                  Submit
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </div>

@@ -658,6 +658,14 @@ export const Purposes = [
     "work": [ "Column Extension Ironworks", "Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
   },
   {
+    "name": "SECOND FLOOR TO THIRD FLOOR",
+    "work": [ "Column Extension Ironworks", "Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+  },
+ {
+    "name": "THIRD FLOOR TO ROOF",
+    "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+  },
+  {
     "name": "SECOND FLOOR TO ROOF",
     "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
   },

@@ -67,75 +67,85 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full  mx-auto p-2 md:p-4">
-      <div className="w-full inset-0 flex justify-center items-center">
-        <div className="bg-white p-4 md:p-6 rounded-lg shadow-lg w-full md:w-2/4 lg:w-2.2/4 border-[#123962] border">
-          <h2 className="text-xl font-bold mb-4">Login</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <h3 className="text-2xl font-semibold mb-2">Welcome to Mattrack!</h3>
-            </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 bg-white p-6 sm:p-8 rounded-lg shadow-lg border border-[#123962]">
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#123962]">Login</h2>
+          <h3 className="text-lg sm:text-xl font-semibold text-center mt-2">Welcome to Mattrack!</h3>
+        </div>
 
-            {/* Email Input */}
-            <label className="block mb-1">Email *</label>
-            <div className="border border-gray-300 bg pl-3 flex justify-center items-center gap-4 rounded w-full">
-              <LuMail className="text-[#123962]"/>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email Input */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email *</label>
+            <div className="mt-1 flex items-center gap-3 rounded-md border border-gray-300 bg-[#F2F4F6] px-3 py-2">
+              <LuMail className="text-[#123962] text-lg" />
               <input
                 type="email"
                 name="email"
                 placeholder="Enter email address"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="border-none bg-[#F2F4F6] p-2 w-full "
+                className="flex-1 bg-transparent outline-none text-gray-900 placeholder-gray-400"
                 required
               />
             </div>
+          </div>
 
-            {/* Password Input */}
-            <label className="block mb-1">Password *</label>
-            <div className="border border-gray-300 bg pl-3 flex justify-center items-center gap-4 rounded w-full">
-              <FaLock className="text-[#123962]"/>
+          {/* Password Input */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Password *</label>
+            <div className="mt-1 flex items-center gap-3 rounded-md border border-gray-300 bg-[#F2F4F6] px-3 py-2">
+              <FaLock className="text-[#123962] text-lg" />
               <input
                 type="password"
                 name="password"
-                placeholder="Enter email address"
+                placeholder="Enter password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="border-none bg-[#F2F4F6] p-2 w-full"
+                className="flex-1 bg-transparent outline-none text-gray-900 placeholder-gray-400"
                 required
               />
             </div>
+          </div>
 
-            {/* Success Message */}
-            {successMessage && (
-              <div className="text-green-500 text-sm">{successMessage}</div>
-            )}
+          {/* Success Message */}
+          {successMessage && (
+            <div className="text-green-600 text-sm text-center">{successMessage}</div>
+          )}
 
-            {/* Error Message */}
-            {errorMessage && (
-              <div className="text-red-500 text-sm">{errorMessage}</div>
-            )}
+          {/* Error Message */}
+          {errorMessage && (
+            <div className="text-red-600 text-sm text-center">{errorMessage}</div>
+          )}
 
-            {/* Submit Button */}
-            <div className="text-right">
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <button
+              type="button"
+              className="text-[#e73434] text-sm hover:text-[#0e2c4f] transition-colors"
+              onClick={() => router.push("/forgetpassword")}
+            >
+              Forget Password
+            </button>
+            <div className="flex gap-4">
               <button
-                type="submit"
-                className="text-[#123962] px-4 py-2 rounded hover:text-[#0e2c4f]"
-                onClick={() => { router.push("/appdata"); }}
+                type="button"
+                className="text-[#123962] px-4 py-2 rounded-md hover:bg-[#123962] hover:text-white transition-colors"
+                onClick={() => router.push("/appdata")}
               >
                 Continue as Guest
               </button>
               <button
                 type="submit"
-                className={`bg-[#123962] text-white px-4 py-2 rounded hover:bg-[#0e2c4f] ${loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                className={`bg-[#123962] text-white px-4 py-2 rounded-md hover:bg-[#0e2c4f] transition-colors ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 disabled={loading}
               >
                 {loading ? "Logging in..." : "Login"}
               </button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );
