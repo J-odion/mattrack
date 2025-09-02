@@ -79,18 +79,18 @@ export const Resendotp = async (credentials) => {
   }
 };
 
-export const forgetpassword = async (credentials) => {
+export const resetPassword = async (credentials) => {
   try {
-    const response = await apiClient.post("/login", credentials);
+    const response = await apiClient.post("/reset-password", credentials);
 
-    if (response.data && response.data.token && response.data.payload.user) {
+    if (response.data && response.data.token && response.data.payload) {
       localStorage.setItem("authToken", response.data.token);
-      return { token: response.data.token, user: response.data.payload.user };
+      return { token: response.data.token, data: response.data.payload };
     } else {
       throw new Error("Invalid response data");
     }
   } catch (error) {
-    console.error("Error during login:", error);
+    console.error("Error during password reset:", error);
     throw error;
   }
 };
