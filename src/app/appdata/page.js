@@ -1,7 +1,5 @@
 import DashboardSideBar from "../component/DashboardSideBar";
-import FooterSection from "../component/Footer";
 import Navbar from "../component/Header";
-import Hero from "../component/Herosection";
 import Subcat from "../component/Subcat";
 
 

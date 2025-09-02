@@ -1,5 +1,4 @@
 import { FaCheck } from "react-icons/fa";
-import FooterSection from "./component/Footer";
 import Login from "./component/Login";
 import Image from "next/image";
 import AuthSideBar from "./component/AuthSideBar";
