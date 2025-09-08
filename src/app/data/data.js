@@ -650,33 +650,29 @@ export const Purposes = [
   },
   {
     "name": "GROUND TO FIRST FLOOR",
-    "work": [ "Formwork for Columns","Block work", "Electrical Works","Column Extension Ironworks", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+    "work": [ "Formwork for Columns","Block work", "Electrical Works","Column Extension Ironworks", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work", "Tiling"]
   },
   {
     "name": "FIRST TO SECOND FLOOR",
-    "work": [ "Column Extension Ironworks", "Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+    "work": [ "Column Extension Ironworks", "Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work","Tiling"]
   },
   {
     "name": "SECOND FLOOR TO THIRD FLOOR",
-    "work": [ "Column Extension Ironworks", "Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+    "work": [ "Column Extension Ironworks", "Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work", "Tiling"]
   },
  {
     "name": "THIRD FLOOR TO ROOF",
-    "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+    "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work", "Tiling"]
   },
   {
     "name": "SECOND FLOOR TO ROOF",
-    "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work"]
+    "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work","Tiling"]
   },
   {
     "name": "Plastering",
     "work": [ "Plastering"]
   },
   {
-    "name": "Tiling",
-    "work": [ "Tiling"]
-  },
-   {
     "name": "Maintanance",
     "work": [ "Maintanance"]
   },
