@@ -4,6 +4,7 @@ import { getTransfer, recieveMat } from "../utils/Apis";
 import { loadUser } from "../libs/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaTimes } from "react-icons/fa";
+import Pagination from "./Pagination"; // Assuming correct file name
 
 const TransferView = () => {
   const [reports, setReports] = useState([]);
@@ -12,6 +13,8 @@ const TransferView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 50;
 
   const loadReports = async () => {
     setLoading(true);
@@ -56,77 +59,85 @@ const TransferView = () => {
     }
   };
 
+  const totalPages = Math.ceil(reports.length / ITEMS_PER_PAGE);
+  const paginatedReports = reports.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-xl sm:text-2xl font-bold mb-6 text-[#123962]">All Transfer Requests</h1>
+        <h1 className="text-2xl font-bold mb-6 text-[#123962]">All Transfer Requests</h1>
         {loading ? (
           <p className="text-center text-gray-600">Loading transfers...</p>
         ) : reports.length === 0 ? (
           <p className="text-center text-gray-600">No transfers found.</p>
         ) : (
-          <div className="space-y-4">
-            {/* Desktop List */}
-            <div className="hidden sm:grid sm:gap-4">
-              {reports.map((req) => (
-                <div
-                  key={req._id}
-                  className="flex justify-between items-center p-4 border rounded-md shadow-sm bg-white"
-                >
-                  <div className="grid grid-cols-5 gap-4 w-full text-sm">
-                    <p>{new Date(req.date).toLocaleDateString()}</p>
-                    <p>{req.purpose}</p>
-                    <p>From: {req.fromSite}</p>
-                    <p>To: {req.toSite}</p>
-                    <p>
-                      Status: <span className="font-medium">{req.status}</span>
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleViewClick(req)}
-                    className="bg-[#123962] text-white px-4 py-2 rounded-md text-sm hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962]"
-                  >
-                    View
-                  </button>
-                </div>
-              ))}
+          <>
+            <div className="mt-6 flex justify-center mb-4">
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             </div>
-            {/* Mobile Card Layout */}
-            <div className="sm:hidden space-y-4">
-              {reports.map((req) => (
-                <div
-                  key={req._id}
-                  className="bg-white p-4 rounded-md shadow-md border border-gray-200"
-                >
-                  <div className="space-y-2">
-                    <p className="text-sm">
-                      <span className="font-medium">Date:</span> {new Date(req.date).toLocaleDateString()}
-                    </p>
-                    <p className="text-sm">
-                      <span className="font-medium">Purpose:</span> {req.purpose}
-                    </p>
-                    <p className="text-sm">
-                      <span className="font-medium">From:</span> {req.fromSite}
-                    </p>
-                    <p className="text-sm">
-                      <span className="font-medium">To:</span> {req.toSite}
-                    </p>
-                    <p className="text-sm">
-                      <span className="font-medium">Status:</span> {req.status}
-                    </p>
-                    <div className="text-right">
-                      <button
-                        onClick={() => handleViewClick(req)}
-                        className="bg-[#123962] text-white px-4 py-2 rounded-md text-sm hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962]"
-                      >
-                        View
-                      </button>
+            <div className="space-y-4">
+              {/* Desktop List */}
+              <div className="hidden sm:grid sm:gap-4">
+                {paginatedReports.map((req) => (
+                  <div
+                    key={req._id}
+                    className="flex justify-between items-center p-4 border rounded-md shadow-sm bg-white"
+                  >
+                    <div className="grid grid-cols-5 gap-4 w-full text-base">
+                      <p>{new Date(req.date).toLocaleDateString()}</p>
+                      <p>{req.purpose}</p>
+                      <p>From: {req.fromSite}</p>
+                      <p>To: {req.toSite}</p>
+                      <p>
+                        Status: <span className="font-medium">{req.status}</span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleViewClick(req)}
+                      className="bg-[#123962] text-white px-4 py-2 rounded-md text-sm hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962]"
+                    >
+                      View
+                    </button>
+                  </div>
+                ))}
+              </div>
+              {/* Mobile Card Layout */}
+              <div className="sm:hidden space-y-4">
+                {paginatedReports.map((req) => (
+                  <div
+                    key={req._id}
+                    className="bg-white p-4 rounded-md shadow-md border border-gray-200"
+                  >
+                    <div className="space-y-2 text-base">
+                      <p>
+                        <span className="font-medium">Date:</span> {new Date(req.date).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <span className="font-medium">From:</span> {req.fromSite}
+                      </p>
+                      <p>
+                        <span className="font-medium">To:</span> {req.toSite}
+                      </p>
+                      <p>
+                        <span className="font-medium">Status:</span> {req.status}
+                      </p>
+                      <div className="text-right">
+                        <button
+                          onClick={() => handleViewClick(req)}
+                          className="bg-[#123962] text-white px-4 py-2 rounded-md text-sm hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962]"
+                        >
+                          View
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+            <div className="mt-6 flex justify-center">
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            </div>
+          </>
         )}
 
         {/* MODAL */}
@@ -140,9 +151,9 @@ const TransferView = () => {
                 <FaTimes size={20} />
               </button>
 
-              <h2 className="text-lg sm:text-xl font-bold mb-4 text-[#123962]">Transfer Details</h2>
+              <h2 className="text-xl font-bold mb-4 text-[#123962]">Transfer Details</h2>
 
-              <div className="mb-4 flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-4 text-sm">
+              <div className="mb-4 flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-4 text-base">
                 <div>
                   <p>
                     <span className="font-medium">Purpose:</span> {selectedRequest.purpose}
@@ -167,10 +178,10 @@ const TransferView = () => {
                 </div>
               </div>
 
-              <h3 className="text-base sm:text-lg font-semibold mt-4 mb-2">Materials</h3>
+              <h3 className="text-lg font-semibold mt-4 mb-2">Materials</h3>
               {/* Desktop Materials Table */}
               <div className="hidden sm:block overflow-x-auto">
-                <table className="w-full border-collapse text-sm">
+                <table className="w-full border-collapse text-base">
                   <thead>
                     <tr className="bg-gray-100 text-left">
                       <th className="px-4 py-2 border-b">Material Name</th>
@@ -193,7 +204,7 @@ const TransferView = () => {
               <div className="sm:hidden space-y-4">
                 {selectedRequest.materials?.map((mat, i) => (
                   <div key={i} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
-                    <div className="space-y-2 text-sm">
+                    <div className="space-y-2 text-base">
                       <p>
                         <span className="font-medium">Material Name:</span> {mat.materialName}
                       </p>

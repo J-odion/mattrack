@@ -4,6 +4,7 @@ import { getMaterialRequest, reviewMaterialRequest } from "../utils/Apis";
 import { loadUser } from "../libs/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaTimes } from "react-icons/fa";
+import Pagination from "./Pagination"; // Assuming correct file name
 
 const ViewRequest = () => {
   const [reports, setReports] = useState([]);
@@ -14,6 +15,8 @@ const ViewRequest = () => {
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 50;
 
   const loadReports = async () => {
     setLoading(true);
@@ -55,17 +58,20 @@ const ViewRequest = () => {
       await reviewMaterialRequest(selectedRequest._id, { status, comment });
       setIsModalOpen(false);
       setComment("");
-      loadReports(); // Refresh the list after review
+      loadReports();
     } catch (err) {
       console.error("Error submitting review:", err);
       setError("Failed to submit review. Please try again.");
     }
   };
 
+  const totalPages = Math.ceil(reports.length / ITEMS_PER_PAGE);
+  const paginatedReports = reports.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-xl sm:text-2xl font-bold mb-6 text-[#123962]">View All Engineers' Requests</h1>
+        <h1 className="text-2xl font-bold mb-6 text-[#123962]">View All Engineers' Requests</h1>
 
         {loading && <p className="text-center text-gray-600">Loading requests...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
@@ -74,73 +80,81 @@ const ViewRequest = () => {
         )}
 
         {!loading && !error && reports.length > 0 && (
-          <div className="space-y-4">
-            {/* Desktop List */}
-            <div className="hidden sm:block">
-              {reports.map((request) => (
-                <div
-                  key={request._id}
-                  className="flex items-center justify-between p-4 border-b rounded-md bg-white shadow-sm"
-                >
-                  <div className="grid grid-cols-6 gap-4 w-full text-sm">
-                    <p>{new Date(request.date).toLocaleDateString()}</p>
-                    <p>{request.name}</p>
-                    <p>{request.purpose}</p>
-                    <p>{request.siteLocation}</p>
-                    <p>
-                      <span className="font-medium">{request.status}</span>
-                    </p>
-                    <p>{request.houseType} / {request.constructionNo}</p>
-                  </div>
-                  <button
-                    onClick={() => handleViewClick(request)}
-                    className="bg-[#123962] text-white px-4 py-2 rounded-md text-sm hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962]"
-                  >
-                    View Details
-                  </button>
-                </div>
-              ))}
+          <>
+            <div className="mt-6 flex justify-center mb-4">
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             </div>
-            {/* Mobile Card Layout */}
-            <div className="sm:hidden space-y-4">
-              {reports.map((request) => (
-                <div
-                  key={request._id}
-                  className="bg-white p-4 rounded-md shadow-md border border-gray-200"
-                >
-                  <div className="space-y-2 text-sm">
-                    <p>
-                      <span className="font-medium">Date:</span> {new Date(request.date).toLocaleDateString()}
-                    </p>
-                    <p>
-                      <span className="font-medium">Name:</span> {request.name}
-                    </p>
-                    <p>
-                      <span className="font-medium">Purpose:</span> {request.purpose}
-                    </p>
-                    <p>
-                      <span className="font-medium">Site Location:</span> {request.siteLocation}
-                    </p>
-                    <p>
-                      <span className="font-medium">Status:</span> {request.status}
-                    </p>
-                    <p>
-                      <span className="font-medium">House Type / Construction No:</span>{" "}
-                      {request.houseType} / {request.constructionNo}
-                    </p>
-                    <div className="text-right">
-                      <button
-                        onClick={() => handleViewClick(request)}
-                        className="bg-[#123962] text-white px-4 py-2 rounded-md text-sm hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962]"
-                      >
-                        View Details
-                      </button>
+            <div className="space-y-4">
+              {/* Desktop List */}
+              <div className="hidden sm:block">
+                {paginatedReports.map((request) => (
+                  <div
+                    key={request._id}
+                    className="flex items-center justify-between p-4 border-b rounded-md bg-white shadow-sm"
+                  >
+                    <div className="grid grid-cols-6 gap-4 w-full text-base">
+                      <p>{new Date(request.date).toLocaleDateString()}</p>
+                      <p>{request.name}</p>
+                      <p>{request.purpose}</p>
+                      <p>{request.siteLocation}</p>
+                      <p>
+                        <span className="font-medium">{request.status}</span>
+                      </p>
+                      <p>{request.houseType} / {request.constructionNo}</p>
+                    </div>
+                    <button
+                      onClick={() => handleViewClick(request)}
+                      className="bg-[#123962] text-white px-4 py-2 rounded-md text-sm hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962]"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                ))}
+              </div>
+              {/* Mobile Card Layout */}
+              <div className="sm:hidden space-y-4">
+                {paginatedReports.map((request) => (
+                  <div
+                    key={request._id}
+                    className="bg-white p-4 rounded-md shadow-md border border-gray-200"
+                  >
+                    <div className="space-y-2 text-base">
+                      <p>
+                        <span className="font-medium">Date:</span> {new Date(request.date).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <span className="font-medium">Name:</span> {request.name}
+                      </p>
+                      <p>
+                        <span className="font-medium">Purpose:</span> {request.purpose}
+                      </p>
+                      <p>
+                        <span className="font-medium">Site Location:</span> {request.siteLocation}
+                      </p>
+                      <p>
+                        <span className="font-medium">Status:</span> {request.status}
+                      </p>
+                      <p>
+                        <span className="font-medium">House Type / Construction No:</span>{" "}
+                        {request.houseType} / {request.constructionNo}
+                      </p>
+                      <div className="text-right">
+                        <button
+                          onClick={() => handleViewClick(request)}
+                          className="bg-[#123962] text-white px-4 py-2 rounded-md text-sm hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962]"
+                        >
+                          View Details
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+            <div className="mt-6 flex justify-center">
+              {/* <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} /> */}
+            </div>
+          </>
         )}
 
         {/* Modal */}
@@ -148,7 +162,7 @@ const ViewRequest = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl max-h-[80vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg sm:text-xl font-bold text-[#123962]">Material Request Information</h2>
+                <h2 className="text-xl font-bold text-[#123962]">Material Request Information</h2>
                 <button
                   onClick={() => setIsModalOpen(false)}
                   className="text-gray-600 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -157,7 +171,7 @@ const ViewRequest = () => {
                 </button>
               </div>
 
-              <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-4 text-sm mb-4">
+              <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-4 text-base mb-4">
                 <div>
                   <p>
                     <span className="font-medium">Name:</span> {selectedRequest.name}
@@ -185,10 +199,10 @@ const ViewRequest = () => {
                 </div>
               </div>
 
-              <h3 className="text-base sm:text-lg font-semibold mb-2">Materials</h3>
+              <h3 className="text-lg font-semibold mb-2">Materials</h3>
               {/* Desktop Materials Table */}
               <div className="hidden sm:block overflow-x-auto">
-                <table className="w-full border-collapse text-sm">
+                <table className="w-full border-collapse text-base">
                   <thead>
                     <tr className="bg-gray-100 text-left">
                       <th className="py-2 px-4 border-b">Material Name</th>
@@ -211,7 +225,7 @@ const ViewRequest = () => {
               <div className="sm:hidden space-y-4">
                 {selectedRequest.materials?.map((material, index) => (
                   <div key={index} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
-                    <div className="space-y-2 text-sm">
+                    <div className="space-y-2 text-base">
                       <p>
                         <span className="font-medium">Material Name:</span> {material.materialName}
                       </p>
@@ -251,7 +265,7 @@ const ViewRequest = () => {
                   </div>
                 </div>
               ) : (
-                <p className="mt-4 text-sm">
+                <p className="mt-4 text-base">
                   <span className="font-medium">Admin/PM Comment:</span>{" "}
                   {selectedRequest.comments || "No comment yet"}
                 </p>

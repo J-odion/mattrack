@@ -59,7 +59,7 @@ export default function Subcat() {
           </button>
         </div>
         {/* Render the corresponding table */}
-        <div className="mt-6 w-full">
+        <div className="mt-6 w-full overflow-y-auto">
           {selectedTable === "inventory" && <InventoryData />}
           {selectedTable === "received" && <DynamicTable />}
           {selectedTable === "disbursed" && <AllDisbursed />}

@@ -4,12 +4,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchDisbursedData } from "../utils/Apis";
 import { FaSortDown, FaSortUp } from "react-icons/fa";
-import Pagination from "./Pgination";
+import Pagination from "./Pagination"; // Corrected import
 
-const ITEMS_PER_PAGE = 12; // Items per page
+const ITEMS_PER_PAGE = 50; // Increased
 
 const AllDisbursed = () => {
-  const [reports, setReports] = useState([]); // Ensure it's an array
+  const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,7 +40,7 @@ const AllDisbursed = () => {
           setFilteredReports(data);
         } else {
           console.error("Invalid API response: Expected an array", data);
-          setReports([]); // Ensure reports is an array
+          setReports([]);
           setFilteredReports([]);
         }
       } catch (err) {
@@ -95,7 +95,7 @@ const AllDisbursed = () => {
     }
 
     setFilteredReports(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   }, [searchQuery, siteLocation, purpose, material, startDate, endDate, recipientName, reports, houseType, constructionNumber]);
 
   // Sorting Function
@@ -113,20 +113,20 @@ const AllDisbursed = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
         {/* Search & Filters */}
         <div className="flex flex-col gap-4 mb-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
           <input
             type="text"
             placeholder="Search by Site Location..."
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
 
           <select
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={siteLocation}
             onChange={(e) => setSiteLocation(e.target.value)}
           >
@@ -143,7 +143,7 @@ const AllDisbursed = () => {
             startDate={startDate}
             endDate={endDate}
             placeholderText="Start Date"
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
           />
           <DatePicker
             selected={endDate}
@@ -153,11 +153,11 @@ const AllDisbursed = () => {
             endDate={endDate}
             minDate={startDate}
             placeholderText="End Date"
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
           />
 
           <select
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={purpose}
             onChange={(e) => setPurpose(e.target.value)}
           >
@@ -168,7 +168,7 @@ const AllDisbursed = () => {
           </select>
 
           <select
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={material}
             onChange={(e) => setMaterial(e.target.value)}
           >
@@ -179,7 +179,7 @@ const AllDisbursed = () => {
           </select>
 
           <select
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={recipientName}
             onChange={(e) => setRecipientName(e.target.value)}
           >
@@ -190,7 +190,7 @@ const AllDisbursed = () => {
           </select>
 
           <select
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={houseType}
             onChange={(e) => sethouseType(e.target.value)}
           >
@@ -201,7 +201,7 @@ const AllDisbursed = () => {
           </select>
 
           <select
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={constructionNumber}
             onChange={(e) => setconstructionNumber(e.target.value)}
           >
@@ -234,11 +234,14 @@ const AllDisbursed = () => {
 
         {!loading && !error && (
           <div className="w-full">
+            <div className="mt-6 flex justify-center mb-4">
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            </div>
             {/* Desktop Table */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-gray-200 text-left text-sm">
+                  <tr className="bg-gray-200 text-left text-base">
                     <th className="py-3 px-4">
                       Date
                       <button
@@ -271,8 +274,8 @@ const AllDisbursed = () => {
                       <td className="py-3 px-4">{report.recipientName}</td>
                       <td className="py-3 px-4">
                         <div>
-                          <p className="text-sm">{report.purpose}</p>
-                          <p className="text-xs font-semibold">{report.levelofwork}</p>
+                          <p className="text-base">{report.purpose}</p>
+                          <p className="text-sm font-semibold">{report.levelofwork}</p>
                         </div>
                       </td>
                     </tr>
@@ -286,7 +289,7 @@ const AllDisbursed = () => {
               {paginatedData.map((report, index) => (
                 <div key={index} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
                   <div className="flex justify-between items-center">
-                    <p className="text-sm font-semibold">
+                    <p className="text-base font-semibold">
                       {new Date(report.date).toLocaleDateString()}
                     </p>
                     <button
@@ -296,34 +299,34 @@ const AllDisbursed = () => {
                       {sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />}
                     </button>
                   </div>
-                  <div className="mt-2 space-y-2">
-                    <p className="text-sm">
+                  <div className="mt-2 space-y-2 text-base">
+                    <p>
                       <span className="font-medium">Site Location:</span> {report.siteLocation}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">House Type:</span> {report.houseType}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">Construction No.:</span>{" "}
                       {report.constructionNumber || "N/A"}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">Material:</span> {report.materialName}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">Quantity:</span> {report.quantity}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">Unit:</span> {report.unit}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">Recipient:</span> {report.recipientName}
                     </p>
                     <div>
-                      <p className="text-sm">
+                      <p>
                         <span className="font-medium">Purpose:</span> {report.purpose}
                       </p>
-                      <p className="text-xs font-semibold">{report.levelofwork}</p>
+                      <p className="text-sm font-semibold">{report.levelofwork}</p>
                     </div>
                   </div>
                 </div>
@@ -332,7 +335,7 @@ const AllDisbursed = () => {
 
             {/* Pagination */}
             <div className="mt-6 flex justify-center">
-              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+              {/* <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} /> */}
             </div>
           </div>
         )}

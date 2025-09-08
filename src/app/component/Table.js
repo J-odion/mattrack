@@ -4,9 +4,9 @@ import { fetchTableData } from "../utils/Apis";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaSortDown, FaSortUp } from "react-icons/fa";
-import Pagination from "./Pgination";
+import Pagination from "./Pagination"; // Corrected import
 
-const ITEMS_PER_PAGE = 12; // Items per page
+const ITEMS_PER_PAGE = 50; // Increased
 
 const DynamicTable = () => {
   const [reports, setReports] = useState([]);
@@ -35,7 +35,7 @@ const DynamicTable = () => {
           setFilteredReports(data);
         } else {
           console.error("Invalid API response: Expected an array", data);
-          setReports([]); // Ensure reports is an array
+          setReports([]);
           setFilteredReports([]);
         }
       } catch (err) {
@@ -77,7 +77,7 @@ const DynamicTable = () => {
     }
 
     setFilteredReports(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   }, [searchQuery, siteLocation, purpose, material, startDate, endDate, reports]);
 
   // Sorting Function
@@ -106,20 +106,20 @@ const DynamicTable = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
         {/* Search & Filters */}
         <div className="flex flex-col gap-4 mb-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
           <input
             type="text"
             placeholder="Search by Site Location..."
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
 
           <select
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={siteLocation}
             onChange={(e) => setSiteLocation(e.target.value)}
           >
@@ -136,7 +136,7 @@ const DynamicTable = () => {
             startDate={startDate}
             endDate={endDate}
             placeholderText="Start Date"
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
           />
           <DatePicker
             selected={endDate}
@@ -146,7 +146,7 @@ const DynamicTable = () => {
             endDate={endDate}
             minDate={startDate}
             placeholderText="End Date"
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
           />
 
           <button
@@ -170,11 +170,14 @@ const DynamicTable = () => {
 
         {!loading && !error && (
           <div className="w-full">
+            <div className="mt-6 flex justify-center mb-4">
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            </div>
             {/* Desktop Table */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-gray-200 text-left text-sm">
+                  <tr className="bg-gray-200 text-left text-base">
                     <th className="py-3 px-4">
                       Date
                       <button
@@ -193,9 +196,9 @@ const DynamicTable = () => {
                   {paginatedData.length > 0 ? (
                     paginatedData.map((report, index) => (
                       <tr key={index} className="border-b border-gray-200">
-                        <td className="py-3 px-4 text-sm">{new Date(report.date).toLocaleDateString()}</td>
-                        <td className="py-3 px-4 text-sm">{report.siteLocation}</td>
-                        <td className="py-3 px-4 text-sm">{report.materials?.length || 0} items</td>
+                        <td className="py-3 px-4 text-base">{new Date(report.date).toLocaleDateString()}</td>
+                        <td className="py-3 px-4 text-base">{report.siteLocation}</td>
+                        <td className="py-3 px-4 text-base">{report.materials?.length || 0} items</td>
                         <td className="py-3 px-4">
                           <button
                             onClick={() => openModal(report.materials)}
@@ -208,7 +211,7 @@ const DynamicTable = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="4" className="text-center p-4 text-sm">No data available</td>
+                      <td colSpan="4" className="text-center p-4 text-base">No data available</td>
                     </tr>
                   )}
                 </tbody>
@@ -220,9 +223,9 @@ const DynamicTable = () => {
               {paginatedData.length > 0 ? (
                 paginatedData.map((report, index) => (
                   <div key={index} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
-                    <div className="space-y-2">
+                    <div className="space-y-2 text-base">
                       <div className="flex justify-between items-center">
-                        <p className="text-sm font-semibold">
+                        <p className="font-semibold">
                           {new Date(report.date).toLocaleDateString()}
                         </p>
                         <button
@@ -232,10 +235,10 @@ const DynamicTable = () => {
                           {sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />}
                         </button>
                       </div>
-                      <p className="text-sm">
+                      <p>
                         <span className="font-medium">Site Location:</span> {report.siteLocation}
                       </p>
-                      <p className="text-sm">
+                      <p>
                         <span className="font-medium">Materials:</span> {report.materials?.length || 0} items
                       </p>
                       <div className="text-right">
@@ -250,13 +253,13 @@ const DynamicTable = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-center text-sm text-gray-500">No data available</p>
+                <p className="text-center text-base text-gray-500">No data available</p>
               )}
             </div>
 
             {/* Pagination */}
             <div className="mt-6 flex justify-center">
-              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+              {/* <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} /> */}
             </div>
           </div>
         )}
@@ -266,7 +269,7 @@ const DynamicTable = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl max-h-[80vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-base sm:text-lg font-semibold text-[#123962]">Material Details</h3>
+                <h3 className="text-lg font-semibold text-[#123962]">Material Details</h3>
                 <button
                   onClick={closeModal}
                   className="text-red-500 hover:text-red-700 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -278,7 +281,7 @@ const DynamicTable = () => {
               <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-gray-200 text-left text-sm">
+                    <tr className="bg-gray-200 text-left text-base">
                       <th className="py-3 px-4 border-b">Material Name</th>
                       <th className="py-3 px-4 border-b">Quantity</th>
                       <th className="py-3 px-4 border-b">Unit</th>
@@ -287,9 +290,9 @@ const DynamicTable = () => {
                   <tbody>
                     {selectedMaterials.map((material, idx) => (
                       <tr key={idx} className="border-b border-gray-200">
-                        <td className="py-3 px-4 text-sm">{material.materialName}</td>
-                        <td className="py-3 px-4 text-sm">{material.quantity}</td>
-                        <td className="py-3 px-4 text-sm">{material.unit}</td>
+                        <td className="py-3 px-4 text-base">{material.materialName}</td>
+                        <td className="py-3 px-4 text-base">{material.quantity}</td>
+                        <td className="py-3 px-4 text-base">{material.unit}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -299,14 +302,14 @@ const DynamicTable = () => {
               <div className="sm:hidden space-y-4">
                 {selectedMaterials.map((material, idx) => (
                   <div key={idx} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
-                    <div className="space-y-2">
-                      <p className="text-sm">
+                    <div className="space-y-2 text-base">
+                      <p>
                         <span className="font-medium">Material Name:</span> {material.materialName}
                       </p>
-                      <p className="text-sm">
+                      <p>
                         <span className="font-medium">Quantity:</span> {material.quantity}
                       </p>
-                      <p className="text-sm">
+                      <p>
                         <span className="font-medium">Unit:</span> {material.unit}
                       </p>
                     </div>

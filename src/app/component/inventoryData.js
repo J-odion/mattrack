@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { fetchAllInventory } from "../utils/Apis";
-import Pagination from "./Pgination";
+import Pagination from "./Pagination"; // Corrected import
 
 const InventoryData = () => {
   const [reports, setReports] = useState([]);
@@ -17,7 +17,7 @@ const InventoryData = () => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 15;
+  const recordsPerPage = 20; // Increased
 
   useEffect(() => {
     const loadReports = async () => {
@@ -75,21 +75,21 @@ const InventoryData = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
         {/* Search & Filters */}
         <div className="flex flex-col gap-4 mb-6 sm:grid sm:grid-cols-2 lg:grid-cols-4">
           <input
             type="text"
             placeholder="Search by material name..."
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
           <select
             name="siteLocation"
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={filters.siteLocation}
             onChange={(e) => setFilters({ ...filters, siteLocation: e.target.value })}
           >
@@ -101,7 +101,7 @@ const InventoryData = () => {
 
           <select
             name="unit"
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={filters.unit}
             onChange={(e) => setFilters({ ...filters, unit: e.target.value })}
           >
@@ -113,7 +113,7 @@ const InventoryData = () => {
 
           <select
             name="materialName"
-            className="border text-sm px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
+            className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={filters.materialName}
             onChange={(e) => setFilters({ ...filters, materialName: e.target.value })}
           >
@@ -136,11 +136,14 @@ const InventoryData = () => {
 
         {!loading && !error && (
           <div className="w-full">
+            <div className="mt-6 flex justify-center mb-4">
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            </div>
             {/* Desktop Table */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-gray-200 text-left text-sm">
+                  <tr className="bg-gray-200 text-left text-base">
                     <th className="py-3 px-4">Material Name</th>
                     <th className="py-3 px-4">Quantity</th>
                     <th className="py-3 px-4">Unit</th>
@@ -164,17 +167,17 @@ const InventoryData = () => {
             <div className="sm:hidden space-y-4">
               {currentRecords.map((report, index) => (
                 <div key={index} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
-                  <div className="space-y-2">
-                    <p className="text-sm">
+                  <div className="space-y-2 text-base">
+                    <p>
                       <span className="font-medium">Material Name:</span> {report.materialName}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">Quantity:</span> {report.totalQuantity}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">Unit:</span> {report.unit}
                     </p>
-                    <p className="text-sm">
+                    <p>
                       <span className="font-medium">Site Location:</span> {report.siteLocation}
                     </p>
                   </div>
@@ -182,9 +185,8 @@ const InventoryData = () => {
               ))}
             </div>
 
-            {/* Pagination */}
             <div className="mt-6 flex justify-center">
-              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+              {/* <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} /> */}
             </div>
           </div>
         )}

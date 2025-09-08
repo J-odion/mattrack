@@ -13,7 +13,6 @@ const TransferMat = ({ toggleForm }) => {
     fromSite: "",
     toSite: "",
     createdBy: userInfo?.name || "",
-    date: new Date().toISOString().split("T")[0], // Add date field
     materials: [],
   });
 
@@ -134,7 +133,7 @@ const TransferMat = ({ toggleForm }) => {
     try {
       await sendMat({ ...formData, requester: createdBy });
       setNotification({ message: "Material transfer submitted successfully", type: "success" });
-      setFormData({ fromSite: "", toSite: "", createdBy: userInfo?.name || "", date: new Date().toISOString().split("T")[0], materials: [] });
+      setFormData({ fromSite: "", toSite: "", createdBy: userInfo?.name || "", materials: [] });
       toggleForm();
     } catch (error) {
       console.error("Transfer error:", error);

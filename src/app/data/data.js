@@ -328,8 +328,7 @@ export const categories = [
         {"name": "¾ × ½ bushe", "unit":"nos"},
         {"name": "gas hose", "unit":"nos"},
         {"name": "gas hose clip", "unit":"nos"},
-
-      ]    
+      ]
   },
   {
     "name": "ELECTRICALS",
@@ -672,6 +671,10 @@ export const Purposes = [
   {
     "name": "Plastering",
     "work": [ "Plastering"]
+  },
+  {
+    "name": "Tiling",
+    "work": [ "Tiling"]
   },
    {
     "name": "Maintanance",
