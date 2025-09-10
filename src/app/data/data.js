@@ -662,11 +662,23 @@ export const Purposes = [
     "work": [ "Column Extension Ironworks", "Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work","Tiling"]
   },
   {
-    "name": "SECOND FLOOR TO THIRD FLOOR",
+    "name": "THIRD FLOOR TP FOURTH FLOOR",
     "work": [ "Column Extension Ironworks", "Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work", "Tiling"]
   },
  {
-    "name": "THIRD FLOOR TO ROOF",
+    "name": "FOURTH FLOOR TO FIFTH FLOOR",
+    "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work", "Tiling"]
+  },
+   {
+    "name": "FIFTH FLOOR TO SIXTH FLOOR ",
+    "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work", "Tiling"]
+  },
+  {
+    "name": "FIFTH FLOOR TO ROOF ",
+    "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work", "Tiling"]
+  },
+  {
+    "name": "SIXTH FLOOR TO ROOF ",
     "work": [ "Column Extension Ironworks","Electrical Works","Block work", "Formwork for Columns", "Casting of columns", "Formwork for slab and beams", "Ironwork for slab and beams", "Casting of Slab and beams", "Plmubing Work", "Tiling"]
   },
   {
