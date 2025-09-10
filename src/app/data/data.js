@@ -143,6 +143,11 @@ export const categories = [
       "materials": [
         { "name": "63mm ×40mm inner threaded PE tee", "unit": "nos" },
         { "name": "40mm PE Cap Plug", "unit": "nos" },
+
+        { "name": "40mm PE pipe ", "unit": "roll" },
+        { "name": "50mm PE pipe ", "unit": "roll" },
+        { "name": "63mm PE pipe ", "unit": "roll" },
+        
         { "name": "63mm PE Cap Plug", "unit": "nos" },
         { "name": "3 x 3 Patteess", "unit": "nos" },
         { "name": "63mm PE Adaptor", "unit": "nos" },
