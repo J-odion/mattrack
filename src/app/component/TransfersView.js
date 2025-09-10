@@ -135,7 +135,7 @@ const TransferView = () => {
               </div>
             </div>
             <div className="mt-6 flex justify-center">
-              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+              
             </div>
           </>
         )}
