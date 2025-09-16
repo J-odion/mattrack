@@ -300,6 +300,30 @@ export const viewSchedule = async () => {
 
 };
 
+export const getHouseSchedule = async ({ siteLocation, houseType, purpose }) => {
+  try {
+    const response = await apiClient.get("/houseschedule", {
+      params: { siteLocation, houseType, purpose },
+    });
+    return response.data.data; //return only the array
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error;
+  }
+};
+// export const getHouseSchedule = async ({ siteLocation, houseType, purpose }) => {
+//   try {
+//     const response = await apiClient.get("/houseschedule", {
+//       params: { siteLocation, houseType, purpose },
+//     });
+//     console.log(response)
+//     return response.data;
+//   } catch (error) {
+//     console.error("API Error:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
+
 export const viewHouseSchedule = async (params) => {
   try {
     const response = await apiClient.get("/houseschedule", { params });

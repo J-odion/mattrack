@@ -95,7 +95,7 @@ const DashboardSideBar = () => {
               src="/assets/whiteLogo.png"
               width={120}
               height={40}
-              className="w-auto h-8 sm:h-10"
+              className="w-auto h-5 sm:h-5"
               alt="IXE Logistics Logo"
               priority
             />
