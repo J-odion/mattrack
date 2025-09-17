@@ -3,8 +3,11 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchDisbursedData } from "../utils/Apis";
+import { loadUser } from "../libs/features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSortDown, FaSortUp } from "react-icons/fa";
 import Pagination from "./Pagination"; // Corrected import
+import jsPDF from "jspdf";
 
 const ITEMS_PER_PAGE = 50; // Increased
 
@@ -13,6 +16,10 @@ const AllDisbursed = () => {
   const [filteredReports, setFilteredReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDownloadOpen, setIsDownloadOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
   // Filters
   const [searchQuery, setSearchQuery] = useState("");
@@ -52,6 +59,14 @@ const AllDisbursed = () => {
 
     loadReports();
   }, []);
+
+
+  useEffect(() => {
+    if (!user) dispatch(loadUser());
+  }, [user, dispatch]);
+
+  const userRole = user?.role || "guest";
+  const userName = user?.name || "guest";
 
   // Filtering Function
   useEffect(() => {
@@ -96,7 +111,7 @@ const AllDisbursed = () => {
 
     setFilteredReports(filtered);
     setCurrentPage(1);
-  }, [searchQuery, siteLocation, purpose, material, startDate, endDate, recipientName, reports, houseType, constructionNumber]);
+  }, [searchQuery, siteLocation, purpose, material, recipientName, houseType, constructionNumber, startDate, endDate, reports]);
 
   // Sorting Function
   const sortedReports = [...filteredReports].sort((a, b) => {
@@ -112,6 +127,77 @@ const AllDisbursed = () => {
     currentPage * ITEMS_PER_PAGE
   );
 
+  // Download Handling
+  const getFormattedFileName = () => {
+    const date = new Date().toISOString().split('T')[0]; // Current date as YYYY-MM-DD
+    return `MtkRe-AllDisbursed-${date}`;
+  };
+
+  const exportToCSV = () => {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Date,Site Location,House Type,Construction No,Material Name,Quantity,Unit,Recipient,Purpose,Level of Work\n";
+    sortedReports.forEach((report) => {
+      csvContent += `${new Date(report.date).toLocaleDateString()},${report.siteLocation || ""},${report.houseType || ""},${report.constructionNumber || "N/A"},${report.materialName || ""},${report.quantity || ""},${report.unit || ""},${report.recipientName || ""},${report.purpose || ""},${report.levelofwork || ""}\n`;
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${getFormattedFileName()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setIsDownloadOpen(false);
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    let y = 10;
+    doc.text("All Disbursed Materials", 10, y);
+    y += 10;
+    sortedReports.forEach((report, index) => {
+      if (y > 280) { // Start new page if near bottom
+        doc.addPage();
+        y = 10;
+      }
+      doc.text(`Record ${index + 1}`, 10, y);
+      y += 10;
+      doc.text(`Date: ${new Date(report.date).toLocaleDateString()}`, 10, y);
+      y += 10;
+      doc.text(`Site Location: ${report.siteLocation || "N/A"}`, 10, y);
+      y += 10;
+      doc.text(`House Type: ${report.houseType || "N/A"}`, 10, y);
+      y += 10;
+      doc.text(`Construction No: ${report.constructionNumber || "N/A"}`, 10, y);
+      y += 10;
+      doc.text(`Material Name: ${report.materialName || "N/A"}`, 10, y);
+      y += 10;
+      doc.text(`Quantity: ${report.quantity || "N/A"}`, 10, y);
+      y += 10;
+      doc.text(`Unit: ${report.unit || "N/A"}`, 10, y);
+      y += 10;
+      doc.text(`Recipient: ${report.recipientName || "N/A"}`, 10, y);
+      y += 10;
+      doc.text(`Purpose: ${report.purpose || "N/A"}`, 10, y);
+      y += 10;
+      doc.text(`Level of Work: ${report.levelofwork || "N/A"}`, 10, y);
+      y += 10;
+    });
+    doc.save(`${getFormattedFileName()}.pdf`);
+    setIsDownloadOpen(false);
+  };
+
+  const handleDownloadClick = () => {
+    setIsDownloadOpen(!isDownloadOpen);
+  };
+
+  const handleFormatSelect = (format) => {
+    if (format === "csv") {
+      exportToCSV();
+    } else if (format === "pdf") {
+      exportToPDF();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
@@ -124,7 +210,6 @@ const AllDisbursed = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-
           <select
             className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={siteLocation}
@@ -135,7 +220,6 @@ const AllDisbursed = () => {
               <option key={idx} value={loc}>{loc}</option>
             ))}
           </select>
-
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -155,7 +239,6 @@ const AllDisbursed = () => {
             placeholderText="End Date"
             className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
           />
-
           <select
             className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={purpose}
@@ -166,7 +249,6 @@ const AllDisbursed = () => {
               <option key={idx} value={purp}>{purp}</option>
             ))}
           </select>
-
           <select
             className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={material}
@@ -177,7 +259,6 @@ const AllDisbursed = () => {
               <option key={idx} value={mat}>{mat}</option>
             ))}
           </select>
-
           <select
             className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={recipientName}
@@ -188,7 +269,6 @@ const AllDisbursed = () => {
               <option key={idx} value={mat}>{mat}</option>
             ))}
           </select>
-
           <select
             className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={houseType}
@@ -199,7 +279,6 @@ const AllDisbursed = () => {
               <option key={idx} value={mat}>{mat}</option>
             ))}
           </select>
-
           <select
             className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
             value={constructionNumber}
@@ -210,6 +289,37 @@ const AllDisbursed = () => {
               <option key={idx} value={mat}>{mat}</option>
             ))}
           </select>
+
+          {userRole === "admin" && (
+            <>
+              <div className="relative">
+                <button
+                  onClick={handleDownloadClick}
+                  className="px-4 py-2 border rounded-md bg-[#123962] text-white hover:bg-[#0e2c4f] focus:outline-none focus:ring-2 focus:ring-[#123962] w-full text-sm"
+                >
+                  Download All
+                </button>
+                {isDownloadOpen && (
+                  <div className="absolute z-10 mt-2 bg-white shadow-lg rounded-md border border-gray-200 w-full">
+                    <button
+                      onClick={() => handleFormatSelect("pdf")}
+                      className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                    >
+                      PDF
+                    </button>
+                    <button
+                      onClick={() => handleFormatSelect("csv")}
+                      className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                    >
+                      CSV
+                    </button>
+                  </div>
+                )}
+              </div>
+
+            </>
+          )}
+
 
           <button
             onClick={() => {
@@ -335,7 +445,7 @@ const AllDisbursed = () => {
 
             {/* Pagination */}
             <div className="mt-6 flex justify-center">
-              {/* <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} /> */}
+              <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             </div>
           </div>
         )}
