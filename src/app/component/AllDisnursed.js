@@ -66,7 +66,6 @@ const AllDisbursed = () => {
   }, [user, dispatch]);
 
   const userRole = user?.role || "guest";
-  const userName = user?.name || "guest";
 
   // Filtering Function
   useEffect(() => {
@@ -130,7 +129,7 @@ const AllDisbursed = () => {
   // Download Handling
   const getFormattedFileName = () => {
     const date = new Date().toISOString().split('T')[0]; // Current date as YYYY-MM-DD
-    return `MtkRe-AllDisbursed-${date}`;
+    return `MatTrack-AllDisbursed-${date}`;
   };
 
   const exportToCSV = () => {

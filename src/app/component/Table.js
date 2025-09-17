@@ -123,7 +123,7 @@ const DynamicTable = () => {
   // Download Handling
   const getFormattedFileName = () => {
     const date = new Date().toISOString().split('T')[0]; // Current date as YYYY-MM-DD
-    return `MtkRe-AllData-${date}`;
+    return `MatTrack-InventoryRecords-${date}`;
   };
 
   const exportToCSV = () => {
