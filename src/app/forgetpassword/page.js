@@ -30,7 +30,7 @@ export default function Home(){
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/forget-password", {
+      const response = await fetch("api/forgetpassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
