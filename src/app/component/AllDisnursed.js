@@ -89,7 +89,10 @@ const AllDisbursed = () => {
     }
 
     if (purpose) {
-      filtered = filtered.filter(report => report.purpose === purpose);
+      filtered = filtered.filter(report => {
+        const combined = `${report.purpose} | ${report.levelofwork}`;
+        return combined === purpose;
+      });
     }
 
     if (material) {
@@ -243,10 +246,11 @@ const AllDisbursed = () => {
             value={purpose}
             onChange={(e) => setPurpose(e.target.value)}
           >
-            <option value="">Filter by Purpose</option>
-            {[...new Set(reports.map(report => report.purpose))].map((purp, idx) => (
-              <option key={idx} value={purp}>{purp}</option>
-            ))}
+            <option value="">Filter by Purpose / Level of Work</option>
+            {[...new Set(reports.map(report => `${report.purpose} | ${report.levelofwork}`))]
+              .map((combo, idx) => (
+                <option key={idx} value={combo}>{combo}</option>
+              ))}
           </select>
           <select
             className="border text-base px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#123962]"
