@@ -694,4 +694,10 @@ export const Purposes = [
     "name": "Maintanance",
     "work": [ "Maintanance"]
   },
+  {
+    "name": "Structural",
+    "work": [ "Moulding Parapet", "Casting Parapet", "Litel Formwork", "Litel casting", "Litel Pre cast", "scafolding", "Roofing"]
+  },
+
 ]
+
